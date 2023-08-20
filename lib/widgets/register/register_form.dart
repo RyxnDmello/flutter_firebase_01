@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../database/account_manager.dart';
 
-import './register_form_title.dart';
-import './register_form_input.dart';
-import './register_form_button.dart';
-import './register_form_instead.dart';
+import './form/register_form_title.dart';
+import './form/register_form_input.dart';
+import './form/register_form_button.dart';
+import './form/register_form_instead.dart';
 
-import '../../../screens/collection.dart';
+import '../../screens/collection.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -17,15 +19,43 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
+  final AccountManager accountManager = AccountManager();
   final _formKey = GlobalKey<FormState>();
   bool _isSignUpForm = true;
   String? _username;
   String? _password;
   String? _email;
 
-  void _saveForm() {
+  void _saveForm() async {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
+
+    if (_isSignUpForm) {
+      final isCreated = await accountManager.createAccount(
+        username: _username!,
+        email: _email!,
+        password: _password!,
+      );
+
+      if (!isCreated) {
+        _failureSnackbar(message: "AUTHENTICATION FAILED");
+        _formKey.currentState!.reset();
+        return;
+      }
+    }
+
+    if (!_isSignUpForm) {
+      final isLogged = await accountManager.loginAccount(
+        email: _email!,
+        password: _password!,
+      );
+
+      if (!isLogged) {
+        _failureSnackbar(message: "LOGIN FAILED");
+        _formKey.currentState!.reset();
+        return;
+      }
+    }
 
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -72,6 +102,23 @@ class _RegisterFormState extends State<RegisterForm> {
 
   void _switchForms() {
     setState(() => _isSignUpForm = !_isSignUpForm);
+  }
+
+  void _failureSnackbar({required String message}) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message.toUpperCase(),
+          textAlign: TextAlign.center,
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w300,
+            letterSpacing: 1,
+            fontSize: 20,
+          ),
+        ),
+      ),
+    );
   }
 
   @override
