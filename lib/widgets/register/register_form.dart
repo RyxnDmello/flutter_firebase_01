@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../../database/account_manager.dart';
+
+import '../../screens/collection.dart';
 
 import './form/register_form_title.dart';
 import './form/register_form_input.dart';
 import './form/register_form_button.dart';
 import './form/register_form_instead.dart';
-
-import '../../screens/collection.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
