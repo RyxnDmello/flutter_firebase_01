@@ -4,19 +4,21 @@ import 'package:google_fonts/google_fonts.dart';
 class CollectionBlockName extends StatelessWidget {
   const CollectionBlockName({
     required this.name,
+    required this.icon,
     super.key,
   });
 
   final String name;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(
-          Icons.work_outline_outlined,
+        Icon(
           color: Colors.white,
           size: 35,
+          icon,
         ),
         const SizedBox(
           width: 6.5,

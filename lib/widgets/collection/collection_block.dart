@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../../models/collection_model.dart';
+
 import './block/collection_block_image.dart';
 import './block/collection_block_details.dart';
 import './block/collection_block_name.dart';
 
 class CollectionBlock extends StatelessWidget {
   const CollectionBlock({
-    required this.image,
+    required this.collection,
     super.key,
   });
 
-  final String image;
+  final CollectionModel collection;
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +36,10 @@ class CollectionBlock extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             CollectionBlockImage(
-              image: image,
+              image: collection.image,
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(
+            Padding(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 20,
               ),
               child: Column(
@@ -45,12 +47,16 @@ class CollectionBlock extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CollectionBlockName(
-                    name: "Projects",
+                    name: collection.name,
+                    icon: collection.icon,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 6.5,
                   ),
-                  CollectionBlockDetails()
+                  CollectionBlockDetails(
+                    progress: collection.progress,
+                    completed: collection.completed,
+                  )
                 ],
               ),
             )

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_01/widgets/collection/collection_block.dart';
+
+import '../models/collection_model.dart';
 
 import '../widgets/collection/collection_app_bar.dart';
+import '../widgets/collection/collection_block.dart';
 
 class CollectionScreen extends StatelessWidget {
   const CollectionScreen({super.key});
@@ -22,49 +24,30 @@ class CollectionScreen extends StatelessWidget {
         ],
       ),
       backgroundColor: Colors.white,
-      body: const SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(
           horizontal: 15,
           vertical: 20,
         ),
         child: Column(
           children: [
-            CollectionAppBar(),
-            SizedBox(
+            const CollectionAppBar(),
+            const SizedBox(
               height: 20,
             ),
-            CollectionBlock(
-              image: "./lib/images/collection/high.png",
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            CollectionBlock(
-              image: "./lib/images/collection/medium.png",
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            CollectionBlock(
-              image: "./lib/images/collection/low.png",
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            CollectionBlock(
-              image: "./lib/images/collection/high.png",
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            CollectionBlock(
-              image: "./lib/images/collection/medium.png",
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            CollectionBlock(
-              image: "./lib/images/collection/low.png",
+            ...collections.map(
+              (collection) {
+                return Column(
+                  children: [
+                    CollectionBlock(
+                      collection: collection,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         ),
