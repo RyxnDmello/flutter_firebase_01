@@ -4,6 +4,7 @@ import '../models/collection_model.dart';
 
 import '../widgets/collection/collection_app_bar.dart';
 import '../widgets/collection/collection_block.dart';
+import '../widgets/collection/collection_form.dart';
 
 class CollectionScreen extends StatelessWidget {
   const CollectionScreen({super.key});
@@ -15,7 +16,20 @@ class CollectionScreen extends StatelessWidget {
         backgroundColor: Colors.black,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(20),
+                    topLeft: Radius.circular(20),
+                  ),
+                ),
+                context: context,
+                builder: (context) {
+                  return const CollectionForm();
+                },
+              );
+            },
             icon: const Icon(
               Icons.add,
               size: 30,
