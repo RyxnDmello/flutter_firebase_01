@@ -16,15 +16,35 @@ class IconModel {
 
 const icons = [
   IconModel(
-    name: "HOME",
+    name: "Custom",
+    icon: Icons.favorite_outlined,
+  ),
+  IconModel(
+    name: "Home",
     icon: Icons.home,
   ),
   IconModel(
-    name: "WORK",
+    name: "Work",
     icon: Icons.work,
   ),
   IconModel(
-    name: "CODE",
+    name: "Food",
+    icon: Icons.restaurant_outlined,
+  ),
+  IconModel(
+    name: "Travel",
+    icon: Icons.flight_takeoff_sharp,
+  ),
+  IconModel(
+    name: "Finance",
+    icon: Icons.currency_rupee_outlined,
+  ),
+  IconModel(
+    name: "Leisure",
+    icon: Icons.beach_access_sharp,
+  ),
+  IconModel(
+    name: "Code",
     icon: Icons.code,
   ),
 ];

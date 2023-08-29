@@ -18,6 +18,8 @@ class CollectionScreen extends StatelessWidget {
           IconButton(
             onPressed: () {
               showModalBottomSheet(
+                useSafeArea: true,
+                isScrollControlled: true,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(20),

@@ -3,15 +3,21 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CollectionFormInput extends StatelessWidget {
   const CollectionFormInput({
+    required this.validateInput,
+    required this.saveInput,
     required this.label,
     super.key,
   });
 
+  final String? Function(String name) validateInput;
+  final void Function(String name) saveInput;
   final String label;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: (value) => validateInput(value!),
+      onSaved: (newValue) => saveInput(newValue!),
       style: GoogleFonts.poppins(
         fontWeight: FontWeight.w500,
         color: Colors.black,

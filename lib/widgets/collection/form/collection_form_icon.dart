@@ -5,22 +5,23 @@ import '../../../models/icon_model.dart';
 
 class CollectionFormIcon extends StatelessWidget {
   const CollectionFormIcon({
+    required this.validateIcon,
     required this.saveIcon,
     super.key,
   });
 
+  final String? Function(String name) validateIcon;
   final void Function(String name) saveIcon;
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
+      validator: (value) => validateIcon(value!),
+      onSaved: (newValue) => saveIcon(newValue!),
       onChanged: (value) => saveIcon(value!),
-      validator: (value) {
-        return null;
-      },
       value: icons[0].name,
       icon: const Icon(
-        Icons.arrow_drop_down_circle_outlined,
+        Icons.menu_rounded,
         color: Colors.black,
       ),
       iconSize: 30,
@@ -49,7 +50,7 @@ class CollectionFormIcon extends StatelessWidget {
             children: [
               Icon(
                 icon.icon,
-                size: 30,
+                size: 26.5,
               ),
               const SizedBox(
                 width: 5,
