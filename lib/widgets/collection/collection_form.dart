@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../providers/collection_provider.dart';
+
+import '../../models/collection_model.dart';
 import '../../models/icon_model.dart';
 
 import './form/collection_form_title.dart';
@@ -8,32 +12,25 @@ import './form/collection_form_icon.dart';
 import './form/collection_form_priority.dart';
 import './form/collection_form_button.dart';
 
-class CollectionForm extends StatefulWidget {
-  const CollectionForm({super.key});
+class CollectionForm extends ConsumerStatefulWidget {
+  const CollectionForm({
+    required this.updateCollection,
+    super.key,
+  });
+
+  final void Function(List<CollectionModel> collection) updateCollection;
 
   @override
-  State<CollectionForm> createState() {
+  ConsumerState<CollectionForm> createState() {
     return _CollectionFormState();
   }
 }
 
-class _CollectionFormState extends State<CollectionForm> {
-  final _formKey = GlobalKey<FormState>();
+class _CollectionFormState extends ConsumerState<CollectionForm> {
+  final formKey = GlobalKey<FormState>();
   String? _name;
   IconData? _icon;
   String? _image;
-
-  void _saveForm() {
-    if (!_formKey.currentState!.validate()) return;
-    _formKey.currentState!.save();
-
-    // ignore: avoid_print
-    print(_name);
-    // ignore: avoid_print
-    print(_icon);
-    // ignore: avoid_print
-    print(_image);
-  }
 
   String? _validateName(String name) {
     if (name.isEmpty || name.length < 2) {
@@ -44,12 +41,11 @@ class _CollectionFormState extends State<CollectionForm> {
   }
 
   String? _validateIcon(String name) {
-    for (var i = 0; i < icons.length; i++) {
-      if (icons[i].name != name) continue;
-      return null;
+    if (name == "Icon") {
+      return "PLEASE SELECT AN ICON";
     }
 
-    return "PLEASE SELECT AN ICON";
+    return null;
   }
 
   void _saveName(String name) {
@@ -70,13 +66,34 @@ class _CollectionFormState extends State<CollectionForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    final collectionProviderRef = ref.watch(collectionProvider.notifier);
+
+    void saveForm() {
+      if (!formKey.currentState!.validate()) return;
+      formKey.currentState!.save();
+
+      if (_image == null) return;
+
+      collectionProviderRef.addCollection(
+        name: _name!,
+        icon: _icon!,
+        image: _image!,
+      );
+
+      widget.updateCollection(
+        collectionProviderRef.getCollections(),
+      );
+
+      Navigator.of(context).pop();
+    }
+
+    return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 40,
       ),
       child: Form(
-        key: _formKey,
+        key: formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -98,15 +115,17 @@ class _CollectionFormState extends State<CollectionForm> {
               saveIcon: _saveIcon,
             ),
             const SizedBox(
-              height: 20,
+              height: 15,
             ),
             CollectionFormPriority(
               saveImage: _saveImage,
             ),
             const SizedBox(
-              height: 20,
+              height: 25,
             ),
-            CollectionFormButton(saveForm: _saveForm),
+            CollectionFormButton(
+              saveForm: saveForm,
+            ),
           ],
         ),
       ),

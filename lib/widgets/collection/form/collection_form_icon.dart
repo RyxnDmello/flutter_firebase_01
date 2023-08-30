@@ -26,19 +26,37 @@ class CollectionFormIcon extends StatelessWidget {
       ),
       iconSize: 30,
       isExpanded: false,
-      decoration: const InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(15, 25, 15, 15),
-        enabledBorder: OutlineInputBorder(
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.fromLTRB(15, 25, 15, 15),
+        enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.black,
             width: 2.5,
           ),
         ),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             color: Colors.black,
             width: 2.5,
           ),
+        ),
+        errorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+            width: 2.5,
+          ),
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.red,
+            width: 2.5,
+          ),
+        ),
+        errorStyle: GoogleFonts.poppins(
+          fontWeight: FontWeight.w600,
+          color: Colors.red,
+          letterSpacing: 0.65,
+          fontSize: 12.5,
         ),
       ),
       items: icons.map((icon) {

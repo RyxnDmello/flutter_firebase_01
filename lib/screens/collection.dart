@@ -5,9 +5,42 @@ import '../models/collection_model.dart';
 import '../widgets/collection/collection_app_bar.dart';
 import '../widgets/collection/collection_block.dart';
 import '../widgets/collection/collection_form.dart';
+import '../widgets/collection/collection_empty.dart';
 
-class CollectionScreen extends StatelessWidget {
+class CollectionScreen extends StatefulWidget {
   const CollectionScreen({super.key});
+
+  @override
+  State createState() {
+    return _CollectionScreenState();
+  }
+}
+
+class _CollectionScreenState extends State<CollectionScreen> {
+  List<CollectionModel> _collections = [];
+
+  void _updateCollection(List<CollectionModel> collections) {
+    setState(() => _collections = collections);
+  }
+
+  void _openForm() {
+    showModalBottomSheet(
+      useSafeArea: true,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
+        ),
+      ),
+      context: context,
+      builder: (context) {
+        return CollectionForm(
+          updateCollection: _updateCollection,
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,22 +49,7 @@ class CollectionScreen extends StatelessWidget {
         backgroundColor: Colors.black,
         actions: [
           IconButton(
-            onPressed: () {
-              showModalBottomSheet(
-                useSafeArea: true,
-                isScrollControlled: true,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20),
-                    topLeft: Radius.circular(20),
-                  ),
-                ),
-                context: context,
-                builder: (context) {
-                  return const CollectionForm();
-                },
-              );
-            },
+            onPressed: () => _openForm(),
             icon: const Icon(
               Icons.add,
               size: 30,
@@ -51,20 +69,25 @@ class CollectionScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            ...collections.map(
-              (collection) {
-                return Column(
-                  children: [
-                    CollectionBlock(
-                      collection: collection,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                  ],
-                );
-              },
-            ),
+            if (_collections.isEmpty)
+              CollectionEmpty(
+                openForm: _openForm,
+              ),
+            if (_collections.isNotEmpty)
+              ..._collections.map(
+                (collection) {
+                  return Column(
+                    children: [
+                      CollectionBlock(
+                        collection: collection,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                    ],
+                  );
+                },
+              ),
           ],
         ),
       ),

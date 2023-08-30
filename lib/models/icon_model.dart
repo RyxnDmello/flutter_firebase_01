@@ -16,6 +16,10 @@ class IconModel {
 
 const icons = [
   IconModel(
+    name: "Icon",
+    icon: Icons.arrow_forward_ios_rounded,
+  ),
+  IconModel(
     name: "Custom",
     icon: Icons.favorite_outlined,
   ),

@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import './firebase_options.dart';
 
+import './screens/collection.dart';
 import './screens/register.dart';
 
 void main() async {
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: RegisterScreen(),
+      home: CollectionScreen(),
     );
   }
 }

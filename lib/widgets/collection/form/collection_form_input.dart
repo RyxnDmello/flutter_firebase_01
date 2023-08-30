@@ -61,6 +61,12 @@ class CollectionFormInput extends StatelessWidget {
             width: 2.5,
           ),
         ),
+        errorStyle: GoogleFonts.poppins(
+          fontWeight: FontWeight.w600,
+          color: Colors.red,
+          letterSpacing: 0.65,
+          fontSize: 12.5,
+        ),
       ),
     );
   }

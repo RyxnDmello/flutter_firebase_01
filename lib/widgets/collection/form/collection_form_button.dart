@@ -11,13 +11,25 @@ class CollectionFormButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return ElevatedButton.icon(
       onPressed: () => saveForm(),
-      child: Text(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color.fromARGB(255, 0, 0, 80),
+        minimumSize: const Size(double.infinity, 50),
+        shadowColor: Colors.black,
+        elevation: 2,
+      ),
+      icon: const Icon(
+        Icons.create_new_folder_outlined,
+        color: Colors.white,
+        size: 30,
+      ),
+      label: Text(
         "Create Collection",
         style: GoogleFonts.poppins(
           color: Colors.white,
-          fontSize: 20,
+          letterSpacing: 0.65,
+          fontSize: 22.5,
         ),
       ),
     );
