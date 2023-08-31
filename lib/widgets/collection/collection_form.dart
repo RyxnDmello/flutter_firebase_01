@@ -33,8 +33,15 @@ class _CollectionFormState extends ConsumerState<CollectionForm> {
   String? _image;
 
   String? _validateName(String name) {
-    if (name.isEmpty || name.length < 2) {
+    int spaces = 0;
+
+    if (name.isEmpty || name.length < 2 || name.length > 15) {
       return "INVALID COLLECTION NAME";
+    }
+
+    for (var i = 0; i < name.length; i++) {
+      if (name[i].contains(' ')) ++spaces;
+      if (spaces > 1) return "INVALID COLLECTION NAME";
     }
 
     return null;

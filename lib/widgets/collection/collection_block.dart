@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../models/collection_model.dart';
 
+import '../../screens/progress.dart';
+
 import './block/collection_block_image.dart';
 import './block/collection_block_details.dart';
 import './block/collection_block_name.dart';
@@ -16,8 +18,20 @@ class CollectionBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void viewTasks() {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) {
+            return ProgressScreen(
+              collection: collection,
+            );
+          },
+        ),
+      );
+    }
+
     return GestureDetector(
-      onTap: () {},
+      onTap: () => viewTasks(),
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: const BoxDecoration(
