@@ -20,7 +20,7 @@ const icons = [
     icon: Icons.arrow_forward_ios_rounded,
   ),
   IconModel(
-    name: "Custom",
+    name: "Personal",
     icon: Icons.favorite_outlined,
   ),
   IconModel(

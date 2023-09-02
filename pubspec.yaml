@@ -31,3 +31,4 @@ flutter:
   assets:
     - ./lib/images/register/
     - ./lib/images/collection/
+    - ./lib/images/progress/

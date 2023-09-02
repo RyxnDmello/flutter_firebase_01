@@ -14,7 +14,6 @@ class CollectionBlockImage extends StatelessWidget {
       image,
       width: double.infinity,
       fit: BoxFit.cover,
-      height: 120,
     );
   }
 }

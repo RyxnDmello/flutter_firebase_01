@@ -33,6 +33,8 @@ class CollectionBlock extends StatelessWidget {
     return GestureDetector(
       onTap: () => viewTasks(),
       child: Container(
+        height: 125,
+        width: double.infinity,
         clipBehavior: Clip.hardEdge,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(
@@ -40,7 +42,7 @@ class CollectionBlock extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black87,
+              color: Colors.black54,
               offset: Offset(0, 5),
               blurRadius: 10,
             ),
@@ -65,7 +67,7 @@ class CollectionBlock extends StatelessWidget {
                     icon: collection.icon,
                   ),
                   const SizedBox(
-                    height: 6.5,
+                    height: 10,
                   ),
                   CollectionBlockDetails(
                     progress: collection.progress,

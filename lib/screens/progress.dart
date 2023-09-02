@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/collection_model.dart';
 
 import '../widgets/progress/progress_app_bar.dart';
+import '../widgets/progress/progress_empty.dart';
 
 class ProgressScreen extends StatelessWidget {
   const ProgressScreen({
@@ -27,16 +28,25 @@ class ProgressScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 20,
-        ),
-        child: Column(
-          children: [
-            ProgressAppBar(),
-          ],
-        ),
+      body: Column(
+        children: [
+          ProgressAppBar(
+            collection: collection,
+          ),
+          SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 20,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (collection.progress.isEmpty) const ProgressEmpty(),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
