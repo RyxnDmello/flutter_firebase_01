@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProgressEmpty extends StatelessWidget {
-  const ProgressEmpty({super.key});
+  const ProgressEmpty({
+    required this.openForm,
+    super.key,
+  });
+
+  final void Function() openForm;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,7 @@ class ProgressEmpty extends StatelessWidget {
           fit: BoxFit.cover,
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () => openForm(),
           child: Text(
             "ADD YOUR TASKS",
             style: GoogleFonts.abel(

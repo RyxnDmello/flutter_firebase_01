@@ -27,7 +27,7 @@ class CollectionForm extends ConsumerStatefulWidget {
 }
 
 class _CollectionFormState extends ConsumerState<CollectionForm> {
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   String? _name;
   IconData? _icon;
   String? _image;
@@ -72,8 +72,8 @@ class _CollectionFormState extends ConsumerState<CollectionForm> {
     final collectionProviderRef = ref.watch(collectionProvider.notifier);
 
     void saveForm() {
-      if (!formKey.currentState!.validate()) return;
-      formKey.currentState!.save();
+      if (!_formKey.currentState!.validate()) return;
+      _formKey.currentState!.save();
 
       if (_image == null) return;
 
@@ -96,7 +96,7 @@ class _CollectionFormState extends ConsumerState<CollectionForm> {
         vertical: 40,
       ),
       child: Form(
-        key: formKey,
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,

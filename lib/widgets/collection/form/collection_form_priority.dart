@@ -33,7 +33,6 @@ class _CollectionFormPriorityState extends State<CollectionFormPriority> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           "Select Priority",
