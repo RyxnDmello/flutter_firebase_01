@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import './form/progress_form_title.dart';
 import './form/progress_form_input.dart';
+import './form/progress_form_priority.dart';
+import './form/progress_form_button.dart';
 
 class ProgressForm extends StatefulWidget {
   const ProgressForm({super.key});
@@ -43,6 +45,14 @@ class _ProgressFormState extends State<ProgressForm> {
               label: "Description",
               maxLines: 5,
             ),
+            SizedBox(
+              height: 15,
+            ),
+            ProgressFormPriority(),
+            SizedBox(
+              height: 25,
+            ),
+            ProgressFormButton(),
           ],
         ),
       ),

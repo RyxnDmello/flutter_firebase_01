@@ -16,15 +16,15 @@ class CollectionFormPriority extends StatefulWidget {
 }
 
 class _CollectionFormPriorityState extends State<CollectionFormPriority> {
-  int _selectedIndex = -1;
+  int _selectedPriority = -1;
 
   void _selectPriority({required int index}) {
-    setState(() => _selectedIndex = index);
+    setState(() => _selectedPriority = index);
   }
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, String> images = {
+    final Map<String, String> priority = {
       "HIGH": "./lib/images/collection/high.png",
       "MEDIUM": "./lib/images/collection/medium.png",
       "LOW": "./lib/images/collection/low.png",
@@ -48,17 +48,19 @@ class _CollectionFormPriorityState extends State<CollectionFormPriority> {
         ),
         ListView.separated(
           shrinkWrap: true,
-          itemCount: images.length,
+          itemCount: priority.length,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                widget.saveImage(images.values.elementAt(index));
+                widget.saveImage(priority.values.elementAt(index));
                 _selectPriority(index: index);
               },
               child: Stack(
                 alignment: Alignment.center,
                 children: [
                   Container(
+                    height: 110,
+                    width: double.infinity,
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
@@ -71,14 +73,12 @@ class _CollectionFormPriorityState extends State<CollectionFormPriority> {
                       ],
                     ),
                     child: Image.asset(
-                      height: 110,
-                      width: double.infinity,
-                      images.values.elementAt(index),
+                      priority.values.elementAt(index),
                       fit: BoxFit.cover,
                     ),
                   ),
                   Text(
-                    images.keys.elementAt(index),
+                    priority.keys.elementAt(index),
                     style: GoogleFonts.abel(
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -92,7 +92,7 @@ class _CollectionFormPriorityState extends State<CollectionFormPriority> {
                     child: Icon(
                       size: 30,
                       Icons.star,
-                      color: _selectedIndex != index
+                      color: _selectedPriority != index
                           ? Colors.transparent
                           : Colors.white,
                     ),

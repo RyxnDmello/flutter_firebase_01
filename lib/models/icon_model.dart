@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class IconModel {
-  const IconModel({
+class _IconModel {
+  const _IconModel({
     required this.name,
     required this.icon,
   });
@@ -15,39 +15,39 @@ class IconModel {
 }
 
 const icons = [
-  IconModel(
+  _IconModel(
     name: "Icon",
     icon: Icons.arrow_forward_ios_rounded,
   ),
-  IconModel(
+  _IconModel(
     name: "Personal",
     icon: Icons.favorite_outlined,
   ),
-  IconModel(
+  _IconModel(
     name: "Home",
     icon: Icons.home,
   ),
-  IconModel(
+  _IconModel(
     name: "Work",
     icon: Icons.work,
   ),
-  IconModel(
+  _IconModel(
     name: "Food",
     icon: Icons.restaurant_outlined,
   ),
-  IconModel(
+  _IconModel(
     name: "Travel",
     icon: Icons.flight_takeoff_sharp,
   ),
-  IconModel(
+  _IconModel(
     name: "Finance",
     icon: Icons.currency_rupee_outlined,
   ),
-  IconModel(
+  _IconModel(
     name: "Leisure",
     icon: Icons.beach_access_sharp,
   ),
-  IconModel(
+  _IconModel(
     name: "Code",
     icon: Icons.code,
   ),
