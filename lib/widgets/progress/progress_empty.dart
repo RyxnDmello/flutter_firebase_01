@@ -12,13 +12,18 @@ class ProgressEmpty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(
-          "./lib/images/progress/empty.png",
-          width: double.infinity,
-          fit: BoxFit.cover,
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 15,
+          ),
+          child: Image.asset(
+            "./lib/images/progress/empty.png",
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
         ),
         TextButton(
           onPressed: () => openForm(),

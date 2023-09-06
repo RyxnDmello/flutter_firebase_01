@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_01/widgets/progress/progress_task.dart';
 
 import '../models/collection_model.dart';
+import '../models/task_model.dart';
 
 import '../widgets/progress/progress_app_bar.dart';
 import '../widgets/progress/progress_form.dart';
@@ -46,28 +48,49 @@ class ProgressScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          ProgressAppBar(
-            collection: collection,
-          ),
-          SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 20,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ProgressAppBar(
+              collection: collection,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (collection.progress.isEmpty)
-                  ProgressEmpty(
-                    openForm: openForm,
-                  ),
-              ],
-            ),
-          ),
-        ],
+            if (tasks.isEmpty)
+              ProgressEmpty(
+                openForm: openForm,
+              ),
+            if (tasks.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 30,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    ...tasks.map(
+                      (task) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ProgressTask(
+                              task: task,
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

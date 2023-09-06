@@ -36,14 +36,12 @@ class _ProgressFormState extends State<ProgressForm> {
             ),
             ProgressFormInput(
               label: "Name",
-              maxLines: 1,
             ),
             SizedBox(
               height: 15,
             ),
             ProgressFormInput(
               label: "Description",
-              maxLines: 5,
             ),
             SizedBox(
               height: 15,
