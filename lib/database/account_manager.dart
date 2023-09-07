@@ -1,13 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AccountManager {
-  AccountManager()
+class _AccountManager {
+  _AccountManager()
       : _firestore = FirebaseFirestore.instance,
-        _firebaseAuth = FirebaseAuth.instance;
+        _firebaseAuth = FirebaseAuth.instance,
+        _createdAccount = null;
 
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestore;
+  UserCredential? _createdAccount;
 
   Future<bool> createAccount({
     required String username,
@@ -15,12 +17,15 @@ class AccountManager {
     required String password,
   }) async {
     try {
-      final createdAccount = await _firebaseAuth.createUserWithEmailAndPassword(
+      _createdAccount = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      await _firestore.collection("accounts").doc(createdAccount.user!.uid).set(
+      await _firestore
+          .collection("accounts")
+          .doc(_createdAccount!.user!.uid)
+          .set(
         {
           "email": email,
           "username": username,
@@ -38,7 +43,7 @@ class AccountManager {
     required String password,
   }) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
+      _createdAccount = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -49,3 +54,5 @@ class AccountManager {
     return true;
   }
 }
+
+final accountManager = _AccountManager();

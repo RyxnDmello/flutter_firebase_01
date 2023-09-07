@@ -20,7 +20,6 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-  final AccountManager accountManager = AccountManager();
   final _formKey = GlobalKey<FormState>();
   bool _isSignUpForm = true;
   String? _username;

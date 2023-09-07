@@ -3,15 +3,21 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ProgressFormInput extends StatelessWidget {
   const ProgressFormInput({
+    required this.validateInput,
+    required this.saveInput,
     required this.label,
     super.key,
   });
 
+  final String? Function(String input) validateInput;
+  final void Function(String input) saveInput;
   final String label;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: (value) => validateInput(value!),
+      onSaved: (newValue) => saveInput(newValue!),
       style: GoogleFonts.poppins(
         fontWeight: FontWeight.w400,
         color: Colors.black,
@@ -43,15 +49,21 @@ class ProgressFormInput extends StatelessWidget {
         ),
         errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.black,
+            color: Colors.red,
             width: 2.5,
           ),
         ),
         focusedErrorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.black,
+            color: Colors.red,
             width: 2.5,
           ),
+        ),
+        errorStyle: GoogleFonts.poppins(
+          fontWeight: FontWeight.w600,
+          color: Colors.red,
+          letterSpacing: 0.65,
+          fontSize: 12.5,
         ),
       ),
     );

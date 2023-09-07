@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/collection_model.dart';
+import '../models/task_model.dart';
 
 class CollectionNotifier extends StateNotifier<List<CollectionModel>> {
   CollectionNotifier() : super([]);
@@ -23,8 +24,28 @@ class CollectionNotifier extends StateNotifier<List<CollectionModel>> {
     ];
   }
 
+  void addTask({
+    required CollectionModel collection,
+    required TaskModel task,
+  }) {
+    for (var i = 0; i < state.length; i++) {
+      if (state[i] != collection) continue;
+      state[i].progress.add(task);
+      return;
+    }
+  }
+
   List<CollectionModel> getCollections() {
     return state;
+  }
+
+  List<TaskModel> getProgress({required CollectionModel collection}) {
+    for (var i = 0; i < state.length; i++) {
+      if (state[i] != collection) continue;
+      return state[i].progress;
+    }
+
+    return [];
   }
 }
 

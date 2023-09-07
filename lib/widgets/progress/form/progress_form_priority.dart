@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProgressFormPriority extends StatefulWidget {
-  const ProgressFormPriority({super.key});
+  const ProgressFormPriority({
+    required this.saveImage,
+    super.key,
+  });
+
+  final void Function(String image) saveImage;
 
   @override
   State<ProgressFormPriority> createState() {
@@ -46,7 +51,13 @@ class _ProgressFormPriorityState extends State<ProgressFormPriority> {
           itemCount: priority.length,
           itemBuilder: (context, index) {
             return GestureDetector(
-              onTap: () => _selectPriority(index),
+              onTap: () {
+                _selectPriority(index);
+
+                widget.saveImage(
+                  priority.values.elementAt(index),
+                );
+              },
               child: Stack(
                 alignment: Alignment.center,
                 children: [

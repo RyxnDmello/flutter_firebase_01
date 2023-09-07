@@ -1,24 +1,97 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../providers/collection_provider.dart';
+
+import '../../models/collection_model.dart';
+import '../../models/task_model.dart';
 
 import './form/progress_form_title.dart';
 import './form/progress_form_input.dart';
 import './form/progress_form_priority.dart';
 import './form/progress_form_button.dart';
 
-class ProgressForm extends StatefulWidget {
-  const ProgressForm({super.key});
+class ProgressForm extends ConsumerStatefulWidget {
+  const ProgressForm({
+    required this.updateTasks,
+    required this.collection,
+    super.key,
+  });
+
+  final void Function(List<TaskModel> tasks) updateTasks;
+  final CollectionModel collection;
 
   @override
-  State<ProgressForm> createState() {
+  ConsumerState<ProgressForm> createState() {
     return _ProgressFormState();
   }
 }
 
-class _ProgressFormState extends State<ProgressForm> {
+class _ProgressFormState extends ConsumerState<ProgressForm> {
   final _formKey = GlobalKey<FormState>();
+  String? _title;
+  String? _description;
+  String? _image;
+
+  String? _validateTitle(String title) {
+    if (title.isEmpty || title.length < 2 || title.length > 15) {
+      return "INVALID TITLE";
+    }
+
+    return null;
+  }
+
+  String? _validateDescription(String description) {
+    if (description.isEmpty ||
+        description.length < 2 ||
+        description.length > 30) {
+      return "INVALID DESCRIPTION";
+    }
+
+    return null;
+  }
+
+  void _saveTitle(String title) {
+    _title = title;
+  }
+
+  void _saveDescription(String description) {
+    _description = description;
+  }
+
+  void _saveImage(String image) {
+    _image = image;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final collectionProviderRef = ref.watch(collectionProvider.notifier);
+
+    void saveForm() {
+      if (!_formKey.currentState!.validate()) return;
+      if (_image == null) return;
+
+      _formKey.currentState!.save();
+
+      collectionProviderRef.addTask(
+        collection: widget.collection,
+        task: TaskModel(
+          title: _title!,
+          description: _description!,
+          image: _image!,
+          date: "7th Sept, 2023",
+        ),
+      );
+
+      widget.updateTasks(
+        collectionProviderRef.getProgress(
+          collection: widget.collection,
+        ),
+      );
+
+      Navigator.of(context).pop();
+    }
+
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
@@ -26,31 +99,39 @@ class _ProgressFormState extends State<ProgressForm> {
       ),
       child: Form(
         key: _formKey,
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            ProgressFormTitle(),
-            SizedBox(
+            const ProgressFormTitle(),
+            const SizedBox(
               height: 10,
             ),
             ProgressFormInput(
               label: "Name",
+              validateInput: _validateTitle,
+              saveInput: _saveTitle,
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             ProgressFormInput(
               label: "Description",
+              validateInput: _validateDescription,
+              saveInput: _saveDescription,
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            ProgressFormPriority(),
-            SizedBox(
+            ProgressFormPriority(
+              saveImage: _saveImage,
+            ),
+            const SizedBox(
               height: 25,
             ),
-            ProgressFormButton(),
+            ProgressFormButton(
+              saveForm: saveForm,
+            ),
           ],
         ),
       ),

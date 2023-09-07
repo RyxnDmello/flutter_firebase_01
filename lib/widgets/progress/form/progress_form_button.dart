@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProgressFormButton extends StatelessWidget {
-  const ProgressFormButton({super.key});
+  const ProgressFormButton({
+    required this.saveForm,
+    super.key,
+  });
+
+  final void Function() saveForm;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-      onPressed: () {},
+      onPressed: () => saveForm(),
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color.fromARGB(255, 0, 0, 65),
         minimumSize: const Size(double.infinity, 50),
