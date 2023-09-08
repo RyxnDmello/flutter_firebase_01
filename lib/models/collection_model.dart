@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 import './task_model.dart';
 
+const _uuid = Uuid();
+
 class CollectionModel {
-  const CollectionModel({
+  CollectionModel({
     required this.name,
     required this.icon,
     required this.image,
     required this.progress,
     required this.completed,
-  });
+  }) : id = _uuid.v4();
 
+  final String id;
   final String name;
   final String image;
   final IconData icon;

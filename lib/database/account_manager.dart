@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
+import '../models/collection_model.dart';
 
 class _AccountManager {
   _AccountManager()
@@ -52,6 +55,48 @@ class _AccountManager {
     }
 
     return true;
+  }
+
+  Future<void> addCollection({required CollectionModel collection}) async {
+    await _firestore
+        .collection("accounts")
+        .doc(_createdAccount!.user!.uid)
+        .collection("collections")
+        .doc(collection.id)
+        .set(
+      {
+        "name": collection.name,
+        "image": collection.image,
+        "icon": collection.icon.codePoint,
+      },
+    );
+  }
+
+  Future<List<CollectionModel>> getCollections() async {
+    QuerySnapshot databaseCollections = await _firestore
+        .collection("accounts")
+        .doc(_createdAccount!.user!.uid)
+        .collection("collections")
+        .get();
+
+    List<CollectionModel> collections = [];
+
+    for (var i = 0; i < databaseCollections.docs.length; i++) {
+      final collection = databaseCollections.docs[i];
+
+      collections = [
+        ...collections,
+        CollectionModel(
+          name: collection.get("name"),
+          icon: IconData(collection.get("icon"), fontFamily: 'MaterialIcons'),
+          image: collection.get("image"),
+          progress: [],
+          completed: [],
+        ),
+      ];
+    }
+
+    return collections;
   }
 }
 

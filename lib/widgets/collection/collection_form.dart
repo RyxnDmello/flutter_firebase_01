@@ -71,11 +71,11 @@ class _CollectionFormState extends ConsumerState<CollectionForm> {
   Widget build(BuildContext context) {
     final collectionProviderRef = ref.watch(collectionProvider.notifier);
 
-    void saveForm() {
+    Future<void> saveForm() async {
       if (!_formKey.currentState!.validate()) return;
-      _formKey.currentState!.save();
-
       if (_image == null) return;
+
+      _formKey.currentState!.save();
 
       collectionProviderRef.addCollection(
         name: _name!,
@@ -84,7 +84,7 @@ class _CollectionFormState extends ConsumerState<CollectionForm> {
       );
 
       widget.updateCollection(
-        collectionProviderRef.getCollections(),
+        await collectionProviderRef.getCollections(),
       );
 
       Navigator.of(context).pop();

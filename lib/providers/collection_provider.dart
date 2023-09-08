@@ -1,27 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../database/account_manager.dart';
+
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
 
 class CollectionNotifier extends StateNotifier<List<CollectionModel>> {
   CollectionNotifier() : super([]);
 
-  void addCollection({
+  Future<void> addCollection({
     required String name,
     required IconData icon,
     required String image,
-  }) {
-    state = [
-      ...state,
-      CollectionModel(
-        name: name,
-        icon: icon,
-        image: image,
-        progress: [],
-        completed: [],
-      )
-    ];
+  }) async {
+    final collection = CollectionModel(
+      name: name,
+      icon: icon,
+      image: image,
+      progress: [],
+      completed: [],
+    );
+
+    await accountManager.addCollection(
+      collection: collection,
+    );
+
+    state = [...state, collection];
+  }
+
+  Future<List<CollectionModel>> getCollections() async {
+    state = [...await accountManager.getCollections()];
+    return state;
   }
 
   void addTask({
@@ -33,10 +43,6 @@ class CollectionNotifier extends StateNotifier<List<CollectionModel>> {
       state[i].progress.add(task);
       return;
     }
-  }
-
-  List<CollectionModel> getCollections() {
-    return state;
   }
 
   List<TaskModel> getProgress({required CollectionModel collection}) {
