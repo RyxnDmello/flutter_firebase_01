@@ -34,24 +34,14 @@ class CollectionNotifier extends StateNotifier<List<CollectionModel>> {
     return state;
   }
 
-  void addTask({
+  Future<void> addProgressTask({
     required CollectionModel collection,
     required TaskModel task,
-  }) {
-    for (var i = 0; i < state.length; i++) {
-      if (state[i] != collection) continue;
-      state[i].progress.add(task);
-      return;
-    }
-  }
-
-  List<TaskModel> getProgress({required CollectionModel collection}) {
-    for (var i = 0; i < state.length; i++) {
-      if (state[i] != collection) continue;
-      return state[i].progress;
-    }
-
-    return [];
+  }) async {
+    await accountManager.addProgressTask(
+      collection: collection,
+      task: task,
+    );
   }
 }
 

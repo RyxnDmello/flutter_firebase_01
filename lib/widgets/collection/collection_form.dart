@@ -18,7 +18,7 @@ class CollectionForm extends ConsumerStatefulWidget {
     super.key,
   });
 
-  final void Function(List<CollectionModel> collection) updateCollection;
+  final void Function(List<CollectionModel> collections) updateCollection;
 
   @override
   ConsumerState<CollectionForm> createState() {

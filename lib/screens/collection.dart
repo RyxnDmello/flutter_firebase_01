@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../database/account_manager.dart';
-
 import '../models/collection_model.dart';
 
 import '../widgets/collection/collection_app_bar.dart';
@@ -20,16 +18,6 @@ class CollectionScreen extends StatefulWidget {
 
 class _CollectionScreenState extends State<CollectionScreen> {
   List<CollectionModel> _collections = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeCollection();
-  }
-
-  Future<void> _initializeCollection() async {
-    _collections = await accountManager.getCollections();
-  }
 
   void _updateCollection(List<CollectionModel> collections) {
     setState(() => _collections = collections);
@@ -59,6 +47,13 @@ class _CollectionScreenState extends State<CollectionScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.refresh_outlined,
+          ),
+          iconSize: 26.5,
+        ),
         actions: [
           IconButton(
             onPressed: () => _openForm(),

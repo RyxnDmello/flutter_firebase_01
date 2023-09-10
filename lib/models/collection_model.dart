@@ -14,7 +14,11 @@ class CollectionModel {
     required this.completed,
   }) : id = _uuid.v4();
 
-  final String id;
+  void setID(String id) {
+    this.id = id;
+  }
+
+  String id;
   final String name;
   final String image;
   final IconData icon;
