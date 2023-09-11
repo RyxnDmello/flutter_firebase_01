@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../providers/collection_provider.dart';
 
 import '../models/collection_model.dart';
 
@@ -7,19 +10,30 @@ import '../widgets/collection/collection_block.dart';
 import '../widgets/collection/collection_form.dart';
 import '../widgets/collection/collection_empty.dart';
 
-class CollectionScreen extends StatefulWidget {
-  const CollectionScreen({super.key});
+class CollectionScreen extends ConsumerStatefulWidget {
+  const CollectionScreen({
+    required this.collections,
+    super.key,
+  });
+
+  final List<CollectionModel> collections;
 
   @override
-  State<CollectionScreen> createState() {
+  ConsumerState<CollectionScreen> createState() {
     return _CollectionScreenState();
   }
 }
 
-class _CollectionScreenState extends State<CollectionScreen> {
+class _CollectionScreenState extends ConsumerState<CollectionScreen> {
   List<CollectionModel> _collections = [];
 
-  void _updateCollection(List<CollectionModel> collections) {
+  @override
+  void initState() {
+    super.initState();
+    _collections = widget.collections;
+  }
+
+  void _updateCollections({required List<CollectionModel> collections}) {
     setState(() => _collections = collections);
   }
 
@@ -36,7 +50,7 @@ class _CollectionScreenState extends State<CollectionScreen> {
       context: context,
       builder: (context) {
         return CollectionForm(
-          updateCollection: _updateCollection,
+          updateCollections: _updateCollections,
         );
       },
     );
@@ -44,11 +58,15 @@ class _CollectionScreenState extends State<CollectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final collectionProviderRef = ref.watch(collectionProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () async => _updateCollections(
+            collections: await collectionProviderRef.getCollections(),
+          ),
           icon: const Icon(
             Icons.refresh_outlined,
           ),

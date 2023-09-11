@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_01/models/collection_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/collection_provider.dart';
 
-import '../../models/collection_model.dart';
 import '../../models/icon_model.dart';
 
 import './form/collection_form_title.dart';
@@ -14,11 +14,13 @@ import './form/collection_form_button.dart';
 
 class CollectionForm extends ConsumerStatefulWidget {
   const CollectionForm({
-    required this.updateCollection,
+    required this.updateCollections,
     super.key,
   });
 
-  final void Function(List<CollectionModel> collections) updateCollection;
+  final void Function({
+    required List<CollectionModel> collections,
+  }) updateCollections;
 
   @override
   ConsumerState<CollectionForm> createState() {
@@ -83,8 +85,8 @@ class _CollectionFormState extends ConsumerState<CollectionForm> {
         image: _image!,
       );
 
-      widget.updateCollection(
-        await collectionProviderRef.getCollections(),
+      widget.updateCollections(
+        collections: await collectionProviderRef.getCollections(),
       );
 
       Navigator.of(context).pop();

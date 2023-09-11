@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../models/task_model.dart';
 import '../models/collection_model.dart';
+import '../models/task_model.dart';
 
 class _AccountManager {
   _AccountManager()
@@ -74,49 +74,44 @@ class _AccountManager {
   }
 
   Future<List<CollectionModel>> getCollections() async {
-    QuerySnapshot databaseCollections = await _firestore
+    final databaseCollections = await _firestore
         .collection("accounts")
         .doc(_createdAccount!.user!.uid)
         .collection("collections")
         .get();
+
+    if (databaseCollections.docs.isEmpty) return [];
 
     List<CollectionModel> collections = [];
 
     for (var i = 0; i < databaseCollections.docs.length; i++) {
       final databaseCollection = databaseCollections.docs[i];
 
-      final progressTasks = await _getProgressTasks(
-        collectionID: databaseCollection.id,
-      );
-
-      final collection = CollectionModel(
-        name: databaseCollection.get("name"),
-        icon: IconData(
-          databaseCollection.get("icon"),
-          fontFamily: 'MaterialIcons',
+      collections.add(
+        CollectionModel(
+          id: databaseCollection.id,
+          name: databaseCollection.get("name"),
+          icon: IconData(
+            databaseCollection.get("icon"),
+            fontFamily: "MaterialIcons",
+          ),
+          image: databaseCollection.get("image"),
         ),
-        image: databaseCollection.get("image"),
-        progress: progressTasks,
-        completed: [],
       );
-
-      collection.setID(databaseCollection.id);
-
-      collections.add(collection);
     }
 
     return collections;
   }
 
   Future<void> addProgressTask({
-    required CollectionModel collection,
+    required String collectionID,
     required TaskModel task,
   }) async {
     await _firestore
         .collection("accounts")
         .doc(_createdAccount!.user!.uid)
         .collection("collections")
-        .doc(collection.id)
+        .doc(collectionID)
         .collection("progress")
         .doc(task.id)
         .set(
@@ -129,14 +124,14 @@ class _AccountManager {
     );
   }
 
-  Future<List<TaskModel>> _getProgressTasks({
-    required String collectionID,
+  Future<List<TaskModel>> getProgressTasks({
+    required String id,
   }) async {
     final databaseTasks = await _firestore
         .collection("accounts")
         .doc(_createdAccount!.user!.uid)
         .collection("collections")
-        .doc(collectionID)
+        .doc(id)
         .collection("progress")
         .get();
 
@@ -147,15 +142,16 @@ class _AccountManager {
     for (var i = 0; i < databaseTasks.docs.length; i++) {
       final databaseTask = databaseTasks.docs[i];
 
-      progressTasks.insert(
-        0,
+      progressTasks = [
+        ...progressTasks,
         TaskModel(
+          id: databaseTask.id,
           title: databaseTask.get("title"),
           description: databaseTask.get("description"),
           image: databaseTask.get("image"),
           date: databaseTask.get("date"),
         ),
-      );
+      ];
     }
 
     return progressTasks;

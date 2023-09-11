@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../providers/task_provider.dart';
 
 import '../../models/collection_model.dart';
 
@@ -8,7 +11,7 @@ import './block/collection_block_image.dart';
 import './block/collection_block_details.dart';
 import './block/collection_block_name.dart';
 
-class CollectionBlock extends StatelessWidget {
+class CollectionBlock extends ConsumerWidget {
   const CollectionBlock({
     required this.collection,
     super.key,
@@ -17,13 +20,20 @@ class CollectionBlock extends StatelessWidget {
   final CollectionModel collection;
 
   @override
-  Widget build(BuildContext context) {
-    void viewTasks() {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final taskProviderRef = ref.watch(taskProvider.notifier);
+
+    Future<void> viewTasks() async {
+      final progressTasks = await taskProviderRef.getProgressTasks(
+        collectionID: collection.id,
+      );
+
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) {
             return ProgressScreen(
               collection: collection,
+              progress: progressTasks,
             );
           },
         ),
@@ -69,9 +79,9 @@ class CollectionBlock extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  CollectionBlockDetails(
-                    progress: collection.progress,
-                    completed: collection.completed,
+                  const CollectionBlockDetails(
+                    progress: [],
+                    completed: [],
                   )
                 ],
               ),

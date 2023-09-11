@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../providers/task_provider.dart';
+
 import '../../models/collection_model.dart';
 import '../../models/task_model.dart';
 
@@ -11,12 +13,12 @@ import './form/progress_form_button.dart';
 
 class ProgressForm extends ConsumerStatefulWidget {
   const ProgressForm({
-    required this.updateTasks,
+    required this.updateProgressTasks,
     required this.collection,
     super.key,
   });
 
-  final void Function(List<TaskModel> tasks) updateTasks;
+  final void Function({required List<TaskModel> tasks}) updateProgressTasks;
   final CollectionModel collection;
 
   @override
@@ -63,11 +65,27 @@ class _ProgressFormState extends ConsumerState<ProgressForm> {
 
   @override
   Widget build(BuildContext context) {
-    void saveForm() {
+    final taskProviderRef = ref.watch(taskProvider.notifier);
+
+    Future<void> saveForm() async {
       if (!_formKey.currentState!.validate()) return;
       if (_image == null) return;
 
       _formKey.currentState!.save();
+
+      await taskProviderRef.addProgressTask(
+        collectionID: widget.collection.id,
+        title: _title!,
+        description: _description!,
+        image: _image!,
+        date: "11th Sept, 2023",
+      );
+
+      widget.updateProgressTasks(
+        tasks: await taskProviderRef.getProgressTasks(
+          collectionID: widget.collection.id,
+        ),
+      );
 
       Navigator.of(context).pop();
     }

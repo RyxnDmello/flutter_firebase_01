@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 
 import '../database/account_manager.dart';
 
 import '../models/collection_model.dart';
-import '../models/task_model.dart';
+
+const _uuid = Uuid();
 
 class CollectionNotifier extends StateNotifier<List<CollectionModel>> {
   CollectionNotifier() : super([]);
@@ -15,11 +17,10 @@ class CollectionNotifier extends StateNotifier<List<CollectionModel>> {
     required String image,
   }) async {
     final collection = CollectionModel(
+      id: _uuid.v4(),
       name: name,
       icon: icon,
       image: image,
-      progress: [],
-      completed: [],
     );
 
     await accountManager.addCollection(
@@ -32,16 +33,6 @@ class CollectionNotifier extends StateNotifier<List<CollectionModel>> {
   Future<List<CollectionModel>> getCollections() async {
     state = [...await accountManager.getCollections()];
     return state;
-  }
-
-  Future<void> addProgressTask({
-    required CollectionModel collection,
-    required TaskModel task,
-  }) async {
-    await accountManager.addProgressTask(
-      collection: collection,
-      task: task,
-    );
   }
 }
 

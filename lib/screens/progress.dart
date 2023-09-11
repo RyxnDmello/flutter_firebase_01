@@ -10,11 +10,13 @@ import '../widgets/progress/progress_empty.dart';
 
 class ProgressScreen extends StatefulWidget {
   const ProgressScreen({
+    required this.progress,
     required this.collection,
     super.key,
   });
 
   final CollectionModel collection;
+  final List<TaskModel> progress;
 
   @override
   State<ProgressScreen> createState() {
@@ -23,14 +25,20 @@ class ProgressScreen extends StatefulWidget {
 }
 
 class _ProgressScreenState extends State<ProgressScreen> {
+  List<TaskModel> _progress = [];
+
+  void _updateProgressTasks({required List<TaskModel> tasks}) {
+    setState(() => _progress = tasks);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _progress = widget.progress;
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<TaskModel> progress = widget.collection.progress;
-
-    void updateTasks(List<TaskModel> tasks) {
-      setState(() => progress = tasks);
-    }
-
     void openForm() {
       showModalBottomSheet(
         useSafeArea: true,
@@ -45,7 +53,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
         builder: (context) {
           return ProgressForm(
             collection: widget.collection,
-            updateTasks: updateTasks,
+            updateProgressTasks: _updateProgressTasks,
           );
         },
       );
@@ -72,11 +80,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
             ProgressAppBar(
               collection: widget.collection,
             ),
-            if (progress.isEmpty)
+            if (_progress.isEmpty)
               ProgressEmpty(
                 openForm: openForm,
               ),
-            if (progress.isNotEmpty)
+            if (_progress.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 15,
@@ -86,7 +94,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    ...progress.map(
+                    ..._progress.map(
                       (task) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -57,9 +57,13 @@ class _RegisterFormState extends State<RegisterForm> {
       }
     }
 
+    final collections = await accountManager.getCollections();
+
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const CollectionScreen(),
+        builder: (context) => CollectionScreen(
+          collections: collections,
+        ),
       ),
     );
   }

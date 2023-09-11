@@ -14,8 +14,8 @@ class ProgressAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double getCompletedPercentage() {
-      int progressTasks = collection.progress.length;
-      int completedTasks = collection.completed.length;
+      int progressTasks = 0;
+      int completedTasks = 0;
 
       int total = progressTasks + completedTasks;
       if (total == 0) return 0;
@@ -82,7 +82,7 @@ class ProgressAppBar extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "${collection.progress.length} Active",
+                      "${0} Active",
                       style: GoogleFonts.abel(
                         color: Colors.white,
                         letterSpacing: 1,
