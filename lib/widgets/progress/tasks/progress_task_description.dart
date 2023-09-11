@@ -13,6 +13,7 @@ class ProgressTaskDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       description,
+      softWrap: true,
       style: GoogleFonts.abel(
         color: Colors.white,
         letterSpacing: 1,

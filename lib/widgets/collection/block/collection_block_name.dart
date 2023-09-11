@@ -26,6 +26,7 @@ class CollectionBlockName extends StatelessWidget {
         Text(
           name.toUpperCase(),
           style: GoogleFonts.abel(
+            fontWeight: FontWeight.w600,
             color: Colors.white,
             letterSpacing: 2,
             fontSize: 30,

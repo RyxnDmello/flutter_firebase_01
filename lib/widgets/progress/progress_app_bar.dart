@@ -66,7 +66,7 @@ class ProgressAppBar extends StatelessWidget {
                     Text(
                       collection.name,
                       style: GoogleFonts.abel(
-                        fontWeight: FontWeight.w100,
+                        fontWeight: FontWeight.w600,
                         color: Colors.white,
                         letterSpacing: 2,
                         fontSize: 30,

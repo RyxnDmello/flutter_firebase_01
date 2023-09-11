@@ -16,36 +16,55 @@ class ProgressTask extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {},
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          ProgressTaskImage(
-            image: task.image,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
+      child: Container(
+        height: 165,
+        width: double.infinity,
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black54,
+              offset: Offset(0, 5),
+              blurRadius: 5,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ProgressTaskDate(
-                  date: task.date,
-                ),
-                ProgressTaskTitle(
-                  title: task.title,
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                ProgressTaskDescription(
-                  description: task.description,
-                ),
-              ],
+          ],
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            ProgressTaskImage(
+              image: task.image,
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ProgressTaskDate(
+                    date: task.date,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ProgressTaskTitle(
+                    title: task.title,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  ProgressTaskDescription(
+                    description: task.description,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

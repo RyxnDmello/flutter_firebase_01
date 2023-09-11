@@ -15,7 +15,6 @@ class ProgressTaskDate extends StatelessWidget {
       date,
       textAlign: TextAlign.right,
       style: GoogleFonts.abel(
-        fontWeight: FontWeight.w600,
         color: Colors.white,
         letterSpacing: 1,
         fontSize: 16.5,

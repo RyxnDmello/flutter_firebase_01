@@ -1,10 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 import '../database/account_manager.dart';
 
 import '../models/task_model.dart';
 
+final _date = DateFormat.yMMMMd('en_US').format(DateTime.now());
 const _uuid = Uuid();
 
 class TaskProviderNotifier extends StateNotifier<List<TaskModel>> {
@@ -15,14 +17,13 @@ class TaskProviderNotifier extends StateNotifier<List<TaskModel>> {
     required String title,
     required String description,
     required String image,
-    required String date,
   }) async {
     final task = TaskModel(
       id: _uuid.v4(),
       title: title,
       description: description,
       image: image,
-      date: date,
+      date: _date,
     );
 
     await accountManager.addProgressTask(

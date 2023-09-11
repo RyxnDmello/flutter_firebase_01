@@ -19,8 +19,9 @@ class ProgressFormInput extends StatelessWidget {
       validator: (value) => validateInput(value!),
       onSaved: (newValue) => saveInput(newValue!),
       style: GoogleFonts.poppins(
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w500,
         color: Colors.black,
+        letterSpacing: 1,
         fontSize: 25,
         height: 1.25,
       ),

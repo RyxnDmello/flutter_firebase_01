@@ -34,7 +34,7 @@ class _ProgressFormState extends ConsumerState<ProgressForm> {
   String? _image;
 
   String? _validateTitle(String title) {
-    if (title.isEmpty || title.length < 2 || title.length > 15) {
+    if (title.isEmpty || title.length < 5 || title.length > 15) {
       return "INVALID TITLE";
     }
 
@@ -43,8 +43,8 @@ class _ProgressFormState extends ConsumerState<ProgressForm> {
 
   String? _validateDescription(String description) {
     if (description.isEmpty ||
-        description.length < 2 ||
-        description.length > 30) {
+        description.length < 5 ||
+        description.length > 60) {
       return "INVALID DESCRIPTION";
     }
 
@@ -78,7 +78,6 @@ class _ProgressFormState extends ConsumerState<ProgressForm> {
         title: _title!,
         description: _description!,
         image: _image!,
-        date: "11th Sept, 2023",
       );
 
       widget.updateProgressTasks(

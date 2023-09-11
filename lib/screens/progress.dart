@@ -72,49 +72,39 @@ class _ProgressScreenState extends State<ProgressScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            ProgressAppBar(
-              collection: widget.collection,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          ProgressAppBar(
+            collection: widget.collection,
+          ),
+          if (_progress.isEmpty)
+            ProgressEmpty(
+              openForm: openForm,
             ),
-            if (_progress.isEmpty)
-              ProgressEmpty(
-                openForm: openForm,
+          if (_progress.isNotEmpty)
+            const SizedBox(
+              height: 20,
+            ),
+          if (_progress.isNotEmpty)
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 30),
+                itemCount: _progress.length,
+                itemBuilder: (context, index) {
+                  return ProgressTask(
+                    task: _progress[index],
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: 15,
+                  );
+                },
               ),
-            if (_progress.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 30,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ..._progress.map(
-                      (task) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            ProgressTask(
-                              task: task,
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-          ],
-        ),
+            )
+        ],
       ),
     );
   }
