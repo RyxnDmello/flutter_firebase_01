@@ -5,22 +5,22 @@ import '../../models/collection_model.dart';
 
 class ProgressAppBar extends StatelessWidget {
   const ProgressAppBar({
+    required this.totalProgressTasks,
+    required this.totalCompletedTasks,
     required this.collection,
     super.key,
   });
 
   final CollectionModel collection;
+  final int totalProgressTasks;
+  final int totalCompletedTasks;
 
   @override
   Widget build(BuildContext context) {
     double getCompletedPercentage() {
-      int progressTasks = 0;
-      int completedTasks = 0;
-
-      int total = progressTasks + completedTasks;
+      int total = totalProgressTasks + totalCompletedTasks;
       if (total == 0) return 0;
-
-      return (completedTasks * 100) / total;
+      return (totalCompletedTasks * 100) / total;
     }
 
     return Container(
@@ -82,7 +82,7 @@ class ProgressAppBar extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "${0} Active",
+                      "$totalProgressTasks Active",
                       style: GoogleFonts.abel(
                         color: Colors.white,
                         letterSpacing: 1,

@@ -4,8 +4,8 @@ import '../models/collection_model.dart';
 import '../models/task_model.dart';
 
 import '../widgets/progress/progress_app_bar.dart';
-import '../widgets/progress/progress_task.dart';
 import '../widgets/progress/progress_form.dart';
+import '../widgets/progress/progress_list.dart';
 import '../widgets/progress/progress_empty.dart';
 
 class ProgressScreen extends StatefulWidget {
@@ -78,6 +78,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
         children: [
           ProgressAppBar(
             collection: widget.collection,
+            totalProgressTasks: _progress.length,
+            totalCompletedTasks: 0,
           ),
           if (_progress.isEmpty)
             ProgressEmpty(
@@ -89,21 +91,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
             ),
           if (_progress.isNotEmpty)
             Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.fromLTRB(15, 10, 15, 30),
-                itemCount: _progress.length,
-                itemBuilder: (context, index) {
-                  return ProgressTask(
-                    task: _progress[index],
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(
-                    height: 15,
-                  );
-                },
+              child: ProgressList(
+                updateProgressTasks: _updateProgressTasks,
+                collectionID: widget.collection.id,
+                progress: _progress,
               ),
-            )
+            ),
         ],
       ),
     );

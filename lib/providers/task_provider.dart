@@ -34,6 +34,16 @@ class TaskProviderNotifier extends StateNotifier<List<TaskModel>> {
     state = [task, ...state];
   }
 
+  Future<void> deleteProgressTask({
+    required String collectionID,
+    required String taskID,
+  }) async {
+    await accountManager.deleteProgressTask(
+      collectionID: collectionID,
+      taskID: taskID,
+    );
+  }
+
   Future<List<TaskModel>> getProgressTasks({
     required String collectionID,
   }) async {

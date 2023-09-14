@@ -124,6 +124,20 @@ class _AccountManager {
     );
   }
 
+  Future<void> deleteProgressTask({
+    required String collectionID,
+    required String taskID,
+  }) async {
+    await _firestore
+        .collection("accounts")
+        .doc(_createdAccount!.user!.uid)
+        .collection("collections")
+        .doc(collectionID)
+        .collection("progress")
+        .doc(taskID)
+        .delete();
+  }
+
   Future<List<TaskModel>> getProgressTasks({
     required String id,
   }) async {
