@@ -82,7 +82,7 @@ class _AccountManager {
 
     if (databaseCollections.docs.isEmpty) return [];
 
-    List<CollectionModel> collections = [];
+    final List<CollectionModel> collections = [];
 
     for (var i = 0; i < databaseCollections.docs.length; i++) {
       final databaseCollection = databaseCollections.docs[i];
@@ -151,13 +151,13 @@ class _AccountManager {
 
     if (databaseTasks.docs.isEmpty) return [];
 
-    List<TaskModel> progressTasks = [];
+    final List<TaskModel> progressTasks = [];
 
     for (var i = 0; i < databaseTasks.docs.length; i++) {
       final databaseTask = databaseTasks.docs[i];
 
-      progressTasks = [
-        ...progressTasks,
+      progressTasks.insert(
+        0,
         TaskModel(
           id: databaseTask.id,
           title: databaseTask.get("title"),
@@ -165,10 +165,64 @@ class _AccountManager {
           image: databaseTask.get("image"),
           date: databaseTask.get("date"),
         ),
-      ];
+      );
     }
 
     return progressTasks;
+  }
+
+  Future<void> addCompletedTask({
+    required String collectionID,
+    required TaskModel task,
+  }) async {
+    await _firestore
+        .collection("accounts")
+        .doc(_createdAccount!.user!.uid)
+        .collection("collections")
+        .doc(collectionID)
+        .collection("completed")
+        .doc(task.id)
+        .set(
+      {
+        "title": task.title,
+        "description": task.description,
+        "image": task.image,
+        "date": task.date,
+      },
+    );
+  }
+
+  Future<List<TaskModel>> getCompletedTasks({
+    required String id,
+  }) async {
+    final databaseTasks = await _firestore
+        .collection("accounts")
+        .doc(_createdAccount!.user!.uid)
+        .collection("collections")
+        .doc(id)
+        .collection("completed")
+        .get();
+
+    if (databaseTasks.docs.isEmpty) return [];
+
+    final List<TaskModel> completedTasks = [];
+
+    for (var i = 0; i < databaseTasks.docs.length; i++) {
+      final databaseTask = databaseTasks.docs[i];
+
+      completedTasks.insert(
+        0,
+        TaskModel(
+          id: databaseTask.id,
+          title: databaseTask.get("title"),
+          description: databaseTask.get("description"),
+          image: databaseTask.get("image"),
+          date: databaseTask.get("date"),
+        ),
+      );
+    }
+
+    return completedTasks;
   }
 }
 

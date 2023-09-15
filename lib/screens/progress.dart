@@ -10,13 +10,15 @@ import '../widgets/progress/progress_empty.dart';
 
 class ProgressScreen extends StatefulWidget {
   const ProgressScreen({
-    required this.progress,
     required this.collection,
+    required this.progress,
+    required this.completed,
     super.key,
   });
 
   final CollectionModel collection;
   final List<TaskModel> progress;
+  final List<TaskModel> completed;
 
   @override
   State<ProgressScreen> createState() {
@@ -26,15 +28,23 @@ class ProgressScreen extends StatefulWidget {
 
 class _ProgressScreenState extends State<ProgressScreen> {
   List<TaskModel> _progress = [];
+  List<TaskModel> _completed = [];
 
-  void _updateProgressTasks({required List<TaskModel> tasks}) {
-    setState(() => _progress = tasks);
+  void _updateTasks({
+    required List<TaskModel> progress,
+    required List<TaskModel> completed,
+  }) {
+    setState(() {
+      _progress = progress;
+      _completed = completed;
+    });
   }
 
   @override
   void initState() {
     super.initState();
     _progress = widget.progress;
+    _completed = widget.completed;
   }
 
   @override
@@ -53,7 +63,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
         builder: (context) {
           return ProgressForm(
             collection: widget.collection,
-            updateProgressTasks: _updateProgressTasks,
+            updateTasks: _updateTasks,
           );
         },
       );
@@ -79,7 +89,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
           ProgressAppBar(
             collection: widget.collection,
             totalProgressTasks: _progress.length,
-            totalCompletedTasks: 0,
+            totalCompletedTasks: _completed.length,
           ),
           if (_progress.isEmpty)
             ProgressEmpty(
@@ -92,8 +102,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
           if (_progress.isNotEmpty)
             Expanded(
               child: ProgressList(
-                updateProgressTasks: _updateProgressTasks,
                 collectionID: widget.collection.id,
+                updateTasks: _updateTasks,
                 progress: _progress,
               ),
             ),

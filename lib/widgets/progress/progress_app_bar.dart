@@ -90,7 +90,7 @@ class ProgressAppBar extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${getCompletedPercentage()}% Completed",
+                      "${getCompletedPercentage().toStringAsPrecision(3)}% Completed",
                       style: GoogleFonts.abel(
                         color: Colors.white,
                         letterSpacing: 1,

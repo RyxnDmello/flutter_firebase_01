@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/task_provider.dart';
+import '../../providers/progress_provider.dart';
+import '../../providers/completed_provider.dart';
 
 import '../../models/task_model.dart';
 
@@ -11,28 +12,51 @@ import './progress_task.dart';
 
 class ProgressList extends ConsumerWidget {
   const ProgressList({
-    required this.updateProgressTasks,
     required this.collectionID,
+    required this.updateTasks,
     required this.progress,
     super.key,
   });
 
-  final void Function({required List<TaskModel> tasks}) updateProgressTasks;
+  final void Function({
+    required List<TaskModel> progress,
+    required List<TaskModel> completed,
+  }) updateTasks;
+
   final List<TaskModel> progress;
   final String collectionID;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final taskProviderRef = ref.watch(taskProvider.notifier);
+    final progressProviderRef = ref.watch(progressProvider.notifier);
+    final completedProviderRef = ref.watch(completedProvider.notifier);
+
+    Future<void> addCompletedTask({
+      required String taskID,
+      required String title,
+      required String description,
+      required String image,
+    }) async {
+      await completedProviderRef.addCompletedTask(
+        collectionID: collectionID,
+        taskID: taskID,
+        title: title,
+        description: description,
+        image: image,
+      );
+    }
 
     Future<void> deleteProgressTask(String taskID) async {
-      await taskProviderRef.deleteProgressTask(
+      await progressProviderRef.deleteProgressTask(
         collectionID: collectionID,
         taskID: taskID,
       );
 
-      updateProgressTasks(
-        tasks: await taskProviderRef.getProgressTasks(
+      updateTasks(
+        progress: await progressProviderRef.getProgressTasks(
+          collectionID: collectionID,
+        ),
+        completed: await completedProviderRef.getCompletedTasks(
           collectionID: collectionID,
         ),
       );
@@ -44,11 +68,20 @@ class ProgressList extends ConsumerWidget {
       itemBuilder: (context, index) {
         return Dismissible(
           key: Key(progress[index].id),
-          onDismissed: (direction) {
+          onDismissed: (direction) async {
             if (direction == DismissDirection.endToStart) {
-              deleteProgressTask(progress[index].id);
+              await deleteProgressTask(progress[index].id);
               return;
             }
+
+            await addCompletedTask(
+              taskID: progress[index].id,
+              title: progress[index].title,
+              description: progress[index].description,
+              image: progress[index].image,
+            );
+
+            await deleteProgressTask(progress[index].id);
           },
           background: const ProgressListDismissible(
             alignment: Alignment.centerLeft,

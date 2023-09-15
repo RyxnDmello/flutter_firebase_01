@@ -9,8 +9,8 @@ import '../models/task_model.dart';
 final _date = DateFormat.yMMMMd('en_US').format(DateTime.now());
 const _uuid = Uuid();
 
-class TaskProviderNotifier extends StateNotifier<List<TaskModel>> {
-  TaskProviderNotifier() : super([]);
+class ProgressProviderNotifier extends StateNotifier<List<TaskModel>> {
+  ProgressProviderNotifier() : super([]);
 
   Future<void> addProgressTask({
     required String collectionID,
@@ -47,12 +47,17 @@ class TaskProviderNotifier extends StateNotifier<List<TaskModel>> {
   Future<List<TaskModel>> getProgressTasks({
     required String collectionID,
   }) async {
-    state = [...await accountManager.getProgressTasks(id: collectionID)];
+    state = [
+      ...await accountManager.getProgressTasks(
+        id: collectionID,
+      ),
+    ];
+
     return state;
   }
 }
 
-final taskProvider =
-    StateNotifierProvider<TaskProviderNotifier, List<TaskModel>>((ref) {
-  return TaskProviderNotifier();
+final progressProvider =
+    StateNotifierProvider<ProgressProviderNotifier, List<TaskModel>>((ref) {
+  return ProgressProviderNotifier();
 });

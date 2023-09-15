@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/task_provider.dart';
+import '../../providers/progress_provider.dart';
+import '../../providers/completed_provider.dart';
 
 import '../../models/collection_model.dart';
 
@@ -21,10 +22,15 @@ class CollectionBlock extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final taskProviderRef = ref.watch(taskProvider.notifier);
+    final progressProviderRef = ref.watch(progressProvider.notifier);
+    final completedProviderRef = ref.watch(completedProvider.notifier);
 
     Future<void> viewTasks() async {
-      final progressTasks = await taskProviderRef.getProgressTasks(
+      final progressTasks = await progressProviderRef.getProgressTasks(
+        collectionID: collection.id,
+      );
+
+      final completedTasks = await completedProviderRef.getCompletedTasks(
         collectionID: collection.id,
       );
 
@@ -34,6 +40,7 @@ class CollectionBlock extends ConsumerWidget {
             return ProgressScreen(
               collection: collection,
               progress: progressTasks,
+              completed: completedTasks,
             );
           },
         ),

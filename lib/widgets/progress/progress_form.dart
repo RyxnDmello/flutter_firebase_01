@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/task_provider.dart';
+import '../../providers/progress_provider.dart';
+import '../../providers/completed_provider.dart';
 
 import '../../models/collection_model.dart';
 import '../../models/task_model.dart';
@@ -13,12 +14,16 @@ import './form/progress_form_button.dart';
 
 class ProgressForm extends ConsumerStatefulWidget {
   const ProgressForm({
-    required this.updateProgressTasks,
+    required this.updateTasks,
     required this.collection,
     super.key,
   });
 
-  final void Function({required List<TaskModel> tasks}) updateProgressTasks;
+  final void Function({
+    required List<TaskModel> progress,
+    required List<TaskModel> completed,
+  }) updateTasks;
+
   final CollectionModel collection;
 
   @override
@@ -34,7 +39,7 @@ class _ProgressFormState extends ConsumerState<ProgressForm> {
   String? _image;
 
   String? _validateTitle(String title) {
-    if (title.isEmpty || title.length < 5 || title.length > 15) {
+    if (title.isEmpty || title.length < 5 || title.length > 20) {
       return "INVALID TITLE";
     }
 
@@ -65,7 +70,8 @@ class _ProgressFormState extends ConsumerState<ProgressForm> {
 
   @override
   Widget build(BuildContext context) {
-    final taskProviderRef = ref.watch(taskProvider.notifier);
+    final progressProviderRef = ref.watch(progressProvider.notifier);
+    final completedProviderRef = ref.watch(completedProvider.notifier);
 
     Future<void> saveForm() async {
       if (!_formKey.currentState!.validate()) return;
@@ -73,15 +79,18 @@ class _ProgressFormState extends ConsumerState<ProgressForm> {
 
       _formKey.currentState!.save();
 
-      await taskProviderRef.addProgressTask(
+      await progressProviderRef.addProgressTask(
         collectionID: widget.collection.id,
         title: _title!,
         description: _description!,
         image: _image!,
       );
 
-      widget.updateProgressTasks(
-        tasks: await taskProviderRef.getProgressTasks(
+      widget.updateTasks(
+        progress: await progressProviderRef.getProgressTasks(
+          collectionID: widget.collection.id,
+        ),
+        completed: await completedProviderRef.getCompletedTasks(
           collectionID: widget.collection.id,
         ),
       );
