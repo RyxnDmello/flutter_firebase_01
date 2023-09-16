@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
 
-import '../widgets/progress/progress_app_bar.dart';
+import '../widgets/progress/progress_header.dart';
 import '../widgets/progress/progress_form.dart';
 import '../widgets/progress/progress_list.dart';
 import '../widgets/progress/progress_empty.dart';
@@ -30,6 +30,13 @@ class _ProgressScreenState extends State<ProgressScreen> {
   List<TaskModel> _progress = [];
   List<TaskModel> _completed = [];
 
+  @override
+  void initState() {
+    super.initState();
+    _progress = widget.progress;
+    _completed = widget.completed;
+  }
+
   void _updateTasks({
     required List<TaskModel> progress,
     required List<TaskModel> completed,
@@ -38,13 +45,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
       _progress = progress;
       _completed = completed;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _progress = widget.progress;
-    _completed = widget.completed;
   }
 
   @override
@@ -86,7 +86,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          ProgressAppBar(
+          ProgressHeader(
             collection: widget.collection,
             totalProgressTasks: _progress.length,
             totalCompletedTasks: _completed.length,
