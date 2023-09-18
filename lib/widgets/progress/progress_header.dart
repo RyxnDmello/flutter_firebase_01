@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import './header/progress_header_controller.dart';
 import './header/progress_header_details.dart';
-import './header/progress_header_name.dart';
+import 'header/progress_header_title.dart';
 
 import '../../models/collection_model.dart';
 
@@ -22,12 +22,13 @@ class ProgressHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void openCompletedScreen() {
+    void viewCompletedTasks() {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) {
-            return const CompletedScreen(
-              completed: [],
+            return CompletedScreen(
+              collection: collection,
+              completed: const [],
             );
           },
         ),
@@ -68,7 +69,7 @@ class ProgressHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ProgressHeaderName(
+                ProgressHeaderTitle(
                   name: collection.name,
                   icon: collection.icon,
                 ),
@@ -83,7 +84,7 @@ class ProgressHeader extends StatelessWidget {
                   height: 10,
                 ),
                 ProgressHeaderController(
-                  openCompletedScreen: openCompletedScreen,
+                  viewCompletedTasks: viewCompletedTasks,
                   clearCollection: () {},
                 ),
               ],

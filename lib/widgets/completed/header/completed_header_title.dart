@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProgressHeaderName extends StatelessWidget {
-  const ProgressHeaderName({
+class CompletedHeaderTitle extends StatelessWidget {
+  const CompletedHeaderTitle({
     required this.name,
     required this.icon,
     super.key,
@@ -18,12 +18,12 @@ class ProgressHeaderName extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Icon(
-          icon,
           color: Colors.white,
           size: 35,
+          icon,
         ),
         const SizedBox(
-          width: 6.5,
+          width: 10,
         ),
         Text(
           name,
@@ -33,7 +33,7 @@ class ProgressHeaderName extends StatelessWidget {
             letterSpacing: 2,
             fontSize: 30,
           ),
-        )
+        ),
       ],
     );
   }
