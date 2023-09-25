@@ -12,7 +12,7 @@ const _uuid = Uuid();
 class ProgressProviderNotifier extends StateNotifier<List<TaskModel>> {
   ProgressProviderNotifier() : super([]);
 
-  Future<void> addProgressTask({
+  Future<void> addTask({
     required String collectionID,
     required String title,
     required String description,
@@ -34,7 +34,7 @@ class ProgressProviderNotifier extends StateNotifier<List<TaskModel>> {
     state = [task, ...state];
   }
 
-  Future<void> deleteProgressTask({
+  Future<void> deleteTask({
     required String collectionID,
     required String taskID,
   }) async {
@@ -44,7 +44,7 @@ class ProgressProviderNotifier extends StateNotifier<List<TaskModel>> {
     );
   }
 
-  Future<List<TaskModel>> getProgressTasks({
+  Future<List<TaskModel>> getTasks({
     required String collectionID,
   }) async {
     state = [

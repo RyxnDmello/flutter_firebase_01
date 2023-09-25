@@ -37,7 +37,7 @@ class ProgressList extends ConsumerWidget {
       required String description,
       required String image,
     }) async {
-      await completedProviderRef.addCompletedTask(
+      await completedProviderRef.addTask(
         collectionID: collectionID,
         taskID: taskID,
         title: title,
@@ -47,16 +47,16 @@ class ProgressList extends ConsumerWidget {
     }
 
     Future<void> deleteProgressTask(String taskID) async {
-      await progressProviderRef.deleteProgressTask(
+      await progressProviderRef.deleteTask(
         collectionID: collectionID,
         taskID: taskID,
       );
 
       updateTasks(
-        progress: await progressProviderRef.getProgressTasks(
+        progress: await progressProviderRef.getTasks(
           collectionID: collectionID,
         ),
-        completed: await completedProviderRef.getCompletedTasks(
+        completed: await completedProviderRef.getTasks(
           collectionID: collectionID,
         ),
       );

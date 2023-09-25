@@ -10,7 +10,7 @@ final _date = DateFormat.yMMMMd('en_US').format(DateTime.now());
 class CompletedProviderNotifier extends StateNotifier<List<TaskModel>> {
   CompletedProviderNotifier() : super([]);
 
-  Future<void> addCompletedTask({
+  Future<void> addTask({
     required String collectionID,
     required String taskID,
     required String title,
@@ -31,7 +31,7 @@ class CompletedProviderNotifier extends StateNotifier<List<TaskModel>> {
     );
   }
 
-  Future<List<TaskModel>> getCompletedTasks({
+  Future<List<TaskModel>> getTasks({
     required String collectionID,
   }) async {
     state = [

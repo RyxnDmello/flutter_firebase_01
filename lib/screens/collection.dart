@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/collection_provider.dart';
+import '../models/task_model.dart';
 
 import '../models/collection_model.dart';
 
@@ -9,6 +10,8 @@ import '../widgets/collection/collection_app_bar.dart';
 import '../widgets/collection/collection_block.dart';
 import '../widgets/collection/collection_form.dart';
 import '../widgets/collection/collection_empty.dart';
+
+import '../screens/progress.dart';
 
 class CollectionScreen extends ConsumerStatefulWidget {
   const CollectionScreen({
@@ -56,6 +59,28 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
     );
   }
 
+  Future<void> _openProgressScreen({
+    required CollectionModel collection,
+    required List<TaskModel> progress,
+    required List<TaskModel> completed,
+  }) async {
+    final collections = await Navigator.of(context).push<List<CollectionModel>>(
+      MaterialPageRoute(
+        builder: (context) {
+          return ProgressScreen(
+            collection: collection,
+            progress: progress,
+            completed: completed,
+          );
+        },
+      ),
+    );
+
+    if (collections!.isEmpty) return;
+
+    _updateCollections(collections: collections);
+  }
+
   @override
   Widget build(BuildContext context) {
     final collectionProviderRef = ref.watch(collectionProvider.notifier);
@@ -67,10 +92,10 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
           onPressed: () async => _updateCollections(
             collections: await collectionProviderRef.getCollections(),
           ),
+          iconSize: 26.5,
           icon: const Icon(
             Icons.refresh_outlined,
           ),
-          iconSize: 26.5,
         ),
         actions: [
           IconButton(
@@ -100,6 +125,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                   return Column(
                     children: [
                       CollectionBlock(
+                        openProgressScreen: _openProgressScreen,
                         collection: collection,
                       ),
                       const SizedBox(

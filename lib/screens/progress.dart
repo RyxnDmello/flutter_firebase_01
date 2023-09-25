@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_01/providers/collection_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
@@ -8,7 +10,7 @@ import '../widgets/progress/progress_form.dart';
 import '../widgets/progress/progress_list.dart';
 import '../widgets/progress/progress_empty.dart';
 
-class ProgressScreen extends StatefulWidget {
+class ProgressScreen extends ConsumerStatefulWidget {
   const ProgressScreen({
     required this.collection,
     required this.progress,
@@ -21,12 +23,12 @@ class ProgressScreen extends StatefulWidget {
   final List<TaskModel> completed;
 
   @override
-  State<ProgressScreen> createState() {
+  ConsumerState<ProgressScreen> createState() {
     return _ProgressScreenState();
   }
 }
 
-class _ProgressScreenState extends State<ProgressScreen> {
+class _ProgressScreenState extends ConsumerState<ProgressScreen> {
   List<TaskModel> _progress = [];
   List<TaskModel> _completed = [];
 
@@ -47,34 +49,49 @@ class _ProgressScreenState extends State<ProgressScreen> {
     });
   }
 
+  void _openForm() {
+    showModalBottomSheet(
+      useSafeArea: true,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
+        ),
+      ),
+      context: context,
+      builder: (context) {
+        return ProgressForm(
+          collection: widget.collection,
+          updateTasks: _updateTasks,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    void openForm() {
-      showModalBottomSheet(
-        useSafeArea: true,
-        isScrollControlled: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20),
-            topLeft: Radius.circular(20),
-          ),
-        ),
-        context: context,
-        builder: (context) {
-          return ProgressForm(
-            collection: widget.collection,
-            updateTasks: _updateTasks,
-          );
-        },
+    final collectionProviderRef = ref.watch(collectionProvider.notifier);
+
+    Future<void> closeProgressScreen() async {
+      Navigator.of(context).pop(
+        await collectionProviderRef.getCollections(),
       );
     }
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
+        leading: IconButton(
+          onPressed: () => closeProgressScreen(),
+          iconSize: 26.5,
+          icon: const Icon(
+            Icons.arrow_back,
+          ),
+        ),
         actions: [
           IconButton(
-            onPressed: () => openForm(),
+            onPressed: () => _openForm(),
             icon: const Icon(
               Icons.add,
               size: 30,
@@ -93,7 +110,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
           ),
           if (_progress.isEmpty)
             ProgressEmpty(
-              openForm: openForm,
+              openForm: _openForm,
             ),
           if (_progress.isNotEmpty)
             const SizedBox(

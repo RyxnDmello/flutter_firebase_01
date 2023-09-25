@@ -79,7 +79,7 @@ class _ProgressFormState extends ConsumerState<ProgressForm> {
 
       _formKey.currentState!.save();
 
-      await progressProviderRef.addProgressTask(
+      await progressProviderRef.addTask(
         collectionID: widget.collection.id,
         title: _title!,
         description: _description!,
@@ -87,10 +87,10 @@ class _ProgressFormState extends ConsumerState<ProgressForm> {
       );
 
       widget.updateTasks(
-        progress: await progressProviderRef.getProgressTasks(
+        progress: await progressProviderRef.getTasks(
           collectionID: widget.collection.id,
         ),
-        completed: await completedProviderRef.getCompletedTasks(
+        completed: await completedProviderRef.getTasks(
           collectionID: widget.collection.id,
         ),
       );
