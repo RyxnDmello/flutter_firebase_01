@@ -3,24 +3,22 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CompletedHeaderController extends StatelessWidget {
   const CompletedHeaderController({
+    required this.closeCompletedScreen,
     required this.totalTasks,
     super.key,
   });
 
+  final void Function() closeCompletedScreen;
   final int totalTasks;
 
   @override
   Widget build(BuildContext context) {
-    void viewProgressTasks() {
-      Navigator.of(context).pop();
-    }
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         OutlinedButton(
-          onPressed: () => viewProgressTasks(),
+          onPressed: () => closeCompletedScreen(),
           style: OutlinedButton.styleFrom(
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(

@@ -192,6 +192,20 @@ class _AccountManager {
     );
   }
 
+  Future<void> deleteCompletedTask({
+    required String collectionID,
+    required String taskID,
+  }) async {
+    await _firestore
+        .collection("accounts")
+        .doc(_createdAccount!.user!.uid)
+        .collection("collections")
+        .doc(collectionID)
+        .collection("completed")
+        .doc(taskID)
+        .delete();
+  }
+
   Future<List<TaskModel>> getCompletedTasks({
     required String id,
   }) async {

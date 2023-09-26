@@ -31,6 +31,16 @@ class CompletedProviderNotifier extends StateNotifier<List<TaskModel>> {
     );
   }
 
+  Future<void> deleteTask({
+    required String collectionID,
+    required String taskID,
+  }) async {
+    await accountManager.deleteCompletedTask(
+      collectionID: collectionID,
+      taskID: taskID,
+    );
+  }
+
   Future<List<TaskModel>> getTasks({
     required String collectionID,
   }) async {

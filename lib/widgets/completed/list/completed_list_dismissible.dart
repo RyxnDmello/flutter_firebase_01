@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ProgressListDismissible extends StatelessWidget {
-  const ProgressListDismissible({
-    required this.icon,
-    required this.color,
+class CompletedListDismissible extends StatelessWidget {
+  const CompletedListDismissible({
     required this.alignment,
+    required this.color,
+    required this.icon,
     super.key,
   });
 

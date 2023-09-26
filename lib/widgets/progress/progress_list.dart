@@ -18,13 +18,13 @@ class ProgressList extends ConsumerWidget {
     super.key,
   });
 
+  final List<TaskModel> progress;
+  final String collectionID;
+
   final void Function({
     required List<TaskModel> progress,
     required List<TaskModel> completed,
   }) updateTasks;
-
-  final List<TaskModel> progress;
-  final String collectionID;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

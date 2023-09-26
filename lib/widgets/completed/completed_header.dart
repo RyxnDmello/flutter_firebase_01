@@ -7,11 +7,13 @@ import './header/completed_header_controller.dart';
 
 class CompletedHeader extends StatelessWidget {
   const CompletedHeader({
+    required this.closeCompletedScreen,
     required this.collection,
     required this.totalTasks,
     super.key,
   });
 
+  final void Function() closeCompletedScreen;
   final CollectionModel collection;
   final int totalTasks;
 
@@ -53,6 +55,7 @@ class CompletedHeader extends StatelessWidget {
                   height: 10,
                 ),
                 CompletedHeaderController(
+                  closeCompletedScreen: closeCompletedScreen,
                   totalTasks: totalTasks,
                 ),
               ],

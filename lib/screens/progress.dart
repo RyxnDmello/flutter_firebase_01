@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_01/providers/collection_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../providers/collection_provider.dart';
 
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
@@ -71,8 +72,9 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
     );
   }
 
-  void _openCompletedScreen() {
-    Navigator.of(context).push(
+  Future<void> _openCompletedScreen() async {
+    final tasks =
+        await Navigator.of(context).push<Map<String, List<TaskModel>>>(
       MaterialPageRoute(
         builder: (context) {
           return CompletedScreen(
@@ -81,6 +83,11 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
           );
         },
       ),
+    );
+
+    _updateTasks(
+      progress: tasks!["progress"]!,
+      completed: tasks["completed"]!,
     );
   }
 
