@@ -10,6 +10,8 @@ import '../widgets/progress/progress_form.dart';
 import '../widgets/progress/progress_list.dart';
 import '../widgets/progress/progress_empty.dart';
 
+import './completed.dart';
+
 class ProgressScreen extends ConsumerStatefulWidget {
   const ProgressScreen({
     required this.collection,
@@ -69,6 +71,19 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
     );
   }
 
+  void _openCompletedScreen() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return CompletedScreen(
+            collection: widget.collection,
+            completed: _completed,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final collectionProviderRef = ref.watch(collectionProvider.notifier);
@@ -107,6 +122,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
             collection: widget.collection,
             totalProgressTasks: _progress.length,
             totalCompletedTasks: _completed.length,
+            openCompletedScreen: _openCompletedScreen,
           ),
           if (_progress.isEmpty)
             ProgressEmpty(

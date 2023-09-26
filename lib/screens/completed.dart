@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../models/collection_model.dart';
+import '../models/task_model.dart';
 
 import '../widgets/completed/completed_header.dart';
-
-import '../models/task_model.dart';
+import '../widgets/completed/completed_list.dart';
 
 class CompletedScreen extends StatefulWidget {
   const CompletedScreen({
@@ -45,6 +45,14 @@ class _CompletedScreenState extends State<CompletedScreen> {
             collection: widget.collection,
             totalTasks: _completed.length,
           ),
+          const SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: CompletedList(
+              completed: _completed,
+            ),
+          )
         ],
       ),
     );

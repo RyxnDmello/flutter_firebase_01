@@ -3,12 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ProgressHeaderController extends StatelessWidget {
   const ProgressHeaderController({
-    required this.viewCompletedTasks,
+    required this.openCompletedScreen,
     required this.clearCollection,
     super.key,
   });
 
-  final void Function() viewCompletedTasks;
+  final void Function() openCompletedScreen;
   final void Function() clearCollection;
 
   @override
@@ -18,7 +18,7 @@ class ProgressHeaderController extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         OutlinedButton(
-          onPressed: () => viewCompletedTasks(),
+          onPressed: () => openCompletedScreen(),
           style: OutlinedButton.styleFrom(
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(

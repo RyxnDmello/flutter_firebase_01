@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'task/progress_task_image.dart';
-import 'task/progress_task_date.dart';
-import 'task/progress_task_title.dart';
-import 'task/progress_task_description.dart';
-
 import '../../models/task_model.dart';
 
-class ProgressTask extends StatelessWidget {
-  const ProgressTask({
+import './task/completed_task_date.dart';
+import './task/completed_task_title.dart';
+import './task/completed_task_description.dart';
+
+class CompletedTask extends StatelessWidget {
+  const CompletedTask({
     required this.task,
     super.key,
   });
@@ -21,10 +20,11 @@ class ProgressTask extends StatelessWidget {
       height: 165,
       width: double.infinity,
       clipBehavior: Clip.hardEdge,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: const [
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(5),
+        ),
+        boxShadow: [
           BoxShadow(
             color: Colors.black54,
             offset: Offset(0, 5),
@@ -35,35 +35,35 @@ class ProgressTask extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          ProgressTaskImage(
-            image: task.image,
+          Image.asset(
+            task.image,
+            fit: BoxFit.cover,
+            width: double.infinity,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                ProgressTaskDate(
+                CompletedTaskDate(
                   date: task.date,
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                ProgressTaskTitle(
+                CompletedTaskTitle(
                   title: task.title,
                 ),
                 const SizedBox(
                   height: 5,
                 ),
-                ProgressTaskDescription(
+                CompletedTaskDescription(
                   description: task.description,
                 ),
               ],
             ),
-          ),
+          )
         ],
       ),
     );

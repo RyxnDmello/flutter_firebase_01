@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 
-import './header/progress_header_controller.dart';
-import './header/progress_header_details.dart';
-import 'header/progress_header_title.dart';
-
 import '../../models/collection_model.dart';
 
-import '../../screens/completed.dart';
+import './header/progress_header_controller.dart';
+import './header/progress_header_details.dart';
+import './header/progress_header_title.dart';
 
 class ProgressHeader extends StatelessWidget {
   const ProgressHeader({
-    required this.totalProgressTasks,
-    required this.totalCompletedTasks,
     required this.collection,
+    required this.openCompletedScreen,
+    required this.totalCompletedTasks,
+    required this.totalProgressTasks,
     super.key,
   });
 
@@ -20,21 +19,10 @@ class ProgressHeader extends StatelessWidget {
   final int totalProgressTasks;
   final int totalCompletedTasks;
 
+  final void Function() openCompletedScreen;
+
   @override
   Widget build(BuildContext context) {
-    void viewCompletedTasks() {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) {
-            return CompletedScreen(
-              collection: collection,
-              completed: const [],
-            );
-          },
-        ),
-      );
-    }
-
     double getCompletedPercentage() {
       int total = totalProgressTasks + totalCompletedTasks;
       if (total == 0) return 0;
@@ -84,7 +72,7 @@ class ProgressHeader extends StatelessWidget {
                   height: 10,
                 ),
                 ProgressHeaderController(
-                  viewCompletedTasks: viewCompletedTasks,
+                  openCompletedScreen: openCompletedScreen,
                   clearCollection: () {},
                 ),
               ],
