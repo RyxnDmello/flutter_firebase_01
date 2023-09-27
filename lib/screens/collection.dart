@@ -126,6 +126,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
                     children: [
                       CollectionBlock(
                         openProgressScreen: _openProgressScreen,
+                        updateCollections: _updateCollections,
                         collection: collection,
                       ),
                       const SizedBox(

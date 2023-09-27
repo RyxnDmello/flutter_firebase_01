@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 import '../database/account_manager.dart';
 
 import '../models/collection_model.dart';
 
+final _date = DateFormat.yMMMMd('en_US').format(DateTime.now());
 const _uuid = Uuid();
 
 class CollectionNotifier extends StateNotifier<List<CollectionModel>> {
@@ -20,6 +22,7 @@ class CollectionNotifier extends StateNotifier<List<CollectionModel>> {
       id: _uuid.v4(),
       name: name,
       icon: icon,
+      date: _date,
       image: image,
     );
 
@@ -28,6 +31,12 @@ class CollectionNotifier extends StateNotifier<List<CollectionModel>> {
     );
 
     state = [...state, collection];
+  }
+
+  Future<void> deleteCollection({required String collectionID}) async {
+    await accountManager.deleteCollection(
+      collectionID: collectionID,
+    );
   }
 
   Future<List<CollectionModel>> getCollections() async {

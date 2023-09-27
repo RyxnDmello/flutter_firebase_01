@@ -67,10 +67,20 @@ class _AccountManager {
         .set(
       {
         "name": collection.name,
+        "date": collection.date,
         "image": collection.image,
         "icon": collection.icon.codePoint,
       },
     );
+  }
+
+  Future<void> deleteCollection({required String collectionID}) async {
+    await _firestore
+        .collection("accounts")
+        .doc(_createdAccount!.user!.uid)
+        .collection("collections")
+        .doc(collectionID)
+        .delete();
   }
 
   Future<List<CollectionModel>> getCollections() async {
@@ -91,6 +101,7 @@ class _AccountManager {
         CollectionModel(
           id: databaseCollection.id,
           name: databaseCollection.get("name"),
+          date: databaseCollection.get("date"),
           icon: IconData(
             databaseCollection.get("icon"),
             fontFamily: "MaterialIcons",
