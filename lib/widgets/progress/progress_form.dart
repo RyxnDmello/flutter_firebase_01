@@ -49,7 +49,7 @@ class _ProgressFormState extends ConsumerState<ProgressForm> {
   String? _validateDescription(String description) {
     if (description.isEmpty ||
         description.length < 5 ||
-        description.length > 60) {
+        description.length > 65) {
       return "INVALID DESCRIPTION";
     }
 
@@ -117,6 +117,7 @@ class _ProgressFormState extends ConsumerState<ProgressForm> {
               label: "Name",
               validateInput: _validateTitle,
               saveInput: _saveTitle,
+              maxLines: 1,
             ),
             const SizedBox(
               height: 15,
@@ -125,6 +126,7 @@ class _ProgressFormState extends ConsumerState<ProgressForm> {
               label: "Description",
               validateInput: _validateDescription,
               saveInput: _saveDescription,
+              maxLines: null,
             ),
             const SizedBox(
               height: 15,
