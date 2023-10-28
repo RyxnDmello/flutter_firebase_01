@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/collection_provider.dart';
-import '../models/task_model.dart';
 
 import '../models/collection_model.dart';
+import '../models/task_model.dart';
 
 import '../widgets/collection/collection_app_bar.dart';
 import '../widgets/collection/collection_block.dart';
@@ -89,20 +90,30 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading: IconButton(
-          onPressed: () async => _updateCollections(
-            collections: await collectionProviderRef.getCollections(),
-          ),
-          iconSize: 26.5,
+          onPressed: () => FirebaseAuth.instance.signOut(),
+          iconSize: 28,
+          splashRadius: 25,
           icon: const Icon(
-            Icons.refresh_outlined,
+            Icons.logout,
           ),
         ),
         actions: [
           IconButton(
+            onPressed: () async => _updateCollections(
+              collections: await collectionProviderRef.getCollections(),
+            ),
+            iconSize: 26.5,
+            splashRadius: 25,
+            icon: const Icon(
+              Icons.refresh_outlined,
+            ),
+          ),
+          IconButton(
             onPressed: () => _openForm(),
+            iconSize: 30,
+            splashRadius: 25,
             icon: const Icon(
               Icons.add,
-              size: 30,
             ),
           ),
         ],

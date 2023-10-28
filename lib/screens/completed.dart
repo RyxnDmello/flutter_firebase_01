@@ -63,6 +63,7 @@ class _CompletedScreenState extends ConsumerState<CompletedScreen> {
         leading: IconButton(
           onPressed: () => closeCompletedScreen(),
           iconSize: 26.5,
+          splashRadius: 25,
           icon: const Icon(
             Icons.arrow_back,
           ),

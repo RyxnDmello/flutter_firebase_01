@@ -107,6 +107,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
         leading: IconButton(
           onPressed: () => closeProgressScreen(),
           iconSize: 26.5,
+          splashRadius: 25,
           icon: const Icon(
             Icons.arrow_back,
           ),
@@ -114,9 +115,10 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
         actions: [
           IconButton(
             onPressed: () => _openForm(),
+            iconSize: 30,
+            splashRadius: 25,
             icon: const Icon(
               Icons.add,
-              size: 30,
             ),
           ),
         ],
