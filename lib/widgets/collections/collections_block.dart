@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/collection_provider.dart';
-import '../../providers/progress_provider.dart';
-import '../../providers/completed_provider.dart';
+import '../../database/account_manager.dart';
 
 import '../../models/collection_model.dart';
 import '../../models/task_model.dart';
@@ -12,7 +9,7 @@ import './block/collection_block_name.dart';
 import './block/collection_block_controller.dart';
 import './block/collection_block_image.dart';
 
-class CollectionBlock extends ConsumerWidget {
+class CollectionBlock extends StatelessWidget {
   const CollectionBlock({
     required this.openProgressScreen,
     required this.updateCollections,
@@ -22,9 +19,7 @@ class CollectionBlock extends ConsumerWidget {
 
   final CollectionModel collection;
 
-  final void Function({
-    required List<CollectionModel> collections,
-  }) updateCollections;
+  final Future<void> Function() updateCollections;
 
   final void Function({
     required CollectionModel collection,
@@ -33,31 +28,29 @@ class CollectionBlock extends ConsumerWidget {
   }) openProgressScreen;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final collectionProviderRef = ref.watch(collectionProvider.notifier);
-    final progressProviderRef = ref.watch(progressProvider.notifier);
-    final completedProviderRef = ref.watch(completedProvider.notifier);
-
+  Widget build(BuildContext context) {
     Future<void> openScreen() async {
+      final progress = await accountManager.getProgressTasks(
+        id: collection.id,
+      );
+
+      final completed = await accountManager.getCompletedTasks(
+        id: collection.id,
+      );
+
       openProgressScreen(
         collection: collection,
-        progress: await progressProviderRef.getTasks(
-          collectionID: collection.id,
-        ),
-        completed: await completedProviderRef.getTasks(
-          collectionID: collection.id,
-        ),
+        completed: completed,
+        progress: progress,
       );
     }
 
     Future<void> deleteCollection() async {
-      await collectionProviderRef.deleteCollection(
+      await accountManager.deleteCollection(
         collectionID: collection.id,
       );
 
-      updateCollections(
-        collections: await collectionProviderRef.getCollections(),
-      );
+      await updateCollections();
     }
 
     return GestureDetector(

@@ -5,8 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 
 import './firebase_options.dart';
 
-import './screens/collection.dart';
 import './screens/register.dart';
+import './screens/collections.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,8 +27,13 @@ class MyApp extends StatelessWidget {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return const RegisterScreen();
-          return const CollectionScreen(collections: []);
+          if (!snapshot.hasData) {
+            return const RegisterScreen();
+          }
+
+          return const CollectionsScreen(
+            collections: null,
+          );
         },
       ),
     );

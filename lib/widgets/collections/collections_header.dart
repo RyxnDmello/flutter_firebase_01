@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CollectionAppBar extends StatelessWidget {
-  const CollectionAppBar({super.key});
+class CollectionsHeader extends StatelessWidget {
+  const CollectionsHeader({super.key});
 
   @override
   Widget build(BuildContext context) {

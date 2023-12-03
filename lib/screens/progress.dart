@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/collection_provider.dart';
-
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
 
@@ -93,12 +91,8 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final collectionProviderRef = ref.watch(collectionProvider.notifier);
-
-    Future<void> closeProgressScreen() async {
-      Navigator.of(context).pop(
-        await collectionProviderRef.getCollections(),
-      );
+    void closeProgressScreen() {
+      Navigator.of(context).pop(true);
     }
 
     return Scaffold(

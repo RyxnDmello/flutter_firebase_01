@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
+import 'package:intl/intl.dart';
 
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
+
+final _date = DateFormat.yMMMMd('en_US').format(DateTime.now());
+const _uuid = Uuid();
 
 class _AccountManager {
   _AccountManager()
@@ -58,18 +63,22 @@ class _AccountManager {
     return true;
   }
 
-  Future<void> addCollection({required CollectionModel collection}) async {
+  Future<void> addCollection({
+    required String name,
+    required String image,
+    required IconData icon,
+  }) async {
     await _firestore
         .collection("accounts")
         .doc(_createdAccount!.user!.uid)
         .collection("collections")
-        .doc(collection.id)
+        .doc(_uuid.v4())
         .set(
       {
-        "name": collection.name,
-        "date": collection.date,
-        "image": collection.image,
-        "icon": collection.icon.codePoint,
+        "name": name,
+        "date": _date,
+        "image": image,
+        "icon": icon.codePoint,
       },
     );
   }

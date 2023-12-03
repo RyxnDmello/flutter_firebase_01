@@ -13,23 +13,19 @@ class RegisterFormButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
+    return ElevatedButton(
       onPressed: () => saveForm(),
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color.fromARGB(255, 0, 0, 180),
         minimumSize: const Size(double.infinity, 0),
         padding: const EdgeInsets.symmetric(
-          vertical: 12.5,
+          vertical: 8,
         ),
       ),
-      icon: const Icon(
-        Icons.account_circle_outlined,
-        size: 32.5,
-      ),
-      label: Text(
+      child: Text(
         label,
         style: GoogleFonts.poppins(
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w400,
           color: Colors.white,
           letterSpacing: 1,
           fontSize: 20,

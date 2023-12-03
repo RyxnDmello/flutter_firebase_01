@@ -3,12 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../database/account_manager.dart';
 
-import '../../screens/collection.dart';
+import '../../models/collection_model.dart';
 
 import './form/register_form_title.dart';
 import './form/register_form_input.dart';
 import './form/register_form_button.dart';
 import './form/register_form_instead.dart';
+
+import '../../screens/collections.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -59,12 +61,8 @@ class _RegisterFormState extends State<RegisterForm> {
 
     final collections = await accountManager.getCollections();
 
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => CollectionScreen(
-          collections: collections,
-        ),
-      ),
+    _openCollectionScreen(
+      collections: collections,
     );
   }
 
@@ -108,6 +106,16 @@ class _RegisterFormState extends State<RegisterForm> {
     setState(() => _isSignUpForm = !_isSignUpForm);
   }
 
+  void _openCollectionScreen({required List<CollectionModel> collections}) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CollectionsScreen(
+          collections: collections,
+        ),
+      ),
+    );
+  }
+
   void _failureSnackbar({required String message}) {
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -138,6 +146,9 @@ class _RegisterFormState extends State<RegisterForm> {
             RegisterFormTitle(
               heading: _isSignUpForm ? "Create Your" : "Login To Your",
             ),
+            const SizedBox(
+              height: 5,
+            ),
             if (_isSignUpForm)
               RegisterFormInput(
                 validateInput: _validateUsername,
@@ -148,7 +159,7 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
             if (_isSignUpForm)
               const SizedBox(
-                height: 20,
+                height: 15,
               ),
             RegisterFormInput(
               validateInput: _validateEmail,
@@ -158,7 +169,7 @@ class _RegisterFormState extends State<RegisterForm> {
               label: "Email",
             ),
             const SizedBox(
-              height: 20,
+              height: 15,
             ),
             RegisterFormInput(
               validateInput: _validatePassword,
@@ -168,14 +179,14 @@ class _RegisterFormState extends State<RegisterForm> {
               label: "Password",
             ),
             const SizedBox(
-              height: 20,
+              height: 15,
             ),
             RegisterFormButton(
               saveForm: _saveForm,
               label: _isSignUpForm ? "Create Account" : "Login Account",
             ),
             const SizedBox(
-              height: 20,
+              height: 15,
             ),
             RegisterFormInstead(
               switchForms: _switchForms,

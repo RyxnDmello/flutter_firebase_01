@@ -25,22 +25,31 @@ class RegisterFormInput extends StatelessWidget {
       keyboardType: inputType,
       obscureText: isProtected,
       style: GoogleFonts.poppins(
-        fontWeight: FontWeight.w300,
+        fontWeight: FontWeight.w400,
         color: Colors.white,
-        letterSpacing: 0.5,
+        letterSpacing: 1,
         fontSize: 20,
-        height: 1.5,
       ),
+      cursorWidth: 1.5,
+      cursorColor: Colors.white,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(12.5, 15, 15, 15),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12.5,
+          vertical: 15,
+        ),
         label: Text(
           label,
           style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.w400,
             color: Colors.white,
-            letterSpacing: 0.5,
-            fontSize: 25,
-            height: 0,
+            letterSpacing: 1,
+            fontSize: 20,
+          ),
+        ),
+        border: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.white,
+            width: 1.5,
           ),
         ),
         enabledBorder: const OutlineInputBorder(

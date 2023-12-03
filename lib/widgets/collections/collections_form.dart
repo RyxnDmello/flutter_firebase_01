@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase_01/models/collection_model.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/collection_provider.dart';
+import '../../database/account_manager.dart';
 
 import '../../models/icon_model.dart';
 
@@ -12,23 +10,21 @@ import './form/collection_form_icon.dart';
 import './form/collection_form_priority.dart';
 import './form/collection_form_button.dart';
 
-class CollectionForm extends ConsumerStatefulWidget {
+class CollectionForm extends StatefulWidget {
   const CollectionForm({
     required this.updateCollections,
     super.key,
   });
 
-  final void Function({
-    required List<CollectionModel> collections,
-  }) updateCollections;
+  final Future<void> Function() updateCollections;
 
   @override
-  ConsumerState<CollectionForm> createState() {
+  State<CollectionForm> createState() {
     return _CollectionFormState();
   }
 }
 
-class _CollectionFormState extends ConsumerState<CollectionForm> {
+class _CollectionFormState extends State<CollectionForm> {
   final _formKey = GlobalKey<FormState>();
   String? _name;
   IconData? _icon;
@@ -71,7 +67,9 @@ class _CollectionFormState extends ConsumerState<CollectionForm> {
 
   @override
   Widget build(BuildContext context) {
-    final collectionProviderRef = ref.watch(collectionProvider.notifier);
+    void closeForm() {
+      Navigator.of(context).pop();
+    }
 
     Future<void> saveForm() async {
       if (!_formKey.currentState!.validate()) return;
@@ -79,17 +77,15 @@ class _CollectionFormState extends ConsumerState<CollectionForm> {
 
       _formKey.currentState!.save();
 
-      collectionProviderRef.addCollection(
-        name: _name!,
+      await accountManager.addCollection(
         icon: _icon!,
         image: _image!,
+        name: _name!,
       );
 
-      widget.updateCollections(
-        collections: await collectionProviderRef.getCollections(),
-      );
+      await widget.updateCollections();
 
-      Navigator.of(context).pop();
+      closeForm();
     }
 
     return SingleChildScrollView(

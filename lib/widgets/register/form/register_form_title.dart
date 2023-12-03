@@ -23,7 +23,11 @@ class RegisterFormTitle extends StatelessWidget {
               fontWeight: FontWeight.w200,
               color: Colors.white,
               fontSize: 50,
+              height: 1,
             ),
+          ),
+          const SizedBox(
+            height: 5,
           ),
           Text(
             "Account",

@@ -24,7 +24,7 @@ class RegisterFormInstead extends StatelessWidget {
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
             color: Colors.white,
-            letterSpacing: 0.5,
+            letterSpacing: 0.65,
             fontSize: 20,
           ),
         ),
@@ -34,7 +34,7 @@ class RegisterFormInstead extends StatelessWidget {
             label,
             style: GoogleFonts.poppins(
               color: const Color.fromARGB(255, 0, 0, 255),
-              letterSpacing: 0.5,
+              letterSpacing: 0.65,
               fontSize: 20,
             ),
           ),

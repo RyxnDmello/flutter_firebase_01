@@ -1,43 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/collection_provider.dart';
+import '../database/account_manager.dart';
 
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
 
-import '../widgets/collection/collection_app_bar.dart';
-import '../widgets/collection/collection_block.dart';
-import '../widgets/collection/collection_form.dart';
-import '../widgets/collection/collection_empty.dart';
+import '../widgets/collections/collections_header.dart';
+import '../widgets/collections/collections_block.dart';
+import '../widgets/collections/collections_form.dart';
+import '../widgets/collections/collections_empty.dart';
 
 import '../screens/progress.dart';
 
-class CollectionScreen extends ConsumerStatefulWidget {
-  const CollectionScreen({
+class CollectionsScreen extends StatefulWidget {
+  const CollectionsScreen({
     required this.collections,
     super.key,
   });
 
-  final List<CollectionModel> collections;
+  final List<CollectionModel>? collections;
 
   @override
-  ConsumerState<CollectionScreen> createState() {
+  State<CollectionsScreen> createState() {
     return _CollectionScreenState();
   }
 }
 
-class _CollectionScreenState extends ConsumerState<CollectionScreen> {
+class _CollectionScreenState extends State<CollectionsScreen> {
   List<CollectionModel> _collections = [];
 
   @override
   void initState() {
     super.initState();
-    _collections = widget.collections;
+
+    if (widget.collections != null) return;
+    _updateCollections();
   }
 
-  void _updateCollections({required List<CollectionModel> collections}) {
+  Future<void> _updateCollections() async {
+    final collections = await accountManager.getCollections();
     setState(() => _collections = collections);
   }
 
@@ -65,7 +67,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
     required List<TaskModel> progress,
     required List<TaskModel> completed,
   }) async {
-    final collections = await Navigator.of(context).push<List<CollectionModel>>(
+    await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
           return ProgressScreen(
@@ -77,15 +79,11 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
       ),
     );
 
-    if (collections!.isEmpty) return;
-
-    _updateCollections(collections: collections);
+    _updateCollections();
   }
 
   @override
   Widget build(BuildContext context) {
-    final collectionProviderRef = ref.watch(collectionProvider.notifier);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -93,17 +91,18 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
           onPressed: () => FirebaseAuth.instance.signOut(),
           iconSize: 28,
           splashRadius: 25,
+          color: Colors.white,
           icon: const Icon(
             Icons.logout,
+            color: Colors.white,
           ),
         ),
         actions: [
           IconButton(
-            onPressed: () async => _updateCollections(
-              collections: await collectionProviderRef.getCollections(),
-            ),
+            onPressed: () async => await _updateCollections(),
             iconSize: 26.5,
             splashRadius: 25,
+            color: Colors.white,
             icon: const Icon(
               Icons.refresh_outlined,
             ),
@@ -112,6 +111,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
             onPressed: () => _openForm(),
             iconSize: 30,
             splashRadius: 25,
+            color: Colors.white,
             icon: const Icon(
               Icons.add,
             ),
@@ -126,7 +126,7 @@ class _CollectionScreenState extends ConsumerState<CollectionScreen> {
         ),
         child: Column(
           children: [
-            const CollectionAppBar(),
+            const CollectionsHeader(),
             const SizedBox(
               height: 20,
             ),
