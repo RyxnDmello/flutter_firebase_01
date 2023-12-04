@@ -48,6 +48,7 @@ class _ProgressFormPriorityState extends State<ProgressFormPriority> {
         ),
         ListView.separated(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: priority.length,
           itemBuilder: (context, index) {
             return GestureDetector(
@@ -62,23 +63,25 @@ class _ProgressFormPriorityState extends State<ProgressFormPriority> {
                 alignment: Alignment.center,
                 children: [
                   Container(
-                    height: 100,
+                    height: 110,
                     width: double.infinity,
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
+                      image: DecorationImage(
+                        image: AssetImage(
+                          priority.values.elementAt(index),
+                        ),
+                        fit: BoxFit.cover,
+                      ),
                       boxShadow: const [
                         BoxShadow(
-                          color: Colors.black54,
-                          offset: Offset(0, 5),
+                          color: Colors.black45,
+                          offset: Offset(0, 6.5),
                           blurRadius: 5,
-                        )
+                        ),
                       ],
-                    ),
-                    child: Image.asset(
-                      width: double.infinity,
-                      priority.values.elementAt(index),
-                      fit: BoxFit.cover,
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(5),
                     ),
                   ),
                   Text(

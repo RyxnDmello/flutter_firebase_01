@@ -125,7 +125,9 @@ class _AccountManager {
 
   Future<void> addProgressTask({
     required String collectionID,
-    required TaskModel task,
+    required String description,
+    required String image,
+    required String title,
   }) async {
     await _firestore
         .collection("accounts")
@@ -133,13 +135,13 @@ class _AccountManager {
         .collection("collections")
         .doc(collectionID)
         .collection("progress")
-        .doc(task.id)
+        .doc(_uuid.v4())
         .set(
       {
-        "title": task.title,
-        "description": task.description,
-        "image": task.image,
-        "date": task.date,
+        "title": title,
+        "description": description,
+        "image": image,
+        "date": _date,
       },
     );
   }
@@ -156,6 +158,22 @@ class _AccountManager {
         .collection("progress")
         .doc(taskID)
         .delete();
+  }
+
+  Future<void> clearProgressTasks({
+    required String collectionID,
+  }) async {
+    final docs = await _firestore
+        .collection("accounts")
+        .doc(_createdAccount!.user!.uid)
+        .collection("collections")
+        .doc(collectionID)
+        .collection("progress")
+        .get();
+
+    for (var element in docs.docs) {
+      await element.reference.delete();
+    }
   }
 
   Future<List<TaskModel>> getProgressTasks({
@@ -193,7 +211,9 @@ class _AccountManager {
 
   Future<void> addCompletedTask({
     required String collectionID,
-    required TaskModel task,
+    required String description,
+    required String image,
+    required String title,
   }) async {
     await _firestore
         .collection("accounts")
@@ -201,13 +221,13 @@ class _AccountManager {
         .collection("collections")
         .doc(collectionID)
         .collection("completed")
-        .doc(task.id)
+        .doc(_uuid.v4())
         .set(
       {
-        "title": task.title,
-        "description": task.description,
-        "image": task.image,
-        "date": task.date,
+        "title": title,
+        "description": description,
+        "image": image,
+        "date": _date,
       },
     );
   }

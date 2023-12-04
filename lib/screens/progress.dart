@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../database/account_manager.dart';
 
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
@@ -11,7 +12,7 @@ import '../widgets/progress/progress_empty.dart';
 
 import './completed.dart';
 
-class ProgressScreen extends ConsumerStatefulWidget {
+class ProgressScreen extends StatefulWidget {
   const ProgressScreen({
     required this.collection,
     required this.progress,
@@ -24,12 +25,12 @@ class ProgressScreen extends ConsumerStatefulWidget {
   final List<TaskModel> completed;
 
   @override
-  ConsumerState<ProgressScreen> createState() {
+  State<ProgressScreen> createState() {
     return _ProgressScreenState();
   }
 }
 
-class _ProgressScreenState extends ConsumerState<ProgressScreen> {
+class _ProgressScreenState extends State<ProgressScreen> {
   List<TaskModel> _progress = [];
   List<TaskModel> _completed = [];
 
@@ -40,10 +41,15 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
     _completed = widget.completed;
   }
 
-  void _updateTasks({
-    required List<TaskModel> progress,
-    required List<TaskModel> completed,
-  }) {
+  Future<void> _updateTasks() async {
+    final progress = await accountManager.getProgressTasks(
+      id: widget.collection.id,
+    );
+
+    final completed = await accountManager.getCompletedTasks(
+      id: widget.collection.id,
+    );
+
     setState(() {
       _progress = progress;
       _completed = completed;
@@ -71,8 +77,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
   }
 
   Future<void> _openCompletedScreen() async {
-    final tasks =
-        await Navigator.of(context).push<Map<String, List<TaskModel>>>(
+    await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
           return CompletedScreen(
@@ -83,25 +88,23 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
       ),
     );
 
-    _updateTasks(
-      progress: tasks!["progress"]!,
-      completed: tasks["completed"]!,
-    );
+    _updateTasks();
+  }
+
+  void _closeProgressScreen() {
+    Navigator.of(context).pop(true);
   }
 
   @override
   Widget build(BuildContext context) {
-    void closeProgressScreen() {
-      Navigator.of(context).pop(true);
-    }
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading: IconButton(
-          onPressed: () => closeProgressScreen(),
+          onPressed: () => _closeProgressScreen(),
           iconSize: 26.5,
           splashRadius: 25,
+          color: Colors.white,
           icon: const Icon(
             Icons.arrow_back,
           ),
@@ -111,39 +114,41 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
             onPressed: () => _openForm(),
             iconSize: 30,
             splashRadius: 25,
+            color: Colors.white,
             icon: const Icon(
               Icons.add,
             ),
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          ProgressHeader(
-            collection: widget.collection,
-            totalProgressTasks: _progress.length,
-            totalCompletedTasks: _completed.length,
-            openCompletedScreen: _openCompletedScreen,
-          ),
-          if (_progress.isEmpty)
-            ProgressEmpty(
-              openForm: _openForm,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ProgressHeader(
+              collection: widget.collection,
+              totalProgressTasks: _progress.length,
+              totalCompletedTasks: _completed.length,
+              openCompletedScreen: _openCompletedScreen,
+              updateTasks: _updateTasks,
             ),
-          if (_progress.isNotEmpty)
-            const SizedBox(
-              height: 20,
-            ),
-          if (_progress.isNotEmpty)
-            Expanded(
-              child: ProgressList(
+            if (_progress.isEmpty)
+              ProgressEmpty(
+                openForm: _openForm,
+              ),
+            if (_progress.isNotEmpty)
+              const SizedBox(
+                height: 20,
+              ),
+            if (_progress.isNotEmpty)
+              ProgressList(
                 collectionID: widget.collection.id,
                 updateTasks: _updateTasks,
                 progress: _progress,
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

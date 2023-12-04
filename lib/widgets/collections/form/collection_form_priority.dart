@@ -48,6 +48,7 @@ class _CollectionFormPriorityState extends State<CollectionFormPriority> {
         ),
         ListView.separated(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: priority.length,
           itemBuilder: (context, index) {
             return GestureDetector(
@@ -63,7 +64,12 @@ class _CollectionFormPriorityState extends State<CollectionFormPriority> {
                     width: double.infinity,
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
+                      image: DecorationImage(
+                        image: AssetImage(
+                          priority.values.elementAt(index),
+                        ),
+                        fit: BoxFit.cover,
+                      ),
                       boxShadow: const [
                         BoxShadow(
                           color: Colors.black45,
@@ -71,10 +77,8 @@ class _CollectionFormPriorityState extends State<CollectionFormPriority> {
                           blurRadius: 5,
                         ),
                       ],
-                    ),
-                    child: Image.asset(
-                      priority.values.elementAt(index),
-                      fit: BoxFit.cover,
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(5),
                     ),
                   ),
                   Text(

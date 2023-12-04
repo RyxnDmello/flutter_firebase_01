@@ -7,7 +7,6 @@ import '../../models/task_model.dart';
 
 import './block/collection_block_name.dart';
 import './block/collection_block_controller.dart';
-import './block/collection_block_image.dart';
 
 class CollectionBlock extends StatelessWidget {
   const CollectionBlock({
@@ -56,14 +55,23 @@ class CollectionBlock extends StatelessWidget {
     return GestureDetector(
       onTap: () => openScreen(),
       child: Container(
-        height: 140,
         width: double.infinity,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 16,
+        ),
         clipBehavior: Clip.hardEdge,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              collection.image,
+            ),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: const BorderRadius.all(
             Radius.circular(5),
           ),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black87,
               offset: Offset(0, 5),
@@ -71,34 +79,21 @@ class CollectionBlock extends StatelessWidget {
             ),
           ],
         ),
-        child: Stack(
-          alignment: Alignment.center,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CollectionBlockImage(
-              image: collection.image,
+            CollectionBlockName(
+              name: collection.name,
+              icon: collection.icon,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CollectionBlockName(
-                    name: collection.name,
-                    icon: collection.icon,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  CollectionBlockController(
-                    deleteCollection: deleteCollection,
-                    date: collection.date,
-                  ),
-                ],
-              ),
-            )
+            const SizedBox(
+              height: 8,
+            ),
+            CollectionBlockController(
+              deleteCollection: deleteCollection,
+              date: collection.date,
+            ),
           ],
         ),
       ),

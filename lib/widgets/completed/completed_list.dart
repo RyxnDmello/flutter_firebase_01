@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/completed_provider.dart';
+import '../../database/account_manager.dart';
 
 import '../../models/task_model.dart';
 
@@ -9,7 +8,7 @@ import './list/completed_list_dismissible.dart';
 
 import './completed_task.dart';
 
-class CompletedList extends ConsumerWidget {
+class CompletedList extends StatelessWidget {
   const CompletedList({
     required this.updateCompletedTasks,
     required this.collectionID,
@@ -17,43 +16,38 @@ class CompletedList extends ConsumerWidget {
     super.key,
   });
 
+  final Future<void> Function() updateCompletedTasks;
   final List<TaskModel> completed;
   final String collectionID;
 
-  final void Function({
-    required List<TaskModel> completed,
-  }) updateCompletedTasks;
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final completedProviderRef = ref.watch(completedProvider.notifier);
-
+  Widget build(BuildContext context) {
     Future<void> deleteCompletedTask({
       required String taskID,
     }) async {
-      await completedProviderRef.deleteTask(
+      await accountManager.deleteCompletedTask(
         collectionID: collectionID,
         taskID: taskID,
       );
 
-      updateCompletedTasks(
-        completed: await completedProviderRef.getTasks(
-          collectionID: collectionID,
-        ),
-      );
+      await updateCompletedTasks();
     }
 
     return ListView.separated(
+      shrinkWrap: true,
       padding: const EdgeInsets.fromLTRB(15, 10, 15, 30),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: completed.length,
       itemBuilder: (context, index) {
         return Dismissible(
+          key: Key(
+            completed[index].id,
+          ),
           onDismissed: (direction) async {
             await deleteCompletedTask(
               taskID: completed[index].id,
             );
           },
-          key: Key(completed[index].id),
           background: const CompletedListDismissible(
             alignment: Alignment.centerLeft,
             icon: Icons.delete_forever,

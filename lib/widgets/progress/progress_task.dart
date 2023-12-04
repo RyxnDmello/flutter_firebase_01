@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'task/progress_task_image.dart';
-import 'task/progress_task_date.dart';
-import 'task/progress_task_title.dart';
-import 'task/progress_task_description.dart';
+import './task/progress_task_date.dart';
+import './task/progress_task_title.dart';
+import './task/progress_task_description.dart';
 
 import '../../models/task_model.dart';
 
@@ -18,12 +17,17 @@ class ProgressTask extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 165,
       width: double.infinity,
+      padding: const EdgeInsets.all(20),
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(5),
+        image: DecorationImage(
+          image: AssetImage(
+            task.image,
+          ),
+          fit: BoxFit.cover,
+          opacity: 0.85,
+        ),
         boxShadow: const [
           BoxShadow(
             color: Colors.black54,
@@ -31,38 +35,27 @@ class ProgressTask extends StatelessWidget {
             blurRadius: 5,
           ),
         ],
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.black,
       ),
-      child: Stack(
-        alignment: Alignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ProgressTaskImage(
-            image: task.image,
+          ProgressTaskDate(
+            date: task.date,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ProgressTaskDate(
-                  date: task.date,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ProgressTaskTitle(
-                  title: task.title,
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                ProgressTaskDescription(
-                  description: task.description,
-                ),
-              ],
-            ),
+          const SizedBox(
+            height: 20,
+          ),
+          ProgressTaskTitle(
+            title: task.title,
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          ProgressTaskDescription(
+            description: task.description,
           ),
         ],
       ),

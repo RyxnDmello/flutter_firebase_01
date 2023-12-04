@@ -1,42 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/progress_provider.dart';
-import '../../providers/completed_provider.dart';
+import '../../database/account_manager.dart';
 
 import '../../models/collection_model.dart';
-import '../../models/task_model.dart';
 
 import './form/progress_form_title.dart';
 import './form/progress_form_input.dart';
 import './form/progress_form_priority.dart';
 import './form/progress_form_button.dart';
 
-class ProgressForm extends ConsumerStatefulWidget {
+class ProgressForm extends StatefulWidget {
   const ProgressForm({
     required this.updateTasks,
     required this.collection,
     super.key,
   });
 
-  final void Function({
-    required List<TaskModel> progress,
-    required List<TaskModel> completed,
-  }) updateTasks;
-
+  final Future<void> Function() updateTasks;
   final CollectionModel collection;
 
   @override
-  ConsumerState<ProgressForm> createState() {
+  State<ProgressForm> createState() {
     return _ProgressFormState();
   }
 }
 
-class _ProgressFormState extends ConsumerState<ProgressForm> {
+class _ProgressFormState extends State<ProgressForm> {
   final _formKey = GlobalKey<FormState>();
   String? _title;
   String? _description;
   String? _image;
+
+  Future<void> saveForm() async {
+    if (!_formKey.currentState!.validate()) return;
+    if (_image == null) return;
+
+    _formKey.currentState!.save();
+
+    await accountManager.addProgressTask(
+      collectionID: widget.collection.id,
+      description: _description!,
+      image: _image!,
+      title: _title!,
+    );
+
+    await widget.updateTasks();
+
+    _closeForm();
+  }
 
   String? _validateTitle(String title) {
     if (title.isEmpty || title.length < 5 || title.length > 20) {
@@ -48,8 +59,8 @@ class _ProgressFormState extends ConsumerState<ProgressForm> {
 
   String? _validateDescription(String description) {
     if (description.isEmpty ||
-        description.length < 5 ||
-        description.length > 65) {
+        description.length < 10 ||
+        description.length > 100) {
       return "INVALID DESCRIPTION";
     }
 
@@ -68,36 +79,12 @@ class _ProgressFormState extends ConsumerState<ProgressForm> {
     _image = image;
   }
 
+  void _closeForm() {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final progressProviderRef = ref.watch(progressProvider.notifier);
-    final completedProviderRef = ref.watch(completedProvider.notifier);
-
-    Future<void> saveForm() async {
-      if (!_formKey.currentState!.validate()) return;
-      if (_image == null) return;
-
-      _formKey.currentState!.save();
-
-      await progressProviderRef.addTask(
-        collectionID: widget.collection.id,
-        title: _title!,
-        description: _description!,
-        image: _image!,
-      );
-
-      widget.updateTasks(
-        progress: await progressProviderRef.getTasks(
-          collectionID: widget.collection.id,
-        ),
-        completed: await completedProviderRef.getTasks(
-          collectionID: widget.collection.id,
-        ),
-      );
-
-      Navigator.of(context).pop();
-    }
-
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
