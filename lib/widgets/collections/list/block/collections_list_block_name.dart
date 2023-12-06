@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CollectionBlockName extends StatelessWidget {
-  const CollectionBlockName({
+class CollectionsListBlockName extends StatelessWidget {
+  const CollectionsListBlockName({
     required this.name,
     required this.icon,
     super.key,
@@ -21,14 +21,14 @@ class CollectionBlockName extends StatelessWidget {
           icon,
         ),
         const SizedBox(
-          width: 6.5,
+          width: 10,
         ),
         Text(
-          name.toUpperCase(),
+          name,
           style: GoogleFonts.abel(
             fontWeight: FontWeight.w600,
             color: Colors.white,
-            letterSpacing: 2,
+            letterSpacing: 1.5,
             fontSize: 30,
           ),
         )

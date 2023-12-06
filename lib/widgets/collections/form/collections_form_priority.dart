@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CollectionFormPriority extends StatefulWidget {
-  const CollectionFormPriority({
+class CollectionsFormPriority extends StatelessWidget {
+  const CollectionsFormPriority({
+    required this.selectedIndex,
     required this.saveImage,
+    required this.title,
     super.key,
   });
 
-  final void Function(String image) saveImage;
+  final void Function({
+    required String image,
+    required int index,
+  }) saveImage;
 
-  @override
-  State<CollectionFormPriority> createState() {
-    return _CollectionFormPriorityState();
-  }
-}
-
-class _CollectionFormPriorityState extends State<CollectionFormPriority> {
-  int _selectedPriority = -1;
-
-  void _selectPriority({required int index}) {
-    setState(() => _selectedPriority = index);
-  }
+  final int selectedIndex;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     final Map<String, String> priority = {
-      "HIGH": "./lib/images/collection/high.png",
-      "MEDIUM": "./lib/images/collection/medium.png",
-      "LOW": "./lib/images/collection/low.png",
+      "HIGH": "./lib/images/collection/priority/high.png",
+      "MEDIUM": "./lib/images/collection/priority/medium.png",
+      "LOW": "./lib/images/collection/priority/low.png",
     };
 
     return Column(
@@ -35,12 +30,12 @@ class _CollectionFormPriorityState extends State<CollectionFormPriority> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Select Priority",
+          title,
           style: GoogleFonts.abel(
-            color: const Color.fromARGB(255, 0, 0, 65),
             fontWeight: FontWeight.w600,
+            color: Colors.black,
             letterSpacing: 0.65,
-            fontSize: 40,
+            fontSize: 35,
           ),
         ),
         const SizedBox(
@@ -52,10 +47,10 @@ class _CollectionFormPriorityState extends State<CollectionFormPriority> {
           itemCount: priority.length,
           itemBuilder: (context, index) {
             return GestureDetector(
-              onTap: () {
-                widget.saveImage(priority.values.elementAt(index));
-                _selectPriority(index: index);
-              },
+              onTap: () => saveImage(
+                image: priority.values.elementAt(index),
+                index: index,
+              ),
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -94,9 +89,9 @@ class _CollectionFormPriorityState extends State<CollectionFormPriority> {
                     top: 15,
                     right: 15,
                     child: Icon(
-                      size: 30,
-                      Icons.star,
-                      color: _selectedPriority != index
+                      size: 35,
+                      Icons.favorite_border,
+                      color: selectedIndex != index
                           ? Colors.transparent
                           : Colors.white,
                     ),

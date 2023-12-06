@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../../database/account_manager.dart';
 
-import '../../models/icon_model.dart';
+import './form/collections_form_title.dart';
+import './form/collections_form_input.dart';
+import './form/collections_form_icons.dart';
+import './form/collections_form_priority.dart';
+import './form/collections_form_button.dart';
 
-import './form/collection_form_title.dart';
-import './form/collection_form_input.dart';
-import './form/collection_form_icon.dart';
-import './form/collection_form_priority.dart';
-import './form/collection_form_button.dart';
-
-class CollectionForm extends StatefulWidget {
-  const CollectionForm({
+class CollectionsForm extends StatefulWidget {
+  const CollectionsForm({
     required this.updateCollections,
     super.key,
   });
@@ -19,16 +17,35 @@ class CollectionForm extends StatefulWidget {
   final Future<void> Function() updateCollections;
 
   @override
-  State<CollectionForm> createState() {
-    return _CollectionFormState();
+  State<CollectionsForm> createState() {
+    return _CollectionsFormState();
   }
 }
 
-class _CollectionFormState extends State<CollectionForm> {
+class _CollectionsFormState extends State<CollectionsForm> {
   final _formKey = GlobalKey<FormState>();
+  int _selectedPriorityIndex = -1;
+  int _selectedIconIndex = -1;
   String? _name;
   IconData? _icon;
   String? _image;
+
+  Future<void> _saveForm() async {
+    if (!_formKey.currentState!.validate()) return;
+    if (_image == null || _icon == null) return;
+
+    _formKey.currentState!.save();
+
+    await accountManager.addCollection(
+      icon: _icon!,
+      image: _image!,
+      name: _name!,
+    );
+
+    await widget.updateCollections();
+
+    _closeForm();
+  }
 
   String? _validateName(String name) {
     if (name.isEmpty ||
@@ -41,53 +58,26 @@ class _CollectionFormState extends State<CollectionForm> {
     return null;
   }
 
-  String? _validateIcon(String name) {
-    if (name == "Icon") {
-      return "PLEASE SELECT AN ICON";
-    }
-
-    return null;
-  }
-
   void _saveName(String name) {
     _name = name.toUpperCase();
   }
 
-  void _saveIcon(String name) {
-    for (var i = 0; i < icons.length; i++) {
-      if (icons[i].name != name) continue;
-      _icon = icons[i].icon;
-      return;
-    }
+  void _saveIcon({required IconData icon, required int index}) {
+    setState(() => _selectedIconIndex = index);
+    _icon = icon;
   }
 
-  void _saveImage(String image) {
+  void _savePriority({required String image, required int index}) {
+    setState(() => _selectedPriorityIndex = index);
     _image = image;
+  }
+
+  void _closeForm() {
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
-    void closeForm() {
-      Navigator.of(context).pop();
-    }
-
-    Future<void> saveForm() async {
-      if (!_formKey.currentState!.validate()) return;
-      if (_image == null) return;
-
-      _formKey.currentState!.save();
-
-      await accountManager.addCollection(
-        icon: _icon!,
-        image: _image!,
-        name: _name!,
-      );
-
-      await widget.updateCollections();
-
-      closeForm();
-    }
-
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
@@ -99,33 +89,39 @@ class _CollectionFormState extends State<CollectionForm> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const CollectionFormTitle(),
-            const SizedBox(
-              height: 10,
+            const CollectionsFormTitle(
+              title: "Create Collection",
             ),
-            CollectionFormInput(
+            const SizedBox(
+              height: 15,
+            ),
+            CollectionsFormInput(
               validateInput: _validateName,
               saveInput: _saveName,
               label: "Name",
             ),
             const SizedBox(
-              height: 10,
+              height: 20,
             ),
-            CollectionFormIcon(
-              validateIcon: _validateIcon,
+            CollectionsFormIcons(
+              selectedIndex: _selectedIconIndex,
+              title: "Select Icon",
               saveIcon: _saveIcon,
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
-            CollectionFormPriority(
-              saveImage: _saveImage,
+            CollectionsFormPriority(
+              selectedIndex: _selectedPriorityIndex,
+              saveImage: _savePriority,
+              title: "Select Priority",
             ),
             const SizedBox(
               height: 25,
             ),
-            CollectionFormButton(
-              saveForm: saveForm,
+            CollectionsFormButton(
+              label: "Create Collection",
+              saveForm: _saveForm,
             ),
           ],
         ),

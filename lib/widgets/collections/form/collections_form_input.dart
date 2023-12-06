@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CollectionFormInput extends StatelessWidget {
-  const CollectionFormInput({
+class CollectionsFormInput extends StatelessWidget {
+  const CollectionsFormInput({
     required this.validateInput,
     required this.saveInput,
     required this.label,
@@ -23,18 +23,16 @@ class CollectionFormInput extends StatelessWidget {
         color: Colors.black,
         letterSpacing: 1,
         fontSize: 25,
-        height: 1.25,
       ),
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(15, 25, 15, 15),
+        contentPadding: const EdgeInsets.all(15),
         label: Text(
           label,
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w500,
             color: Colors.black,
-            letterSpacing: 0.5,
+            letterSpacing: 0,
             fontSize: 25,
-            height: 0,
           ),
         ),
         enabledBorder: const OutlineInputBorder(
@@ -51,19 +49,19 @@ class CollectionFormInput extends StatelessWidget {
         ),
         errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.red,
+            color: Color.fromARGB(255, 200, 0, 0),
             width: 2.5,
           ),
         ),
         focusedErrorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.red,
+            color: Color.fromARGB(255, 200, 0, 0),
             width: 2.5,
           ),
         ),
         errorStyle: GoogleFonts.poppins(
+          color: const Color.fromARGB(255, 200, 0, 0),
           fontWeight: FontWeight.w600,
-          color: Colors.red,
           letterSpacing: 0.65,
           fontSize: 12.5,
         ),

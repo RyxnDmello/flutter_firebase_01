@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CollectionBlockController extends StatelessWidget {
-  const CollectionBlockController({
+class CollectionsListBlockController extends StatelessWidget {
+  const CollectionsListBlockController({
     required this.deleteCollection,
     required this.date,
     super.key,
@@ -20,10 +20,9 @@ class CollectionBlockController extends StatelessWidget {
         OutlinedButton(
           onPressed: () => deleteCollection(),
           style: OutlinedButton.styleFrom(
-            foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(
               horizontal: 25,
-              vertical: 5,
+              vertical: 2.5,
             ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(40),
@@ -32,6 +31,7 @@ class CollectionBlockController extends StatelessWidget {
               color: Colors.white,
               width: 2,
             ),
+            foregroundColor: Colors.white,
           ),
           child: Text(
             "Delete",

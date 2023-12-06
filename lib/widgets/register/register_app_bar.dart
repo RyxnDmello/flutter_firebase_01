@@ -10,7 +10,7 @@ class RegisterAppBar extends StatelessWidget {
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage(
-            "./lib/images/register/app_bar_background.png",
+            "./lib/images/register/background.png",
           ),
           fit: BoxFit.cover,
           opacity: 0.85,

@@ -1,35 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CollectionFormButton extends StatelessWidget {
-  const CollectionFormButton({
+class CollectionsFormButton extends StatelessWidget {
+  const CollectionsFormButton({
     required this.saveForm,
+    required this.label,
     super.key,
   });
 
   final void Function() saveForm;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: () => saveForm(),
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color.fromARGB(255, 0, 0, 80),
-        minimumSize: const Size(double.infinity, 50),
+        backgroundColor: const Color.fromARGB(255, 0, 0, 65),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 0,
+          vertical: 8,
+        ),
         shadowColor: Colors.black,
         elevation: 2,
       ),
       icon: const Icon(
-        Icons.create_new_folder_outlined,
+        Icons.add,
         color: Colors.white,
-        size: 30,
+        size: 28,
       ),
       label: Text(
-        "Create Collection",
+        label,
         style: GoogleFonts.poppins(
+          fontWeight: FontWeight.w400,
           color: Colors.white,
           letterSpacing: 0.65,
-          fontSize: 22.5,
+          fontSize: 20,
         ),
       ),
     );

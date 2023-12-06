@@ -61,7 +61,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
     final collections = await accountManager.getCollections();
 
-    _openCollectionScreen(
+    _openCollectionsScreen(
       collections: collections,
     );
   }
@@ -106,7 +106,7 @@ class _RegisterFormState extends State<RegisterForm> {
     setState(() => _isSignUpForm = !_isSignUpForm);
   }
 
-  void _openCollectionScreen({required List<CollectionModel> collections}) {
+  void _openCollectionsScreen({required List<CollectionModel> collections}) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => CollectionsScreen(

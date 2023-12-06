@@ -1,5 +1,5 @@
-name: flutter_firebase_01
-description: A new Flutter project.
+name: task_flow
+description: Task Management Application
 
 publish_to: "none"
 
@@ -32,5 +32,9 @@ flutter:
 
   assets:
     - ./lib/images/register/
+
     - ./lib/images/collection/
+    - ./lib/images/collection/priority/
+
     - ./lib/images/progress/
+    - ./lib/images/progress/priority/

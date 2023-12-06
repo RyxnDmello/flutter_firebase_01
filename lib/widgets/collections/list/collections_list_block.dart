@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../../database/account_manager.dart';
+import '../../../database/account_manager.dart';
 
-import '../../models/collection_model.dart';
-import '../../models/task_model.dart';
+import '../../../models/collection_model.dart';
+import '../../../models/task_model.dart';
 
-import './block/collection_block_name.dart';
-import './block/collection_block_controller.dart';
+import './block/collections_list_block_name.dart';
+import './block/collections_list_block_controller.dart';
 
-class CollectionBlock extends StatelessWidget {
-  const CollectionBlock({
+class CollectionsListBlock extends StatelessWidget {
+  const CollectionsListBlock({
     required this.openProgressScreen,
     required this.updateCollections,
     required this.collection,
@@ -83,14 +83,14 @@ class CollectionBlock extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CollectionBlockName(
+            CollectionsListBlockName(
               name: collection.name,
               icon: collection.icon,
             ),
             const SizedBox(
-              height: 8,
+              height: 12.5,
             ),
-            CollectionBlockController(
+            CollectionsListBlockController(
               deleteCollection: deleteCollection,
               date: collection.date,
             ),
