@@ -31,7 +31,6 @@ class CollectionsFormInput extends StatelessWidget {
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w500,
             color: Colors.black,
-            letterSpacing: 0,
             fontSize: 25,
           ),
         ),

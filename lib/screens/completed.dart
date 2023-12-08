@@ -6,7 +6,8 @@ import '../models/collection_model.dart';
 import '../models/task_model.dart';
 
 import '../widgets/completed/completed_header.dart';
-import '../widgets/completed/completed_list.dart';
+
+import '../widgets/common/tasks_list.dart';
 
 class CompletedScreen extends StatefulWidget {
   const CompletedScreen({
@@ -41,6 +42,17 @@ class _CompletedScreenState extends State<CompletedScreen> {
     setState(() => _completed = completed);
   }
 
+  Future<void> _deleteCompletedTask({
+    required String taskID,
+  }) async {
+    await accountManager.deleteCompletedTask(
+      collectionID: widget.collection.id,
+      taskID: taskID,
+    );
+
+    await _updateCompletedTasks();
+  }
+
   Future<void> _closeCompletedScreen() async {
     Navigator.of(context).pop(true);
   }
@@ -48,6 +60,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading: IconButton(
@@ -71,11 +84,12 @@ class _CompletedScreenState extends State<CompletedScreen> {
           const SizedBox(
             height: 20,
           ),
-          CompletedList(
-            updateCompletedTasks: _updateCompletedTasks,
+          TasksList(
             collectionID: widget.collection.id,
-            completed: _completed,
-          )
+            onDeleteTask: _deleteCompletedTask,
+            tasks: _completed,
+            onAddTask: null,
+          ),
         ],
       ),
     );

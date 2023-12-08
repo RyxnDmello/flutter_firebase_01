@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProgressFormPriority extends StatefulWidget {
+class ProgressFormPriority extends StatelessWidget {
   const ProgressFormPriority({
+    required this.selectedIndex,
     required this.saveImage,
+    required this.title,
     super.key,
   });
 
-  final void Function(String image) saveImage;
+  final void Function({
+    required String image,
+    required int index,
+  }) saveImage;
 
-  @override
-  State<ProgressFormPriority> createState() {
-    return _ProgressFormPriorityState();
-  }
-}
-
-class _ProgressFormPriorityState extends State<ProgressFormPriority> {
-  int _selectedPriority = -1;
-
-  void _selectPriority(int index) {
-    setState(() => _selectedPriority = index);
-  }
+  final int selectedIndex;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     final Map<String, String> priority = {
-      "HIGH": "./lib/images/progress/high.png",
-      "MEDIUM": "./lib/images/progress/medium.png",
-      "LOW": "./lib/images/progress/low.png",
+      "HIGH": "./lib/images/progress/priority/high.png",
+      "MEDIUM": "./lib/images/progress/priority/medium.png",
+      "LOW": "./lib/images/progress/priority/low.png",
     };
 
     return Column(
@@ -35,11 +30,11 @@ class _ProgressFormPriorityState extends State<ProgressFormPriority> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Select Priority",
+          title,
           style: GoogleFonts.abel(
-            color: const Color.fromARGB(255, 0, 0, 65),
             fontWeight: FontWeight.w600,
-            letterSpacing: 0.65,
+            color: Colors.black,
+            letterSpacing: 0.5,
             fontSize: 40,
           ),
         ),
@@ -52,13 +47,10 @@ class _ProgressFormPriorityState extends State<ProgressFormPriority> {
           itemCount: priority.length,
           itemBuilder: (context, index) {
             return GestureDetector(
-              onTap: () {
-                _selectPriority(index);
-
-                widget.saveImage(
-                  priority.values.elementAt(index),
-                );
-              },
+              onTap: () => saveImage(
+                image: priority.entries.elementAt(index).value,
+                index: index,
+              ),
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -97,9 +89,9 @@ class _ProgressFormPriorityState extends State<ProgressFormPriority> {
                     top: 20,
                     right: 20,
                     child: Icon(
-                      Icons.star,
-                      size: 30,
-                      color: _selectedPriority != index
+                      Icons.favorite_border,
+                      size: 35,
+                      color: selectedIndex != index
                           ? Colors.transparent
                           : Colors.white,
                     ),

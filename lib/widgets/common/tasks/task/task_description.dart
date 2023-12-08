@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CompletedTaskDescription extends StatelessWidget {
-  const CompletedTaskDescription({
+class TaskDescription extends StatelessWidget {
+  const TaskDescription({
     required this.description,
     super.key,
   });
@@ -13,8 +13,9 @@ class CompletedTaskDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       description,
+      softWrap: true,
       style: GoogleFonts.abel(
-        color: Colors.white,
+        color: const Color.fromARGB(200, 255, 255, 255),
         letterSpacing: 1,
         fontSize: 20,
         height: 1,

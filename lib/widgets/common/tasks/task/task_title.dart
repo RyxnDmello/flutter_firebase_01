@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CompletedTaskDate extends StatelessWidget {
-  const CompletedTaskDate({
-    required this.date,
+class TaskTitle extends StatelessWidget {
+  const TaskTitle({
+    required this.title,
     super.key,
   });
 
-  final String date;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      date,
-      textAlign: TextAlign.right,
+      title,
       style: GoogleFonts.abel(
+        fontWeight: FontWeight.w600,
         color: Colors.white,
-        letterSpacing: 1,
-        fontSize: 16.5,
+        letterSpacing: 1.5,
+        fontSize: 30,
         height: 1,
       ),
     );

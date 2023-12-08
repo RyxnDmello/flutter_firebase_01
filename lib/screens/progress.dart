@@ -5,10 +5,11 @@ import '../../database/account_manager.dart';
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
 
+import '../widgets/common/empty_list.dart';
+import '../widgets/common/tasks_list.dart';
+
 import '../widgets/progress/progress_header.dart';
 import '../widgets/progress/progress_form.dart';
-import '../widgets/progress/progress_list.dart';
-import '../widgets/progress/progress_empty.dart';
 
 import './completed.dart';
 
@@ -56,6 +57,40 @@ class _ProgressScreenState extends State<ProgressScreen> {
     });
   }
 
+  Future<void> _addCompletedTask({
+    required String description,
+    required String title,
+    required String image,
+  }) async {
+    await accountManager.addCompletedTask(
+      collectionID: widget.collection.id,
+      description: description,
+      image: image,
+      title: title,
+    );
+
+    await _updateTasks();
+  }
+
+  Future<void> _deleteProgressTask({
+    required String taskID,
+  }) async {
+    await accountManager.deleteProgressTask(
+      collectionID: widget.collection.id,
+      taskID: taskID,
+    );
+
+    await _updateTasks();
+  }
+
+  Future<void> _clearProgressTasks() async {
+    await accountManager.clearProgressTasks(
+      collectionID: widget.collection.id,
+    );
+
+    await _updateTasks();
+  }
+
   void _openForm() {
     showModalBottomSheet(
       useSafeArea: true,
@@ -88,7 +123,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
       ),
     );
 
-    _updateTasks();
+    await _updateTasks();
   }
 
   void _closeProgressScreen() {
@@ -98,6 +133,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
         leading: IconButton(
@@ -131,21 +167,32 @@ class _ProgressScreenState extends State<ProgressScreen> {
               totalProgressTasks: _progress.length,
               totalCompletedTasks: _completed.length,
               openCompletedScreen: _openCompletedScreen,
-              updateTasks: _updateTasks,
+              clearCollection: _clearProgressTasks,
             ),
             if (_progress.isEmpty)
-              ProgressEmpty(
-                openForm: _openForm,
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 25,
+                  top: 80,
+                ),
+                child: EmptyList(
+                  image: "./lib/images/progress/empty.png",
+                  label: "CREATE TASK",
+                  openForm: _openForm,
+                  isDark: true,
+                  size: 265,
+                ),
               ),
             if (_progress.isNotEmpty)
               const SizedBox(
                 height: 20,
               ),
             if (_progress.isNotEmpty)
-              ProgressList(
+              TasksList(
                 collectionID: widget.collection.id,
-                updateTasks: _updateTasks,
-                progress: _progress,
+                onDeleteTask: _deleteProgressTask,
+                onAddTask: _addCompletedTask,
+                tasks: _progress,
               ),
           ],
         ),

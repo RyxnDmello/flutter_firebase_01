@@ -27,6 +27,7 @@ class ProgressForm extends StatefulWidget {
 
 class _ProgressFormState extends State<ProgressForm> {
   final _formKey = GlobalKey<FormState>();
+  int _selectedImageIndex = -1;
   String? _title;
   String? _description;
   String? _image;
@@ -75,7 +76,8 @@ class _ProgressFormState extends State<ProgressForm> {
     _description = description;
   }
 
-  void _saveImage(String image) {
+  void _saveImage({required String image, required int index}) {
+    setState(() => _selectedImageIndex = index);
     _image = image;
   }
 
@@ -96,9 +98,11 @@ class _ProgressFormState extends State<ProgressForm> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const ProgressFormTitle(),
+            const ProgressFormTitle(
+              title: "Create Task",
+            ),
             const SizedBox(
-              height: 10,
+              height: 15,
             ),
             ProgressFormInput(
               label: "Name",
@@ -119,6 +123,8 @@ class _ProgressFormState extends State<ProgressForm> {
               height: 15,
             ),
             ProgressFormPriority(
+              selectedIndex: _selectedImageIndex,
+              title: "Select Priority",
               saveImage: _saveImage,
             ),
             const SizedBox(

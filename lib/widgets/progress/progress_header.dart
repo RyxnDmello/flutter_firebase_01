@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../database/account_manager.dart';
-
 import '../../models/collection_model.dart';
 
 import './header/progress_header_controller.dart';
@@ -10,16 +8,16 @@ import './header/progress_header_title.dart';
 
 class ProgressHeader extends StatelessWidget {
   const ProgressHeader({
-    required this.collection,
     required this.openCompletedScreen,
     required this.totalCompletedTasks,
     required this.totalProgressTasks,
-    required this.updateTasks,
+    required this.clearCollection,
+    required this.collection,
     super.key,
   });
 
+  final Future<void> Function() clearCollection;
   final void Function() openCompletedScreen;
-  final Future<void> Function() updateTasks;
   final CollectionModel collection;
   final int totalCompletedTasks;
   final int totalProgressTasks;
@@ -30,14 +28,6 @@ class ProgressHeader extends StatelessWidget {
       int total = totalProgressTasks + totalCompletedTasks;
       if (total == 0) return 0;
       return (totalCompletedTasks * 100) / total;
-    }
-
-    Future<void> clearProgressTasks() async {
-      await accountManager.clearProgressTasks(
-        collectionID: collection.id,
-      );
-
-      await updateTasks();
     }
 
     return Container(
@@ -84,9 +74,7 @@ class ProgressHeader extends StatelessWidget {
                 ),
                 ProgressHeaderController(
                   openCompletedScreen: openCompletedScreen,
-                  clearCollection: () async {
-                    await clearProgressTasks();
-                  },
+                  clearCollection: clearCollection,
                 ),
               ],
             ),

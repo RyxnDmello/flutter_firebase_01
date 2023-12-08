@@ -8,8 +8,8 @@ class ProgressHeaderController extends StatelessWidget {
     super.key,
   });
 
+  final Future<void> Function() clearCollection;
   final void Function() openCompletedScreen;
-  final void Function() clearCollection;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class ProgressHeaderController extends StatelessWidget {
           ),
         ),
         IconButton(
-          onPressed: () => clearCollection(),
+          onPressed: () async => await clearCollection(),
           iconSize: 30,
           icon: const Icon(
             Icons.delete_forever,

@@ -26,17 +26,17 @@ class ProgressFormInput extends StatelessWidget {
         color: Colors.black,
         letterSpacing: 1,
         fontSize: 25,
-        height: 1.25,
       ),
+      cursorWidth: 2,
+      cursorColor: Colors.black,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(15, 25, 15, 15),
+        contentPadding: const EdgeInsets.fromLTRB(15, 12.5, 15, 15),
         label: Text(
           label,
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w500,
             color: Colors.black,
             fontSize: 25,
-            height: 0,
           ),
         ),
         enabledBorder: const OutlineInputBorder(

@@ -6,10 +6,11 @@ import '../database/account_manager.dart';
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
 
+import '../widgets/common/empty_list.dart';
+
 import '../widgets/collections/collections_header.dart';
 import '../widgets/collections/collections_form.dart';
 import '../widgets/collections/collections_list.dart';
-import '../widgets/collections/collections_empty.dart';
 
 import '../screens/progress.dart';
 
@@ -29,14 +30,6 @@ class CollectionsScreen extends StatefulWidget {
 
 class _CollectionScreenState extends State<CollectionsScreen> {
   List<CollectionModel> _collections = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    if (widget.collections != null) return;
-    _updateCollections();
-  }
 
   Future<void> _updateCollections() async {
     final collections = await accountManager.getCollections();
@@ -113,10 +106,12 @@ class _CollectionScreenState extends State<CollectionsScreen> {
           horizontal: 0,
           vertical: 140,
         ),
-        child: CollectionsEmpty(
+        child: EmptyList(
           image: "./lib/images/collection/empty.png",
           label: "CREATE COLLECTIONS",
           openForm: _openForm,
+          isDark: false,
+          size: 300,
         ),
       );
     }
