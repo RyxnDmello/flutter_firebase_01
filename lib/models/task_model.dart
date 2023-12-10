@@ -3,13 +3,15 @@ class TaskModel {
     required this.id,
     required this.title,
     required this.description,
-    required this.image,
+    required this.background,
+    required this.priority,
     required this.date,
   });
 
   final String id;
   final String title;
   final String description;
-  final String image;
+  final int background;
+  final int priority;
   final String date;
 }

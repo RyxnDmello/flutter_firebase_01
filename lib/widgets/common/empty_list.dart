@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 class EmptyList extends StatelessWidget {
   const EmptyList({
     required this.openForm,
-    required this.isDark,
     required this.image,
     required this.label,
     required this.size,
@@ -14,7 +13,6 @@ class EmptyList extends StatelessWidget {
   final void Function() openForm;
   final String image;
   final String label;
-  final bool isDark;
   final double size;
 
   @override
@@ -31,20 +29,24 @@ class EmptyList extends StatelessWidget {
           TextButton(
             onPressed: () => openForm(),
             style: TextButton.styleFrom(
-              foregroundColor: isDark ? Colors.white : Colors.black,
-              shape: ContinuousRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+              foregroundColor: const Color.fromARGB(255, 50, 0, 150),
               padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 5,
+                horizontal: 40,
+                vertical: 4,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              side: const BorderSide(
+                color: Color.fromARGB(255, 50, 0, 150),
+                width: 2.5,
               ),
             ),
             child: Text(
               label,
               textAlign: TextAlign.center,
               style: GoogleFonts.abel(
-                color: isDark ? Colors.white : Colors.black,
+                color: const Color.fromARGB(255, 50, 0, 150),
                 fontWeight: FontWeight.w600,
                 letterSpacing: 1,
                 fontSize: 28,

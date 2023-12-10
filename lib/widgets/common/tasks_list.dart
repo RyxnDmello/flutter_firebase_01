@@ -19,7 +19,8 @@ class TasksList extends StatelessWidget {
   final Future<void> Function({
     required String title,
     required String description,
-    required String image,
+    required int background,
+    required int priority,
   })? onAddTask;
 
   final Future<void> Function({

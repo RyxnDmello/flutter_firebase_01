@@ -3,13 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ProgressHeaderDetails extends StatelessWidget {
   const ProgressHeaderDetails({
-    required this.active,
     required this.percentage,
+    required this.active,
     super.key,
   });
 
-  final String active;
   final String percentage;
+  final String active;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class ProgressHeaderDetails extends StatelessWidget {
           "$active Active",
           style: GoogleFonts.abel(
             color: Colors.white,
-            letterSpacing: 1,
+            letterSpacing: 0.5,
             fontSize: 25,
           ),
         ),
@@ -29,7 +29,7 @@ class ProgressHeaderDetails extends StatelessWidget {
           "$percentage% Completed",
           style: GoogleFonts.abel(
             color: Colors.white,
-            letterSpacing: 1,
+            letterSpacing: 0.5,
             fontSize: 25,
           ),
         ),

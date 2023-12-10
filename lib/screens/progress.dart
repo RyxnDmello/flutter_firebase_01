@@ -58,14 +58,16 @@ class _ProgressScreenState extends State<ProgressScreen> {
   }
 
   Future<void> _addCompletedTask({
-    required String description,
     required String title,
-    required String image,
+    required String description,
+    required int background,
+    required int priority,
   }) async {
     await accountManager.addCompletedTask(
       collectionID: widget.collection.id,
       description: description,
-      image: image,
+      background: background,
+      priority: priority,
       title: title,
     );
 
@@ -126,37 +128,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
     await _updateTasks();
   }
 
-  void _closeProgressScreen() {
-    Navigator.of(context).pop(true);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          onPressed: () => _closeProgressScreen(),
-          iconSize: 26.5,
-          splashRadius: 25,
-          color: Colors.white,
-          icon: const Icon(
-            Icons.arrow_back,
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => _openForm(),
-            iconSize: 30,
-            splashRadius: 25,
-            color: Colors.white,
-            icon: const Icon(
-              Icons.add,
-            ),
-          ),
-        ],
-      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -164,10 +138,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
           children: [
             ProgressHeader(
               collection: widget.collection,
-              totalProgressTasks: _progress.length,
-              totalCompletedTasks: _completed.length,
-              openCompletedScreen: _openCompletedScreen,
-              clearCollection: _clearProgressTasks,
+              progressLength: _progress.length,
+              completedLength: _completed.length,
+              onOpenScreen: _openCompletedScreen,
+              onClear: _clearProgressTasks,
+              onOpenForm: _openForm,
             ),
             if (_progress.isEmpty)
               Padding(
@@ -179,8 +154,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   image: "./lib/images/progress/empty.png",
                   label: "CREATE TASK",
                   openForm: _openForm,
-                  isDark: true,
-                  size: 265,
+                  size: 325,
                 ),
               ),
             if (_progress.isNotEmpty)

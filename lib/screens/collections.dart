@@ -104,14 +104,13 @@ class _CollectionScreenState extends State<CollectionsScreen> {
       collections = SingleChildScrollView(
         padding: const EdgeInsets.symmetric(
           horizontal: 0,
-          vertical: 140,
+          vertical: 120,
         ),
         child: EmptyList(
           image: "./lib/images/collection/empty.png",
           label: "CREATE COLLECTIONS",
           openForm: _openForm,
-          isDark: false,
-          size: 300,
+          size: 350,
         ),
       );
     }

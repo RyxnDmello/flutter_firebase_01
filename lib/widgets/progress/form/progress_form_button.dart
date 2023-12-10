@@ -4,10 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 class ProgressFormButton extends StatelessWidget {
   const ProgressFormButton({
     required this.saveForm,
+    required this.label,
     super.key,
   });
 
   final void Function() saveForm;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -15,21 +17,28 @@ class ProgressFormButton extends StatelessWidget {
       onPressed: () => saveForm(),
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color.fromARGB(255, 0, 0, 65),
-        minimumSize: const Size(double.infinity, 50),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 0,
+          vertical: 8,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
         shadowColor: Colors.black,
         elevation: 2,
       ),
       icon: const Icon(
         Icons.add,
         color: Colors.white,
-        size: 30,
+        size: 28,
       ),
       label: Text(
-        "Create Task",
+        label,
         style: GoogleFonts.poppins(
+          fontWeight: FontWeight.w400,
           color: Colors.white,
           letterSpacing: 0.65,
-          fontSize: 22.5,
+          fontSize: 20,
         ),
       ),
     );

@@ -126,7 +126,8 @@ class _AccountManager {
   Future<void> addProgressTask({
     required String collectionID,
     required String description,
-    required String image,
+    required int background,
+    required int priority,
     required String title,
   }) async {
     await _firestore
@@ -140,7 +141,8 @@ class _AccountManager {
       {
         "title": title,
         "description": description,
-        "image": image,
+        "background": background,
+        "priority": priority,
         "date": _date,
       },
     );
@@ -194,14 +196,14 @@ class _AccountManager {
     for (var i = 0; i < databaseTasks.docs.length; i++) {
       final databaseTask = databaseTasks.docs[i];
 
-      progressTasks.insert(
-        0,
+      progressTasks.add(
         TaskModel(
           id: databaseTask.id,
-          title: databaseTask.get("title"),
-          description: databaseTask.get("description"),
-          image: databaseTask.get("image"),
-          date: databaseTask.get("date"),
+          title: databaseTask.data()["title"],
+          description: databaseTask.data()["description"],
+          background: databaseTask.data()["background"],
+          priority: databaseTask.data()["priority"],
+          date: databaseTask.data()["date"],
         ),
       );
     }
@@ -212,7 +214,8 @@ class _AccountManager {
   Future<void> addCompletedTask({
     required String collectionID,
     required String description,
-    required String image,
+    required int background,
+    required int priority,
     required String title,
   }) async {
     await _firestore
@@ -226,7 +229,8 @@ class _AccountManager {
       {
         "title": title,
         "description": description,
-        "image": image,
+        "background": background,
+        "priority": priority,
         "date": _date,
       },
     );
@@ -264,14 +268,14 @@ class _AccountManager {
     for (var i = 0; i < databaseTasks.docs.length; i++) {
       final databaseTask = databaseTasks.docs[i];
 
-      completedTasks.insert(
-        0,
+      completedTasks.add(
         TaskModel(
           id: databaseTask.id,
-          title: databaseTask.get("title"),
-          description: databaseTask.get("description"),
-          image: databaseTask.get("image"),
-          date: databaseTask.get("date"),
+          title: databaseTask.data()["title"],
+          description: databaseTask.data()["description"],
+          background: databaseTask.data()["background"],
+          priority: databaseTask.data()["priority"],
+          date: databaseTask.data()["date"],
         ),
       );
     }

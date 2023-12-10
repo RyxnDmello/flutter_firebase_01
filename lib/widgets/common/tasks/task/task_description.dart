@@ -14,9 +14,10 @@ class TaskDescription extends StatelessWidget {
     return Text(
       description,
       softWrap: true,
-      style: GoogleFonts.abel(
-        color: const Color.fromARGB(200, 255, 255, 255),
-        letterSpacing: 1,
+      style: GoogleFonts.montserrat(
+        fontWeight: FontWeight.w400,
+        color: Colors.white,
+        letterSpacing: 0.25,
         fontSize: 20,
         height: 1,
       ),

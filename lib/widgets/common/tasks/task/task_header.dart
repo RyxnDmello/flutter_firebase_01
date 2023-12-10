@@ -5,7 +5,6 @@ class TaskHeader extends StatelessWidget {
   const TaskHeader({
     required this.onAddTask,
     required this.onDeleteTask,
-    required this.color,
     required this.date,
     super.key,
   });
@@ -13,7 +12,6 @@ class TaskHeader extends StatelessWidget {
   final Future<void> Function()? onDeleteTask;
   final Future<void> Function()? onAddTask;
   final String date;
-  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -28,24 +26,25 @@ class TaskHeader extends StatelessWidget {
             if (onAddTask != null)
               HeaderButton(
                 onTap: () async => await onAddTask!(),
-                color: Colors.green,
+                color: Colors.white,
                 icon: Icons.check,
               ),
-            HeaderButton(
-              onTap: () async => await onDeleteTask!(),
-              color: Colors.red,
-              icon: Icons.close,
-            ),
+            if (onDeleteTask != null)
+              HeaderButton(
+                onTap: () async => await onDeleteTask!(),
+                color: Colors.white,
+                icon: Icons.close,
+              ),
           ],
         ),
         Text(
           date,
           textAlign: TextAlign.right,
-          style: GoogleFonts.abel(
+          style: GoogleFonts.montserrat(
             fontWeight: FontWeight.w600,
             color: Colors.white,
-            letterSpacing: 0.85,
-            fontSize: 20,
+            letterSpacing: 0.25,
+            fontSize: 18,
           ),
         ),
       ],
@@ -72,7 +71,7 @@ class HeaderButton extends StatelessWidget {
       style: IconButton.styleFrom(
         side: BorderSide(
           color: color,
-          width: 2,
+          width: 2.5,
         ),
       ),
       icon: Icon(icon),

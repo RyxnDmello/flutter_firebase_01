@@ -25,6 +25,11 @@ class CollectionsFormPriority extends StatelessWidget {
       "LOW": "./lib/images/collection/priority/low.png",
     };
 
+    Color selectedColor(int index) {
+      if (selectedIndex != index) return Colors.transparent;
+      return Colors.white;
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -34,7 +39,7 @@ class CollectionsFormPriority extends StatelessWidget {
           style: GoogleFonts.abel(
             fontWeight: FontWeight.w600,
             color: Colors.black,
-            letterSpacing: 0.65,
+            letterSpacing: 0.5,
             fontSize: 35,
           ),
         ),
@@ -90,10 +95,8 @@ class CollectionsFormPriority extends StatelessWidget {
                     right: 15,
                     child: Icon(
                       size: 35,
-                      Icons.favorite_border,
-                      color: selectedIndex != index
-                          ? Colors.transparent
-                          : Colors.white,
+                      Icons.image,
+                      color: selectedColor(index),
                     ),
                   ),
                 ],

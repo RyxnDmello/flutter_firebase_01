@@ -21,6 +21,9 @@ class CollectionsFormButton extends StatelessWidget {
           horizontal: 0,
           vertical: 8,
         ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
         shadowColor: Colors.black,
         elevation: 2,
       ),

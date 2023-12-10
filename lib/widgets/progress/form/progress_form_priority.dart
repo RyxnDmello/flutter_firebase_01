@@ -3,27 +3,32 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ProgressFormPriority extends StatelessWidget {
   const ProgressFormPriority({
+    required this.onSavePriority,
     required this.selectedIndex,
-    required this.saveImage,
     required this.title,
     super.key,
   });
 
-  final void Function({
-    required String image,
-    required int index,
-  }) saveImage;
-
   final int selectedIndex;
   final String title;
 
+  final void Function({
+    required int index,
+  }) onSavePriority;
+
   @override
   Widget build(BuildContext context) {
-    final Map<String, String> priority = {
-      "HIGH": "./lib/images/progress/priority/high.png",
-      "MEDIUM": "./lib/images/progress/priority/medium.png",
-      "LOW": "./lib/images/progress/priority/low.png",
+    final Map<String, Color> priority = {
+      "CRITICAL": Colors.black,
+      "HIGH": const Color.fromARGB(255, 200, 0, 0),
+      "MEDIUM": const Color.fromARGB(255, 0, 0, 200),
+      "LOW": const Color.fromARGB(255, 0, 200, 0),
     };
+
+    Color selectedColor(int index) {
+      if (selectedIndex != index) return Colors.transparent;
+      return Colors.white;
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -35,36 +40,29 @@ class ProgressFormPriority extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: Colors.black,
             letterSpacing: 0.5,
-            fontSize: 40,
+            fontSize: 35,
           ),
         ),
         const SizedBox(
           height: 10,
         ),
-        ListView.separated(
+        GridView.builder(
           shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: 1 / 0.65,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            crossAxisCount: 2,
+          ),
           itemCount: priority.length,
           itemBuilder: (context, index) {
             return GestureDetector(
-              onTap: () => saveImage(
-                image: priority.entries.elementAt(index).value,
-                index: index,
-              ),
+              onTap: () => onSavePriority(index: index),
               child: Stack(
-                alignment: Alignment.center,
                 children: [
                   Container(
-                    height: 110,
-                    width: double.infinity,
-                    clipBehavior: Clip.hardEdge,
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                          priority.values.elementAt(index),
-                        ),
-                        fit: BoxFit.cover,
-                      ),
                       boxShadow: const [
                         BoxShadow(
                           color: Colors.black45,
@@ -72,37 +70,30 @@ class ProgressFormPriority extends StatelessWidget {
                           blurRadius: 5,
                         ),
                       ],
-                      color: Colors.black,
+                      color: priority.values.elementAt(index),
                       borderRadius: BorderRadius.circular(5),
                     ),
-                  ),
-                  Text(
-                    priority.keys.elementAt(index),
-                    style: GoogleFonts.abel(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                      letterSpacing: 0.65,
-                      fontSize: 40,
+                    child: Text(
+                      priority.keys.elementAt(index),
+                      style: GoogleFonts.abel(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        letterSpacing: 1,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
                   Positioned(
-                    top: 20,
-                    right: 20,
+                    top: 10,
+                    right: 10,
                     child: Icon(
-                      Icons.favorite_border,
-                      size: 35,
-                      color: selectedIndex != index
-                          ? Colors.transparent
-                          : Colors.white,
+                      Icons.check,
+                      color: selectedColor(index),
+                      size: 30,
                     ),
                   ),
                 ],
               ),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const SizedBox(
-              height: 15,
             );
           },
         ),

@@ -109,7 +109,7 @@ class _CollectionsFormState extends State<CollectionsForm> {
               saveIcon: _saveIcon,
             ),
             const SizedBox(
-              height: 10,
+              height: 15,
             ),
             CollectionsFormPriority(
               selectedIndex: _selectedPriorityIndex,

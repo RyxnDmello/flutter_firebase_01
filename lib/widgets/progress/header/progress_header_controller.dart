@@ -17,16 +17,16 @@ class ProgressHeaderController extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        OutlinedButton(
+        TextButton(
           onPressed: () => openCompletedScreen(),
           style: OutlinedButton.styleFrom(
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(
               horizontal: 25,
-              vertical: 8,
+              vertical: 0,
             ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(40),
+              borderRadius: BorderRadius.circular(5),
             ),
             side: const BorderSide(
               color: Colors.white,

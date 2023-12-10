@@ -27,21 +27,22 @@ class ProgressForm extends StatefulWidget {
 
 class _ProgressFormState extends State<ProgressForm> {
   final _formKey = GlobalKey<FormState>();
-  int _selectedImageIndex = -1;
-  String? _title;
   String? _description;
-  String? _image;
+  int _background = -1;
+  int _priority = -1;
+  String? _title;
 
   Future<void> saveForm() async {
     if (!_formKey.currentState!.validate()) return;
-    if (_image == null) return;
+    if (_background == -1 || _priority == -1) return;
 
     _formKey.currentState!.save();
 
     await accountManager.addProgressTask(
       collectionID: widget.collection.id,
       description: _description!,
-      image: _image!,
+      background: _background,
+      priority: _priority,
       title: _title!,
     );
 
@@ -76,9 +77,12 @@ class _ProgressFormState extends State<ProgressForm> {
     _description = description;
   }
 
-  void _saveImage({required String image, required int index}) {
-    setState(() => _selectedImageIndex = index);
-    _image = image;
+  void _savePriority({required int index}) {
+    setState(() => _priority = index);
+  }
+
+  void _saveBackground({required int index}) {
+    setState(() => _background = index);
   }
 
   void _closeForm() {
@@ -123,15 +127,16 @@ class _ProgressFormState extends State<ProgressForm> {
               height: 15,
             ),
             ProgressFormPriority(
-              selectedIndex: _selectedImageIndex,
               title: "Select Priority",
-              saveImage: _saveImage,
+              selectedIndex: _priority,
+              onSavePriority: _savePriority,
             ),
             const SizedBox(
               height: 25,
             ),
             ProgressFormButton(
               saveForm: saveForm,
+              label: "Create Task",
             ),
           ],
         ),

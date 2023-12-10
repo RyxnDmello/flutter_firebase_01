@@ -13,11 +13,11 @@ class TaskTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: GoogleFonts.abel(
-        fontWeight: FontWeight.w600,
+      style: GoogleFonts.montserrat(
+        fontWeight: FontWeight.w500,
         color: Colors.white,
-        letterSpacing: 1.5,
-        fontSize: 30,
+        letterSpacing: 0,
+        fontSize: 28,
         height: 1,
       ),
     );

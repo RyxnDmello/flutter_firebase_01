@@ -32,6 +32,11 @@ class CollectionsFormIcons extends StatelessWidget {
       Icons.map,
     ];
 
+    Color selectedColor(int index) {
+      if (selectedIndex != index) return Colors.black;
+      return const Color.fromARGB(255, 0, 0, 200);
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -41,9 +46,12 @@ class CollectionsFormIcons extends StatelessWidget {
           style: GoogleFonts.abel(
             fontWeight: FontWeight.w600,
             color: Colors.black,
-            letterSpacing: 0.65,
+            letterSpacing: 0.5,
             fontSize: 35,
           ),
+        ),
+        const SizedBox(
+          height: 15,
         ),
         GridView.builder(
           shrinkWrap: true,
@@ -51,21 +59,25 @@ class CollectionsFormIcons extends StatelessWidget {
           itemCount: icons.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             childAspectRatio: 1 / 1,
+            crossAxisSpacing: 12.5,
+            mainAxisSpacing: 12.5,
             crossAxisCount: 5,
           ),
           itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () => saveIcon(
+            return IconButton.outlined(
+              onPressed: () => saveIcon(
                 icon: icons[index],
                 index: index,
               ),
-              child: Icon(
-                icons[index],
-                color: selectedIndex == index
-                    ? const Color.fromARGB(255, 0, 0, 200)
-                    : Colors.black,
-                size: 40,
+              style: IconButton.styleFrom(
+                side: BorderSide(
+                  color: selectedColor(index),
+                  width: 2.5,
+                ),
               ),
+              icon: Icon(icons[index]),
+              color: selectedColor(index),
+              iconSize: 32.5,
             );
           },
         ),
