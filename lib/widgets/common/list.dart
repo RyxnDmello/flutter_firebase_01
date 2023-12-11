@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/task_model.dart';
 
-import './tasks/task.dart';
+import './list/task.dart';
 
 class TasksList extends StatelessWidget {
   const TasksList({

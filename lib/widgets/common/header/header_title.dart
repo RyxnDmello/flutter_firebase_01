@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CompletedHeaderTitle extends StatelessWidget {
-  const CompletedHeaderTitle({
+class HeaderTitle extends StatelessWidget {
+  const HeaderTitle({
     required this.name,
     required this.icon,
     super.key,
@@ -18,9 +18,9 @@ class CompletedHeaderTitle extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Icon(
+          icon,
           color: Colors.white,
           size: 35,
-          icon,
         ),
         const SizedBox(
           width: 10,
@@ -33,7 +33,7 @@ class CompletedHeaderTitle extends StatelessWidget {
             letterSpacing: 2,
             fontSize: 30,
           ),
-        ),
+        )
       ],
     );
   }

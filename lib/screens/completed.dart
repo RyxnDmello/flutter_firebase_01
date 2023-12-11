@@ -5,9 +5,8 @@ import '../database/account_manager.dart';
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
 
-import '../widgets/completed/completed_header.dart';
-
-import '../widgets/common/tasks_list.dart';
+import '../widgets/common/header.dart';
+import '../widgets/common/list.dart';
 
 class CompletedScreen extends StatefulWidget {
   const CompletedScreen({
@@ -60,25 +59,18 @@ class _CompletedScreenState extends State<CompletedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          onPressed: () => _closeCompletedScreen(),
-          iconSize: 26.5,
-          splashRadius: 25,
-          icon: const Icon(
-            Icons.arrow_back,
-          ),
-        ),
-      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          CompletedHeader(
-            closeCompletedScreen: _closeCompletedScreen,
+          Header(
+            completedLength: widget.completed.length,
+            onOpenScreen: _closeCompletedScreen,
             collection: widget.collection,
-            totalTasks: _completed.length,
+            progressLength: null,
+            isProgress: false,
+            onOpenForm: null,
+            onClear: null,
           ),
           const SizedBox(
             height: 20,

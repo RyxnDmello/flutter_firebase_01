@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class EmptyList extends StatelessWidget {
-  const EmptyList({
+class Empty extends StatelessWidget {
+  const Empty({
     required this.openForm,
     required this.image,
     required this.label,

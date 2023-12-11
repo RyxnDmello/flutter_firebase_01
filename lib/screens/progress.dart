@@ -5,10 +5,10 @@ import '../../database/account_manager.dart';
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
 
-import '../widgets/common/empty_list.dart';
-import '../widgets/common/tasks_list.dart';
+import '../widgets/common/header.dart';
+import '../widgets/common/list.dart';
+import '../widgets/common/empty.dart';
 
-import '../widgets/progress/progress_header.dart';
 import '../widgets/progress/progress_form.dart';
 
 import './completed.dart';
@@ -136,13 +136,14 @@ class _ProgressScreenState extends State<ProgressScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            ProgressHeader(
+            Header(
               collection: widget.collection,
               progressLength: _progress.length,
               completedLength: _completed.length,
               onOpenScreen: _openCompletedScreen,
               onClear: _clearProgressTasks,
               onOpenForm: _openForm,
+              isProgress: true,
             ),
             if (_progress.isEmpty)
               Padding(
@@ -150,7 +151,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   bottom: 25,
                   top: 80,
                 ),
-                child: EmptyList(
+                child: Empty(
                   image: "./lib/images/progress/empty.png",
                   label: "CREATE TASK",
                   openForm: _openForm,

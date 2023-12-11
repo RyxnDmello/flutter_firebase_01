@@ -6,7 +6,7 @@ import '../database/account_manager.dart';
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
 
-import '../widgets/common/empty_list.dart';
+import '../widgets/common/empty.dart';
 
 import '../widgets/collections/collections_header.dart';
 import '../widgets/collections/collections_form.dart';
@@ -106,7 +106,7 @@ class _CollectionScreenState extends State<CollectionsScreen> {
           horizontal: 0,
           vertical: 120,
         ),
-        child: EmptyList(
+        child: Empty(
           image: "./lib/images/collection/empty.png",
           label: "CREATE COLLECTIONS",
           openForm: _openForm,

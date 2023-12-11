@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProgressHeaderDetails extends StatelessWidget {
-  const ProgressHeaderDetails({
+class HeaderDetails extends StatelessWidget {
+  const HeaderDetails({
     required this.percentage,
     required this.active,
     super.key,
