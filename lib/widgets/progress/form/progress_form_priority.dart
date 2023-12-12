@@ -48,6 +48,7 @@ class ProgressFormPriority extends StatelessWidget {
         ),
         GridView.builder(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             childAspectRatio: 1 / 0.65,
             crossAxisSpacing: 10,

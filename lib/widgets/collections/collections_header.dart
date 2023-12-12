@@ -1,57 +1,74 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+import './header/collections_header_navbar.dart';
+import './header/collections_header_title.dart';
+import './header/collections_header_controller.dart';
 
 class CollectionsHeader extends StatelessWidget {
   const CollectionsHeader({
+    required this.onOpenGraph,
+    required this.onOpenForm,
+    required this.background,
+    required this.onRefresh,
+    required this.onBack,
     required this.image,
+    required this.title,
     super.key,
   });
 
+  final Future<void> Function() onRefresh;
+  final void Function()? onOpenGraph;
+  final void Function() onOpenForm;
+  final void Function() onBack;
+  final String background;
   final String image;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15),
-      child: Row(
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(15, 65, 15, 20),
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+            background,
+          ),
+          fit: BoxFit.cover,
+          opacity: 0.65,
+        ),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black54,
+            offset: Offset(0, 5),
+            blurRadius: 10,
+          )
+        ],
+        color: Colors.black,
+      ),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Image.asset(
-            image,
-            fit: BoxFit.cover,
-            width: 120,
+          CollectionsHeaderNavbar(
+            onRefresh: onRefresh,
+            onOpenForm: onOpenForm,
+            onBack: onBack,
           ),
           const SizedBox(
-            width: 15,
+            height: 20,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Explore",
-                style: GoogleFonts.abel(
-                  color: const Color.fromARGB(255, 0, 0, 65),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 50,
-                  height: 1,
-                ),
-              ),
-              const SizedBox(
-                height: 2.5,
-              ),
-              Text(
-                "Collections",
-                style: GoogleFonts.abel(
-                  color: const Color.fromARGB(255, 0, 0, 65),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 50,
-                  height: 1,
-                ),
-              ),
-            ],
+          CollectionsHeaderTitle(
+            image: image,
+            title: title,
           ),
+          SizedBox(
+            height: onOpenGraph == null ? 10 : 20,
+          ),
+          if (onOpenGraph != null)
+            CollectionsHeaderController(
+              onOpenGraph: onOpenGraph!,
+            ),
         ],
       ),
     );

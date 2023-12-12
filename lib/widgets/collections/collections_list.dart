@@ -14,7 +14,6 @@ class CollectionsList extends StatelessWidget {
   });
 
   final List<CollectionModel> collections;
-
   final Future<void> Function() updateCollections;
 
   final Future<void> Function({
@@ -28,6 +27,10 @@ class CollectionsList extends StatelessWidget {
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.only(
+        right: 15,
+        left: 15,
+      ),
       itemCount: collections.length,
       itemBuilder: (context, index) {
         return CollectionsListBlock(

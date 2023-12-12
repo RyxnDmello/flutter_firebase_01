@@ -75,71 +75,68 @@ class _CollectionScreenState extends State<CollectionsScreen> {
     _updateCollections();
   }
 
+  Future<void> _closeCollectionsScreen() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget collections = SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 20,
-      ),
-      child: Column(
+    Widget content = Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        CollectionsHeader(
+          background: "./lib/images/collection/background.png",
+          image: "./lib/images/collection/collection.png",
+          onBack: _closeCollectionsScreen,
+          onRefresh: _updateCollections,
+          title: "Empty Collection",
+          onOpenForm: _openForm,
+          onOpenGraph: null,
+        ),
+        const SizedBox(
+          height: 80,
+        ),
+        Empty(
+          image: "./lib/images/collection/empty.png",
+          label: "CREATE COLLECTION",
+          openForm: _openForm,
+          size: 300,
+        ),
+      ],
+    );
+
+    if (_collections.isNotEmpty) {
+      content = Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const CollectionsHeader(
+          CollectionsHeader(
+            background: "./lib/images/collection/background.png",
             image: "./lib/images/collection/collection.png",
+            onBack: _closeCollectionsScreen,
+            onRefresh: _updateCollections,
+            title: "Your Collections",
+            onOpenForm: _openForm,
+            onOpenGraph: () {},
           ),
           const SizedBox(
-            height: 30,
+            height: 40,
           ),
           CollectionsList(
-            updateCollections: _updateCollections,
             onOpenProgressScreen: _openProgressScreen,
+            updateCollections: _updateCollections,
             collections: _collections,
           ),
         ],
-      ),
-    );
-
-    if (_collections.isEmpty) {
-      collections = SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 0,
-          vertical: 120,
-        ),
-        child: Empty(
-          image: "./lib/images/collection/empty.png",
-          label: "CREATE COLLECTIONS",
-          openForm: _openForm,
-          size: 350,
-        ),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          onPressed: () => FirebaseAuth.instance.signOut(),
-          iconSize: 28,
-          splashRadius: 25,
-          color: Colors.white,
-          icon: const Icon(
-            Icons.close,
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => _openForm(),
-            iconSize: 25,
-            splashRadius: 25,
-            color: Colors.white,
-            icon: const Icon(
-              Icons.create,
-            ),
-          ),
-        ],
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: content,
       ),
-      body: collections,
     );
   }
 }
