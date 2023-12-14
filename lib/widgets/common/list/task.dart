@@ -36,13 +36,9 @@ class Task extends StatelessWidget {
         vertical: 20,
       ),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
-            Color.fromARGB(255, 51, 73, 185),
-            Color.fromARGB(255, 198, 64, 189),
-            Color.fromARGB(255, 63, 174, 211),
-          ],
-          transform: GradientRotation(45),
+        gradient: LinearGradient(
+          colors: taskBackgrounds[task.background],
+          transform: const GradientRotation(45),
         ),
         boxShadow: const [
           BoxShadow(
@@ -57,8 +53,10 @@ class Task extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const TaskPriority(
-            color: Color.fromARGB(255, 255, 0, 0),
+          TaskPriority(
+            color: taskPriorities.values.elementAt(
+              task.priority,
+            ),
           ),
           const SizedBox(
             height: 20,

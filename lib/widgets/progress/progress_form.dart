@@ -7,6 +7,7 @@ import '../../models/collection_model.dart';
 import './form/progress_form_title.dart';
 import './form/progress_form_input.dart';
 import './form/progress_form_priority.dart';
+import './form/progress_form_background.dart';
 import './form/progress_form_button.dart';
 
 class ProgressForm extends StatefulWidget {
@@ -130,6 +131,14 @@ class _ProgressFormState extends State<ProgressForm> {
               title: "Select Priority",
               selectedIndex: _priority,
               onSavePriority: _savePriority,
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            ProgressFormBackground(
+              onSaveBackground: _saveBackground,
+              title: "Select Background",
+              selectedIndex: _background,
             ),
             const SizedBox(
               height: 25,

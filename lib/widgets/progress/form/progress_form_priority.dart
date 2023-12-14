@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../models/task_model.dart';
+
 class ProgressFormPriority extends StatelessWidget {
   const ProgressFormPriority({
     required this.onSavePriority,
@@ -18,13 +20,6 @@ class ProgressFormPriority extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, Color> priority = {
-      "CRITICAL": Colors.black,
-      "HIGH": const Color.fromARGB(255, 200, 0, 0),
-      "MEDIUM": const Color.fromARGB(255, 0, 0, 200),
-      "LOW": const Color.fromARGB(255, 0, 200, 0),
-    };
-
     Color selectedColor(int index) {
       if (selectedIndex != index) return Colors.transparent;
       return Colors.white;
@@ -55,7 +50,7 @@ class ProgressFormPriority extends StatelessWidget {
             mainAxisSpacing: 10,
             crossAxisCount: 2,
           ),
-          itemCount: priority.length,
+          itemCount: taskPriorities.length,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () => onSavePriority(index: index),
@@ -71,11 +66,11 @@ class ProgressFormPriority extends StatelessWidget {
                           blurRadius: 5,
                         ),
                       ],
-                      color: priority.values.elementAt(index),
+                      color: taskPriorities.values.elementAt(index),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Text(
-                      priority.keys.elementAt(index),
+                      taskPriorities.keys.elementAt(index),
                       style: GoogleFonts.abel(
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
