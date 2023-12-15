@@ -36,9 +36,16 @@ class Task extends StatelessWidget {
         vertical: 20,
       ),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: taskBackgrounds[task.background],
-          transform: const GradientRotation(45),
+        image: DecorationImage(
+          image: AssetImage(
+            taskBackgrounds.keys.elementAt(
+              task.background,
+            ),
+          ),
+          opacity: taskBackgrounds.values.elementAt(
+            task.background,
+          ),
+          fit: BoxFit.cover,
         ),
         boxShadow: const [
           BoxShadow(
@@ -48,15 +55,14 @@ class Task extends StatelessWidget {
           )
         ],
         borderRadius: BorderRadius.circular(10),
+        color: Colors.black,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TaskPriority(
-            color: taskPriorities.values.elementAt(
-              task.priority,
-            ),
+            color: taskPriorities[task.priority],
           ),
           const SizedBox(
             height: 20,

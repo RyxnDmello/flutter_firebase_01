@@ -38,3 +38,4 @@ flutter:
 
     - ./lib/images/progress/
     - ./lib/images/progress/priority/
+    - ./lib/images/progress/backgrounds/

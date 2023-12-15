@@ -5,14 +5,12 @@ class ProgressFormInput extends StatelessWidget {
   const ProgressFormInput({
     required this.validateInput,
     required this.saveInput,
-    required this.maxLines,
     required this.label,
     super.key,
   });
 
   final String? Function(String input) validateInput;
   final void Function(String input) saveInput;
-  final int? maxLines;
   final String label;
 
   @override
@@ -20,7 +18,7 @@ class ProgressFormInput extends StatelessWidget {
     return TextFormField(
       validator: (value) => validateInput(value!),
       onSaved: (newValue) => saveInput(newValue!),
-      maxLines: maxLines,
+      maxLines: null,
       style: GoogleFonts.poppins(
         fontWeight: FontWeight.w500,
         color: Colors.black,

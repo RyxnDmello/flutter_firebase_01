@@ -19,12 +19,11 @@ class CollectionsFormButton extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 0, 0, 65),
         padding: const EdgeInsets.symmetric(
           horizontal: 0,
-          vertical: 8,
+          vertical: 10,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(40),
         ),
-        shadowColor: Colors.black,
         elevation: 2,
       ),
       icon: const Icon(

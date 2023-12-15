@@ -113,7 +113,6 @@ class _ProgressFormState extends State<ProgressForm> {
               label: "Name",
               validateInput: _validateTitle,
               saveInput: _saveTitle,
-              maxLines: 1,
             ),
             const SizedBox(
               height: 15,
@@ -122,7 +121,6 @@ class _ProgressFormState extends State<ProgressForm> {
               label: "Description",
               validateInput: _validateDescription,
               saveInput: _saveDescription,
-              maxLines: null,
             ),
             const SizedBox(
               height: 15,
@@ -141,7 +139,7 @@ class _ProgressFormState extends State<ProgressForm> {
               selectedIndex: _background,
             ),
             const SizedBox(
-              height: 25,
+              height: 30,
             ),
             ProgressFormButton(
               saveForm: saveForm,

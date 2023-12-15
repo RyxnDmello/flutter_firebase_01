@@ -45,10 +45,9 @@ class ProgressFormPriority extends StatelessWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 1 / 0.65,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            crossAxisCount: 2,
+            childAspectRatio: 1 / 1,
+            crossAxisSpacing: 15,
+            crossAxisCount: 5,
           ),
           itemCount: taskPriorities.length,
           itemBuilder: (context, index) {
@@ -66,22 +65,9 @@ class ProgressFormPriority extends StatelessWidget {
                           blurRadius: 5,
                         ),
                       ],
-                      color: taskPriorities.values.elementAt(index),
-                      borderRadius: BorderRadius.circular(5),
+                      color: taskPriorities[index],
+                      shape: BoxShape.circle,
                     ),
-                    child: Text(
-                      taskPriorities.keys.elementAt(index),
-                      style: GoogleFonts.abel(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        letterSpacing: 1,
-                        fontSize: 25,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 10,
-                    right: 10,
                     child: Icon(
                       Icons.check,
                       color: selectedColor(index),

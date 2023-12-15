@@ -39,12 +39,12 @@ class ProgressFormBackground extends StatelessWidget {
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: taskBackgrounds.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
-            crossAxisCount: 4,
+            crossAxisCount: 2,
           ),
+          itemCount: taskBackgrounds.length,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () => onSaveBackground(
@@ -53,6 +53,12 @@ class ProgressFormBackground extends StatelessWidget {
               child: Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                      taskBackgrounds.keys.elementAt(index),
+                    ),
+                    fit: BoxFit.cover,
+                  ),
                   boxShadow: const [
                     BoxShadow(
                       color: Colors.black45,
@@ -60,18 +66,15 @@ class ProgressFormBackground extends StatelessWidget {
                       blurRadius: 5,
                     ),
                   ],
-                  gradient: LinearGradient(
-                    transform: const GradientRotation(45),
-                    colors: taskBackgrounds[index],
-                  ),
                   borderRadius: BorderRadius.circular(5),
+                  color: Colors.black,
                 ),
                 child: Icon(
                   Icons.check,
                   color: selectedIndex == index
                       ? Colors.white
                       : Colors.transparent,
-                  size: 35,
+                  size: 50,
                 ),
               ),
             );
