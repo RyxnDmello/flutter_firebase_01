@@ -282,6 +282,26 @@ class _AccountManager {
 
     return completedTasks;
   }
+
+  Future<Map<CollectionModel, int>> getCollectionsAndProgressCount() async {
+    final collections = await getCollections();
+
+    final List<List<TaskModel>> tasks = [];
+
+    for (var collection in collections) {
+      tasks.add(
+        await getProgressTasks(id: collection.id),
+      );
+    }
+
+    Map<CollectionModel, int> ans = {};
+
+    for (var collection in collections.asMap().entries) {
+      ans[collection.value] = tasks[collection.key].length;
+    }
+
+    return ans;
+  }
 }
 
 final accountManager = _AccountManager();

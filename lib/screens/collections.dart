@@ -13,6 +13,7 @@ import '../widgets/collections/collections_form.dart';
 import '../widgets/collections/collections_list.dart';
 
 import '../screens/progress.dart';
+import '../screens/graphs.dart';
 
 class CollectionsScreen extends StatefulWidget {
   const CollectionsScreen({
@@ -75,6 +76,26 @@ class _CollectionScreenState extends State<CollectionsScreen> {
     _updateCollections();
   }
 
+  Future<void> _openGraphsScreen() async {
+    final collections = await accountManager.getCollectionsAndProgressCount();
+
+    _graphsScreen(
+      collections: collections,
+    );
+  }
+
+  Future<void> _graphsScreen({
+    required Map<CollectionModel, int> collections,
+  }) async {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => GraphsScreen(
+          collections: collections,
+        ),
+      ),
+    );
+  }
+
   Future<void> _closeCollectionsScreen() async {
     await FirebaseAuth.instance.signOut();
   }
@@ -114,11 +135,11 @@ class _CollectionScreenState extends State<CollectionsScreen> {
           CollectionsHeader(
             background: "./lib/images/collection/background.png",
             image: "./lib/images/collection/collection.png",
-            onBack: _closeCollectionsScreen,
-            onRefresh: _updateCollections,
             title: "Your Collections",
+            onBack: _closeCollectionsScreen,
+            onOpenGraph: _openGraphsScreen,
+            onRefresh: _updateCollections,
             onOpenForm: _openForm,
-            onOpenGraph: () {},
           ),
           const SizedBox(
             height: 40,
