@@ -1,24 +1,25 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uuid/uuid.dart';
-import 'package:intl/intl.dart';
-
-import '../models/collection_model.dart';
-import '../models/task_model.dart';
-
-final _date = DateFormat.yMMMMd('en_US').format(DateTime.now());
-const _uuid = Uuid();
 
 class _AccountManager {
   _AccountManager()
       : _firestore = FirebaseFirestore.instance,
         _firebaseAuth = FirebaseAuth.instance,
-        _createdAccount = null;
+        _userCredential = null,
+        _account = null;
 
-  final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestore;
-  UserCredential? _createdAccount;
+  final FirebaseAuth _firebaseAuth;
+  UserCredential? _userCredential;
+  DocumentReference? _account;
+
+  UserCredential? get userCredential {
+    return _userCredential!;
+  }
+
+  DocumentReference? get account {
+    return _account;
+  }
 
   Future<bool> createAccount({
     required String username,
@@ -26,15 +27,16 @@ class _AccountManager {
     required String password,
   }) async {
     try {
-      _createdAccount = await _firebaseAuth.createUserWithEmailAndPassword(
+      _userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      await _firestore
-          .collection("accounts")
-          .doc(_createdAccount!.user!.uid)
-          .set(
+      _account = _firestore.collection("accounts").doc(
+            _userCredential!.user!.uid,
+          );
+
+      await _account!.set(
         {
           "email": email,
           "username": username,
@@ -52,255 +54,19 @@ class _AccountManager {
     required String password,
   }) async {
     try {
-      _createdAccount = await _firebaseAuth.signInWithEmailAndPassword(
+      _userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      _account = _firestore.collection("accounts").doc(
+            _userCredential!.user!.uid,
+          );
     } on FirebaseAuthException {
       return false;
     }
 
     return true;
-  }
-
-  Future<void> addCollection({
-    required String name,
-    required String image,
-    required IconData icon,
-  }) async {
-    await _firestore
-        .collection("accounts")
-        .doc(_createdAccount!.user!.uid)
-        .collection("collections")
-        .doc(_uuid.v4())
-        .set(
-      {
-        "name": name,
-        "date": _date,
-        "image": image,
-        "icon": icon.codePoint,
-      },
-    );
-  }
-
-  Future<void> deleteCollection({required String collectionID}) async {
-    await _firestore
-        .collection("accounts")
-        .doc(_createdAccount!.user!.uid)
-        .collection("collections")
-        .doc(collectionID)
-        .delete();
-  }
-
-  Future<List<CollectionModel>> getCollections() async {
-    final databaseCollections = await _firestore
-        .collection("accounts")
-        .doc(_createdAccount!.user!.uid)
-        .collection("collections")
-        .get();
-
-    if (databaseCollections.docs.isEmpty) return [];
-
-    final List<CollectionModel> collections = [];
-
-    for (var i = 0; i < databaseCollections.docs.length; i++) {
-      final databaseCollection = databaseCollections.docs[i];
-
-      collections.add(
-        CollectionModel(
-          id: databaseCollection.id,
-          name: databaseCollection.get("name"),
-          date: databaseCollection.get("date"),
-          icon: IconData(
-            databaseCollection.get("icon"),
-            fontFamily: "MaterialIcons",
-          ),
-          image: databaseCollection.get("image"),
-        ),
-      );
-    }
-
-    return collections;
-  }
-
-  Future<void> addProgressTask({
-    required String collectionID,
-    required String description,
-    required int background,
-    required int priority,
-    required String title,
-  }) async {
-    await _firestore
-        .collection("accounts")
-        .doc(_createdAccount!.user!.uid)
-        .collection("collections")
-        .doc(collectionID)
-        .collection("progress")
-        .doc(_uuid.v4())
-        .set(
-      {
-        "title": title,
-        "description": description,
-        "background": background,
-        "priority": priority,
-        "date": _date,
-      },
-    );
-  }
-
-  Future<void> deleteProgressTask({
-    required String collectionID,
-    required String taskID,
-  }) async {
-    await _firestore
-        .collection("accounts")
-        .doc(_createdAccount!.user!.uid)
-        .collection("collections")
-        .doc(collectionID)
-        .collection("progress")
-        .doc(taskID)
-        .delete();
-  }
-
-  Future<void> clearProgressTasks({
-    required String collectionID,
-  }) async {
-    final docs = await _firestore
-        .collection("accounts")
-        .doc(_createdAccount!.user!.uid)
-        .collection("collections")
-        .doc(collectionID)
-        .collection("progress")
-        .get();
-
-    for (var element in docs.docs) {
-      await element.reference.delete();
-    }
-  }
-
-  Future<List<TaskModel>> getProgressTasks({
-    required String id,
-  }) async {
-    final databaseTasks = await _firestore
-        .collection("accounts")
-        .doc(_createdAccount!.user!.uid)
-        .collection("collections")
-        .doc(id)
-        .collection("progress")
-        .get();
-
-    if (databaseTasks.docs.isEmpty) return [];
-
-    final List<TaskModel> progressTasks = [];
-
-    for (var i = 0; i < databaseTasks.docs.length; i++) {
-      final databaseTask = databaseTasks.docs[i];
-
-      progressTasks.add(
-        TaskModel(
-          id: databaseTask.id,
-          title: databaseTask.data()["title"],
-          description: databaseTask.data()["description"],
-          background: databaseTask.data()["background"],
-          priority: databaseTask.data()["priority"],
-          date: databaseTask.data()["date"],
-        ),
-      );
-    }
-
-    return progressTasks;
-  }
-
-  Future<void> addCompletedTask({
-    required String collectionID,
-    required String description,
-    required int background,
-    required int priority,
-    required String title,
-  }) async {
-    await _firestore
-        .collection("accounts")
-        .doc(_createdAccount!.user!.uid)
-        .collection("collections")
-        .doc(collectionID)
-        .collection("completed")
-        .doc(_uuid.v4())
-        .set(
-      {
-        "title": title,
-        "description": description,
-        "background": background,
-        "priority": priority,
-        "date": _date,
-      },
-    );
-  }
-
-  Future<void> deleteCompletedTask({
-    required String collectionID,
-    required String taskID,
-  }) async {
-    await _firestore
-        .collection("accounts")
-        .doc(_createdAccount!.user!.uid)
-        .collection("collections")
-        .doc(collectionID)
-        .collection("completed")
-        .doc(taskID)
-        .delete();
-  }
-
-  Future<List<TaskModel>> getCompletedTasks({
-    required String id,
-  }) async {
-    final databaseTasks = await _firestore
-        .collection("accounts")
-        .doc(_createdAccount!.user!.uid)
-        .collection("collections")
-        .doc(id)
-        .collection("completed")
-        .get();
-
-    if (databaseTasks.docs.isEmpty) return [];
-
-    final List<TaskModel> completedTasks = [];
-
-    for (var i = 0; i < databaseTasks.docs.length; i++) {
-      final databaseTask = databaseTasks.docs[i];
-
-      completedTasks.add(
-        TaskModel(
-          id: databaseTask.id,
-          title: databaseTask.data()["title"],
-          description: databaseTask.data()["description"],
-          background: databaseTask.data()["background"],
-          priority: databaseTask.data()["priority"],
-          date: databaseTask.data()["date"],
-        ),
-      );
-    }
-
-    return completedTasks;
-  }
-
-  Future<Map<CollectionModel, int>> getCollectionsAndProgressCount() async {
-    final collections = await getCollections();
-
-    final List<List<TaskModel>> tasks = [];
-
-    for (var collection in collections) {
-      tasks.add(
-        await getProgressTasks(id: collection.id),
-      );
-    }
-
-    Map<CollectionModel, int> ans = {};
-
-    for (var collection in collections.asMap().entries) {
-      ans[collection.value] = tasks[collection.key].length;
-    }
-
-    return ans;
   }
 }
 

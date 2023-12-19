@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../database/account_manager.dart';
+import '../../../database/collection_manager.dart';
+import '../../../database/progress_manager.dart';
+import '../../../database/completed_manager.dart';
 
 import '../../../models/collection_model.dart';
 import '../../../models/task_model.dart';
@@ -29,12 +31,12 @@ class CollectionsListBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future<void> openScreen() async {
-      final progress = await accountManager.getProgressTasks(
-        id: collection.id,
+      final progress = await progressManager.tasks(
+        collectionID: collection.id,
       );
 
-      final completed = await accountManager.getCompletedTasks(
-        id: collection.id,
+      final completed = await completedManager.tasks(
+        collectionID: collection.id,
       );
 
       openProgressScreen(
@@ -45,7 +47,7 @@ class CollectionsListBlock extends StatelessWidget {
     }
 
     Future<void> deleteCollection() async {
-      await accountManager.deleteCollection(
+      await collectionManager.deleteCollection(
         collectionID: collection.id,
       );
 

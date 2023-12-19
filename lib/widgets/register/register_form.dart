@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../database/account_manager.dart';
+import '../../database/collection_manager.dart';
 
 import '../../models/collection_model.dart';
 
@@ -59,7 +60,7 @@ class _RegisterFormState extends State<RegisterForm> {
       }
     }
 
-    final collections = await accountManager.getCollections();
+    final collections = await collectionManager.collections;
 
     _openCollectionsScreen(
       collections: collections,

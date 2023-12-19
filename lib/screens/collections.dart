@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../database/account_manager.dart';
+import '../database/collection_manager.dart';
+import '../database/graphs_manager.dart';
 
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
@@ -12,8 +13,8 @@ import '../widgets/collections/collections_header.dart';
 import '../widgets/collections/collections_form.dart';
 import '../widgets/collections/collections_list.dart';
 
-import '../screens/progress.dart';
-import '../screens/graphs.dart';
+import './progress.dart';
+import './graphs.dart';
 
 class CollectionsScreen extends StatefulWidget {
   const CollectionsScreen({
@@ -33,7 +34,7 @@ class _CollectionScreenState extends State<CollectionsScreen> {
   List<CollectionModel> _collections = [];
 
   Future<void> _updateCollections() async {
-    final collections = await accountManager.getCollections();
+    final collections = await collectionManager.collections;
     setState(() => _collections = collections);
   }
 
@@ -77,20 +78,20 @@ class _CollectionScreenState extends State<CollectionsScreen> {
   }
 
   Future<void> _openGraphsScreen() async {
-    final collections = await accountManager.getCollectionsAndProgressCount();
+    final collectionGraphData = await graphsManager.collectionGraphData;
 
     _graphsScreen(
-      collections: collections,
+      collectionGraphData: collectionGraphData,
     );
   }
 
   Future<void> _graphsScreen({
-    required Map<CollectionModel, int> collections,
+    required Map<CollectionModel, int> collectionGraphData,
   }) async {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GraphsScreen(
-          collections: collections,
+          collections: collectionGraphData,
         ),
       ),
     );

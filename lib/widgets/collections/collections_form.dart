@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../database/account_manager.dart';
+import '../../database/collection_manager.dart';
 
 import './form/collections_form_title.dart';
 import './form/collections_form_input.dart';
@@ -36,7 +36,7 @@ class _CollectionsFormState extends State<CollectionsForm> {
 
     _formKey.currentState!.save();
 
-    await accountManager.addCollection(
+    await collectionManager.createCollection(
       icon: _icon!,
       image: _image!,
       name: _name!,

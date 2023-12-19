@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../database/account_manager.dart';
+import '../database/progress_manager.dart';
+import '../database/completed_manager.dart';
 
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
@@ -43,12 +44,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
   }
 
   Future<void> _updateTasks() async {
-    final progress = await accountManager.getProgressTasks(
-      id: widget.collection.id,
+    final progress = await progressManager.tasks(
+      collectionID: widget.collection.id,
     );
 
-    final completed = await accountManager.getCompletedTasks(
-      id: widget.collection.id,
+    final completed = await completedManager.tasks(
+      collectionID: widget.collection.id,
     );
 
     setState(() {
@@ -63,7 +64,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
     required int background,
     required int priority,
   }) async {
-    await accountManager.addCompletedTask(
+    await completedManager.addTask(
       collectionID: widget.collection.id,
       description: description,
       background: background,
@@ -77,7 +78,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
   Future<void> _deleteProgressTask({
     required String taskID,
   }) async {
-    await accountManager.deleteProgressTask(
+    await progressManager.deleteTask(
       collectionID: widget.collection.id,
       taskID: taskID,
     );
@@ -86,7 +87,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
   }
 
   Future<void> _clearProgressTasks() async {
-    await accountManager.clearProgressTasks(
+    await progressManager.clearTasks(
       collectionID: widget.collection.id,
     );
 

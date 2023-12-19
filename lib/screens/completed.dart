@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../database/account_manager.dart';
+import '../database/completed_manager.dart';
 
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
@@ -34,8 +34,8 @@ class _CompletedScreenState extends State<CompletedScreen> {
   }
 
   Future<void> _updateCompletedTasks() async {
-    final completed = await accountManager.getCompletedTasks(
-      id: widget.collection.id,
+    final completed = await completedManager.tasks(
+      collectionID: widget.collection.id,
     );
 
     setState(() => _completed = completed);
@@ -44,7 +44,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
   Future<void> _deleteCompletedTask({
     required String taskID,
   }) async {
-    await accountManager.deleteCompletedTask(
+    await completedManager.deleteTask(
       collectionID: widget.collection.id,
       taskID: taskID,
     );

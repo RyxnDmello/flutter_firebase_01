@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../database/account_manager.dart';
+import '../../database/progress_manager.dart';
 
 import '../../models/collection_model.dart';
 
@@ -39,7 +39,7 @@ class _ProgressFormState extends State<ProgressForm> {
 
     _formKey.currentState!.save();
 
-    await accountManager.addProgressTask(
+    await progressManager.addTask(
       collectionID: widget.collection.id,
       description: _description!,
       background: _background,
