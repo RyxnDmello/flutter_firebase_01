@@ -18,13 +18,13 @@ class TaskModel {
   final String date;
 }
 
-const List<Color> taskPriorities = [
-  Color.fromARGB(255, 0, 0, 0),
-  Color.fromARGB(255, 200, 0, 0),
-  Color.fromARGB(255, 150, 0, 200),
-  Color.fromARGB(255, 0, 0, 200),
-  Color.fromARGB(255, 0, 200, 0),
-];
+const Map<String, Color> taskPriorities = {
+  "CRITICAL": Color.fromARGB(255, 0, 0, 0),
+  "HIGH": Color.fromARGB(255, 200, 0, 0),
+  "MEDIUM": Color.fromARGB(255, 0, 0, 200),
+  "LOW": Color.fromARGB(255, 0, 180, 0),
+  "SIDE": Color.fromARGB(255, 150, 0, 200),
+};
 
 const Map<String, double> taskBackgrounds = {
   "./lib/images/progress/backgrounds/1.png": 0.65,

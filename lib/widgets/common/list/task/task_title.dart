@@ -14,9 +14,9 @@ class TaskTitle extends StatelessWidget {
     return Text(
       title,
       style: GoogleFonts.montserrat(
-        fontWeight: FontWeight.w500,
-        color: Colors.white,
-        letterSpacing: 0,
+        fontWeight: FontWeight.w600,
+        color: Colors.black,
+        letterSpacing: 0.5,
         fontSize: 28,
         height: 1,
       ),

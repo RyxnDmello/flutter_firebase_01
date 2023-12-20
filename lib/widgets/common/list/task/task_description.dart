@@ -15,9 +15,9 @@ class TaskDescription extends StatelessWidget {
       description,
       softWrap: true,
       style: GoogleFonts.montserrat(
-        fontWeight: FontWeight.w400,
-        color: Colors.white,
-        letterSpacing: 0.25,
+        color: const Color.fromARGB(255, 25, 25, 25),
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0,
         fontSize: 20,
         height: 1,
       ),

@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+import './header/task_header_button.dart';
+import './header/task_header_priority.dart';
+import './header/task_header_duration.dart';
 
 class TaskHeader extends StatelessWidget {
   const TaskHeader({
-    required this.onAddTask,
     required this.onDeleteTask,
-    required this.date,
+    required this.onAddTask,
+    required this.priorityColor,
+    required this.priorityType,
+    required this.duration,
     super.key,
   });
 
   final Future<void> Function()? onDeleteTask;
   final Future<void> Function()? onAddTask;
-  final String date;
+  final Color priorityColor;
+  final String priorityType;
+  final String duration;
 
   @override
   Widget build(BuildContext context) {
@@ -24,59 +31,28 @@ class TaskHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (onAddTask != null)
-              HeaderButton(
-                onTap: () async => await onAddTask!(),
-                color: Colors.white,
+              TaskHeaderButton(
+                onTap: onAddTask,
                 icon: Icons.check,
               ),
             if (onDeleteTask != null)
-              HeaderButton(
-                onTap: () async => await onDeleteTask!(),
-                color: Colors.white,
+              TaskHeaderButton(
+                onTap: onDeleteTask,
                 icon: Icons.close,
               ),
+            const SizedBox(
+              width: 10,
+            ),
+            TaskHeaderPriority(
+              priorityColor: priorityColor,
+              priorityType: priorityType,
+            ),
           ],
         ),
-        Text(
-          date,
-          textAlign: TextAlign.right,
-          style: GoogleFonts.montserrat(
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-            letterSpacing: 0.25,
-            fontSize: 18,
-          ),
+        TaskHeaderDuration(
+          duration: duration,
         ),
       ],
-    );
-  }
-}
-
-class HeaderButton extends StatelessWidget {
-  const HeaderButton({
-    required this.onTap,
-    required this.color,
-    required this.icon,
-    super.key,
-  });
-
-  final void Function() onTap;
-  final IconData icon;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton.outlined(
-      onPressed: onTap,
-      style: IconButton.styleFrom(
-        side: BorderSide(
-          color: color,
-          width: 2.5,
-        ),
-      ),
-      icon: Icon(icon),
-      iconSize: 25,
-      color: color,
     );
   }
 }

@@ -3,6 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../models/task_model.dart';
 
+import './priority/progress_form_priority_type.dart';
+import './priority/progress_form_priority_duration.dart';
+
 class ProgressFormPriority extends StatelessWidget {
   const ProgressFormPriority({
     required this.onSavePriority,
@@ -20,11 +23,6 @@ class ProgressFormPriority extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color selectedColor(int index) {
-      if (selectedIndex != index) return Colors.transparent;
-      return Colors.white;
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -41,41 +39,50 @@ class ProgressFormPriority extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        GridView.builder(
+        ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 1 / 1,
-            crossAxisSpacing: 15,
-            crossAxisCount: 5,
-          ),
           itemCount: taskPriorities.length,
           itemBuilder: (context, index) {
             return GestureDetector(
-              onTap: () => onSavePriority(index: index),
-              child: Stack(
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black45,
-                          offset: Offset(0, 6.5),
-                          blurRadius: 5,
-                        ),
-                      ],
-                      color: taskPriorities[index],
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.check,
-                      color: selectedColor(index),
-                      size: 30,
-                    ),
-                  ),
-                ],
+              onTap: () => onSavePriority(
+                index: index,
               ),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: taskPriorities.values.elementAt(index),
+                  borderRadius: BorderRadius.circular(2.5),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black45,
+                      offset: Offset(0, 5),
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ProgressFormPriorityType(
+                      isSelected: selectedIndex == index ? true : false,
+                      type: taskPriorities.keys.elementAt(index),
+                    ),
+                    const ProgressFormPriorityDuration(
+                      duration: "10d",
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+          separatorBuilder: (context, index) {
+            return const SizedBox(
+              height: 10,
             );
           },
         ),

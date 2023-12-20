@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../models/task_model.dart';
 
 import './task/task_header.dart';
-import './task/task_priority.dart';
 import './task/task_title.dart';
 import './task/task_description.dart';
 
@@ -36,49 +35,33 @@ class Task extends StatelessWidget {
         vertical: 20,
       ),
       decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-            taskBackgrounds.keys.elementAt(
-              task.background,
-            ),
-          ),
-          opacity: taskBackgrounds.values.elementAt(
-            task.background,
-          ),
-          fit: BoxFit.cover,
-        ),
         boxShadow: const [
           BoxShadow(
-            color: Colors.black,
+            color: Colors.black45,
             offset: Offset(0, 5),
+            spreadRadius: 2,
             blurRadius: 10,
-          )
+          ),
         ],
         borderRadius: BorderRadius.circular(10),
-        color: Colors.black,
+        color: Colors.white,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TaskPriority(
-            color: taskPriorities[task.priority],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
           TaskHeader(
             onAddTask: onAddTask != null
                 ? () async {
+                    await onDeleteTask!(
+                      taskID: task.id,
+                    );
+
                     await onAddTask!(
                       title: task.title,
                       description: task.description,
-                      background: task.background,
                       priority: task.priority,
-                    );
-
-                    await onDeleteTask!(
-                      taskID: task.id,
+                      background: task.background,
                     );
                   }
                 : null,
@@ -89,10 +72,16 @@ class Task extends StatelessWidget {
                     );
                   }
                 : null,
-            date: task.date,
+            priorityColor: taskPriorities.values.elementAt(
+              task.priority,
+            ),
+            priorityType: taskPriorities.keys.elementAt(
+              task.priority,
+            ),
+            duration: "10d",
           ),
           const SizedBox(
-            height: 20,
+            height: 15,
           ),
           TaskTitle(
             title: task.title,
