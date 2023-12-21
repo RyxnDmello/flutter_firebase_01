@@ -17,8 +17,8 @@ class Task extends StatelessWidget {
   final Future<void> Function({
     required String title,
     required String description,
-    required int background,
     required int priority,
+    required String date,
   })? onAddTask;
 
   final Future<void> Function({
@@ -61,7 +61,7 @@ class Task extends StatelessWidget {
                       title: task.title,
                       description: task.description,
                       priority: task.priority,
-                      background: task.background,
+                      date: task.date,
                     );
                   }
                 : null,
@@ -72,13 +72,13 @@ class Task extends StatelessWidget {
                     );
                   }
                 : null,
-            priorityColor: taskPriorities.values.elementAt(
+            priorityColor: priorities.values.elementAt(
               task.priority,
             ),
-            priorityType: taskPriorities.keys.elementAt(
+            priorityType: priorities.keys.elementAt(
               task.priority,
             ),
-            duration: "10d",
+            days: "10d",
           ),
           const SizedBox(
             height: 15,

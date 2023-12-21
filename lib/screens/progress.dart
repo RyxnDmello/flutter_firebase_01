@@ -61,15 +61,15 @@ class _ProgressScreenState extends State<ProgressScreen> {
   Future<void> _addCompletedTask({
     required String title,
     required String description,
-    required int background,
     required int priority,
+    required String date,
   }) async {
     await completedManager.addTask(
       collectionID: widget.collection.id,
       description: description,
-      background: background,
       priority: priority,
       title: title,
+      date: date,
     );
 
     await _updateTasks();

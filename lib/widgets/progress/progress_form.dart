@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../database/progress_manager.dart';
 
@@ -7,7 +8,7 @@ import '../../models/collection_model.dart';
 import './form/progress_form_title.dart';
 import './form/progress_form_input.dart';
 import './form/progress_form_priority.dart';
-import 'form/progress_form_duration.dart';
+import './form/progress_form_date.dart';
 import './form/progress_form_button.dart';
 
 class ProgressForm extends StatefulWidget {
@@ -28,23 +29,24 @@ class ProgressForm extends StatefulWidget {
 
 class _ProgressFormState extends State<ProgressForm> {
   final _formKey = GlobalKey<FormState>();
+  int _selectedDurationIndex = -1;
   String? _description;
-  int _background = -1;
-  int _priority = -1;
   String? _title;
+  int? _priority;
+  String? _date;
 
   Future<void> saveForm() async {
     if (!_formKey.currentState!.validate()) return;
-    if (_background == -1 || _priority == -1) return;
+    if (_priority == null || _date == null) return;
 
     _formKey.currentState!.save();
 
     await progressManager.addTask(
       collectionID: widget.collection.id,
       description: _description!,
-      background: _background,
-      priority: _priority,
+      priority: _priority!,
       title: _title!,
+      date: _date!,
     );
 
     await widget.updateTasks();
@@ -82,8 +84,33 @@ class _ProgressFormState extends State<ProgressForm> {
     setState(() => _priority = index);
   }
 
-  void _saveBackground({required int index}) {
-    setState(() => _background = index);
+  Future<void> _saveDate() async {
+    final selectedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(
+        DateTime.now().year + 10,
+      ),
+    );
+
+    if (selectedDate == null) return;
+
+    setState(() {
+      _date = DateFormat("dd MMM, yyyy").format(
+        selectedDate,
+      );
+    });
+
+    _selectedDurationIndex = -1;
+  }
+
+  void _saveDuration({
+    required int days,
+    required int index,
+  }) {
+    setState(() => _selectedDurationIndex = index);
+    _date = null;
   }
 
   void _closeForm() {
@@ -127,23 +154,25 @@ class _ProgressFormState extends State<ProgressForm> {
             ),
             ProgressFormPriority(
               title: "Select Priority",
-              selectedIndex: _priority,
               onSavePriority: _savePriority,
+              selected: _priority ?? -1,
             ),
             const SizedBox(
               height: 25,
             ),
-            ProgressFormDuration(
-              onSaveBackground: _saveBackground,
+            ProgressFormDate(
               title: "Select Duration",
-              selectedIndex: _background,
+              onSelectDuration: _saveDuration,
+              selected: _selectedDurationIndex,
+              onSaveDate: _saveDate,
+              savedDate: _date,
             ),
             const SizedBox(
               height: 30,
             ),
             ProgressFormButton(
-              saveForm: saveForm,
               label: "Create Task",
+              saveForm: saveForm,
             ),
           ],
         ),

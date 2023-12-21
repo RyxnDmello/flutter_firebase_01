@@ -9,17 +9,17 @@ import './priority/progress_form_priority_duration.dart';
 class ProgressFormPriority extends StatelessWidget {
   const ProgressFormPriority({
     required this.onSavePriority,
-    required this.selectedIndex,
+    required this.selected,
     required this.title,
     super.key,
   });
 
-  final int selectedIndex;
-  final String title;
-
   final void Function({
     required int index,
   }) onSavePriority;
+
+  final int selected;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class ProgressFormPriority extends StatelessWidget {
         ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: taskPriorities.length,
+          itemCount: priorities.length,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () => onSavePriority(
@@ -54,13 +54,13 @@ class ProgressFormPriority extends StatelessWidget {
                   vertical: 10,
                 ),
                 decoration: BoxDecoration(
-                  color: taskPriorities.values.elementAt(index),
+                  color: priorities.values.elementAt(index),
                   borderRadius: BorderRadius.circular(2.5),
                   boxShadow: const [
                     BoxShadow(
                       color: Colors.black45,
                       offset: Offset(0, 5),
-                      blurRadius: 10,
+                      blurRadius: 5,
                     ),
                   ],
                 ),
@@ -69,8 +69,8 @@ class ProgressFormPriority extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ProgressFormPriorityType(
-                      isSelected: selectedIndex == index ? true : false,
-                      type: taskPriorities.keys.elementAt(index),
+                      type: priorities.keys.elementAt(index),
+                      isSelected: selected == index,
                     ),
                     const ProgressFormPriorityDuration(
                       duration: "10d",

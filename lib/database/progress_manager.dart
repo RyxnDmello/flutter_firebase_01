@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 import './account_manager.dart';
 
 import '../models/task_model.dart';
 
-final _date = DateFormat.yMMMMd('en_US').format(DateTime.now());
 const _uuid = Uuid();
 
 class _ProgressManager {
@@ -17,9 +15,9 @@ class _ProgressManager {
   Future<void> addTask({
     required String collectionID,
     required String description,
-    required int background,
-    required int priority,
     required String title,
+    required int priority,
+    required String date,
   }) async {
     _account = accountManager.account;
 
@@ -33,8 +31,7 @@ class _ProgressManager {
         "title": title,
         "description": description,
         "priority": priority,
-        "background": background,
-        "date": _date,
+        "date": date,
       },
     );
   }
@@ -88,7 +85,6 @@ class _ProgressManager {
         title: task.data()["title"],
         description: task.data()["description"],
         priority: task.data()["priority"],
-        background: task.data()["background"],
         date: task.data()["date"],
       );
     }).toList();
