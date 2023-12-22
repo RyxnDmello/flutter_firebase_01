@@ -16,12 +16,12 @@ class ProgressFormTitle extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Icon(
-          Icons.task_alt_rounded,
+          Icons.create_outlined,
           color: Colors.black,
           size: 45,
         ),
         const SizedBox(
-          width: 10,
+          width: 8,
         ),
         Text(
           title,

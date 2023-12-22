@@ -5,6 +5,8 @@ import '../../database/progress_manager.dart';
 
 import '../../models/collection_model.dart';
 
+import '../common/calendar.dart';
+
 import './form/progress_form_title.dart';
 import './form/progress_form_input.dart';
 import './form/progress_form_priority.dart';
@@ -29,24 +31,25 @@ class ProgressForm extends StatefulWidget {
 
 class _ProgressFormState extends State<ProgressForm> {
   final _formKey = GlobalKey<FormState>();
-  int _selectedDurationIndex = -1;
+  int _selectedOption = -1;
   String? _description;
+  String? _duration;
   String? _title;
   int? _priority;
   String? _date;
 
   Future<void> saveForm() async {
     if (!_formKey.currentState!.validate()) return;
-    if (_priority == null || _date == null) return;
+    if (_priority == null || (_date == null && _duration == null)) return;
 
     _formKey.currentState!.save();
 
     await progressManager.addTask(
       collectionID: widget.collection.id,
       description: _description!,
+      date: _date ?? _duration!,
       priority: _priority!,
       title: _title!,
-      date: _date!,
     );
 
     await widget.updateTasks();
@@ -65,7 +68,7 @@ class _ProgressFormState extends State<ProgressForm> {
   String? _validateDescription(String description) {
     if (description.isEmpty ||
         description.length < 10 ||
-        description.length > 100) {
+        description.length > 200) {
       return "INVALID DESCRIPTION";
     }
 
@@ -85,32 +88,49 @@ class _ProgressFormState extends State<ProgressForm> {
   }
 
   Future<void> _saveDate() async {
-    final selectedDate = await showDatePicker(
+    final selectedDate = await openDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(
-        DateTime.now().year + 10,
-      ),
     );
 
     if (selectedDate == null) return;
 
     setState(() {
-      _date = DateFormat("dd MMM, yyyy").format(
-        selectedDate,
-      );
+      _date = DateFormat("dd MMM, yyyy").format(selectedDate);
+      _selectedOption = -1;
     });
 
-    _selectedDurationIndex = -1;
+    _duration = null;
   }
 
   void _saveDuration({
     required int days,
     required int index,
   }) {
-    setState(() => _selectedDurationIndex = index);
-    _date = null;
+    _duration = DateFormat("dd MMM, yyyy").format(
+      DateTime.parse(_formattedDate(days: days)),
+    );
+
+    setState(() {
+      _selectedOption = index;
+      _date = null;
+    });
+  }
+
+  String _formattedDate({required int days}) {
+    String day = "${DateTime.now().day + days}";
+    String month = "${DateTime.now().month}";
+    String year = "${DateTime.now().year}";
+
+    if (int.parse(day) > 30) {
+      day = "${int.parse(day) - 30}";
+      month = int.parse(month) == 12 ? "01" : "12";
+      year = "${int.parse(year) + 1}";
+    }
+
+    if (month.length != 2) month = "0$month";
+    if (day.length != 2) day = "0$day";
+
+    return "$year-$month-$day";
   }
 
   void _closeForm() {
@@ -140,6 +160,7 @@ class _ProgressFormState extends State<ProgressForm> {
               label: "Name",
               validateInput: _validateTitle,
               saveInput: _saveTitle,
+              lines: 1,
             ),
             const SizedBox(
               height: 15,
@@ -162,8 +183,8 @@ class _ProgressFormState extends State<ProgressForm> {
             ),
             ProgressFormDate(
               title: "Select Duration",
-              onSelectDuration: _saveDuration,
-              selected: _selectedDurationIndex,
+              onSaveOption: _saveDuration,
+              selectedOption: _selectedOption,
               onSaveDate: _saveDate,
               savedDate: _date,
             ),

@@ -7,7 +7,7 @@ class ProgressFormPriorityDuration extends StatelessWidget {
     super.key,
   });
 
-  final String duration;
+  final int duration;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class ProgressFormPriorityDuration extends StatelessWidget {
           width: 8,
         ),
         Text(
-          duration,
+          "${duration}d",
           style: GoogleFonts.montserrat(
             fontWeight: FontWeight.w500,
             color: Colors.white,

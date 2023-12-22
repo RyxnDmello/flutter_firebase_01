@@ -23,3 +23,5 @@ const Map<String, Color> priorities = {
   "LOW": Color.fromARGB(255, 0, 180, 0),
   "SIDE": Color.fromARGB(255, 150, 0, 200),
 };
+
+const List<int> durations = [5, 10, 15, 20, 25, 30, 35, 40];

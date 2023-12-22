@@ -19,7 +19,7 @@ class TaskDescription extends StatelessWidget {
         fontWeight: FontWeight.w500,
         letterSpacing: 0,
         fontSize: 20,
-        height: 1,
+        height: 1.25,
       ),
     );
   }

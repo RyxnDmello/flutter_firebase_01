@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../models/task_model.dart';
+
 import './date/progress_form_date_custom.dart';
 import './date/progress_form_date_option.dart';
 
 class ProgressFormDate extends StatelessWidget {
   const ProgressFormDate({
-    required this.onSelectDuration,
+    required this.onSaveOption,
+    required this.selectedOption,
     required this.onSaveDate,
     required this.savedDate,
-    required this.selected,
     required this.title,
     super.key,
   });
@@ -19,16 +21,14 @@ class ProgressFormDate extends StatelessWidget {
   final void Function({
     required int days,
     required int index,
-  }) onSelectDuration;
+  }) onSaveOption;
 
+  final int? selectedOption;
   final String? savedDate;
-  final int selected;
   final String title;
 
   @override
   Widget build(BuildContext context) {
-    List<int> days = [5, 10, 15, 20, 25, 30, 35, 40];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -46,11 +46,12 @@ class ProgressFormDate extends StatelessWidget {
           height: 10,
         ),
         ProgressFormDateCustom(
+          isSelected: savedDate != null ? true : false,
+          date: savedDate ?? "Custom Date",
           onSaveDate: onSaveDate,
-          savedDate: savedDate,
         ),
         const SizedBox(
-          height: 15,
+          height: 10,
         ),
         GridView.builder(
           shrinkWrap: true,
@@ -61,15 +62,15 @@ class ProgressFormDate extends StatelessWidget {
             mainAxisSpacing: 10,
             crossAxisCount: 4,
           ),
-          itemCount: days.length,
+          itemCount: durations.length,
           itemBuilder: (context, index) {
             return ProgressFormDateOption(
-              onSelectDuration: () => onSelectDuration(
-                days: days[index],
+              onSelectOption: () => onSaveOption(
+                days: durations[index],
                 index: index,
               ),
-              isSelected: selected == index,
-              days: days[index],
+              isSelected: selectedOption == index,
+              duration: durations[index],
             );
           },
         ),

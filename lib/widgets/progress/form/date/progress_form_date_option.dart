@@ -3,30 +3,30 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ProgressFormDateOption extends StatelessWidget {
   const ProgressFormDateOption({
-    required this.onSelectDuration,
+    required this.onSelectOption,
     required this.isSelected,
-    required this.days,
+    required this.duration,
     super.key,
   });
 
-  final void Function() onSelectDuration;
+  final void Function() onSelectOption;
   final bool isSelected;
-  final int days;
+  final int duration;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onSelectDuration,
+      onTap: onSelectOption,
       child: Container(
         padding: const EdgeInsets.all(6.5),
         decoration: BoxDecoration(
-          color: isSelected
-              ? const Color.fromARGB(100, 0, 0, 255)
-              : const Color.fromARGB(25, 0, 0, 255),
-          border: Border.all(
-            color: const Color.fromARGB(255, 0, 0, 180),
-            width: 2.5,
-          ),
+          border: isSelected
+              ? Border.all(
+                  color: const Color.fromARGB(255, 0, 0, 180),
+                  width: 2.5,
+                )
+              : null,
+          color: Color.fromARGB(isSelected ? 40 : 30, 0, 0, 255),
           borderRadius: BorderRadius.circular(5),
         ),
         child: Stack(
@@ -40,7 +40,7 @@ class ProgressFormDateOption extends StatelessWidget {
               right: 0,
               bottom: 0,
               child: Text(
-                "${days}d",
+                "${duration}d",
                 style: GoogleFonts.montserrat(
                   fontWeight: FontWeight.w500,
                   color: Colors.black,

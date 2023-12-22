@@ -6,19 +6,21 @@ class ProgressFormInput extends StatelessWidget {
     required this.validateInput,
     required this.saveInput,
     required this.label,
+    this.lines,
     super.key,
   });
 
   final String? Function(String input) validateInput;
   final void Function(String input) saveInput;
   final String label;
+  final int? lines;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       validator: (value) => validateInput(value!),
       onSaved: (newValue) => saveInput(newValue!),
-      maxLines: null,
+      maxLines: lines,
       style: GoogleFonts.poppins(
         fontWeight: FontWeight.w500,
         color: Colors.black,

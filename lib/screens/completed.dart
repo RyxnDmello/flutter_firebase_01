@@ -59,29 +59,31 @@ class _CompletedScreenState extends State<CompletedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Header(
-            completedLength: widget.completed.length,
-            onOpenScreen: _closeCompletedScreen,
-            collection: widget.collection,
-            progressLength: null,
-            isProgress: false,
-            onOpenForm: null,
-            onClear: null,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          TasksList(
-            collectionID: widget.collection.id,
-            onDeleteTask: _deleteCompletedTask,
-            tasks: _completed,
-            onAddTask: null,
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Header(
+              onOpenScreen: _closeCompletedScreen,
+              completedLength: _completed.length,
+              collection: widget.collection,
+              progressLength: null,
+              isProgress: false,
+              onOpenForm: null,
+              onClear: null,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TasksList(
+              collectionID: widget.collection.id,
+              onDeleteTask: _deleteCompletedTask,
+              tasks: _completed,
+              onAddTask: null,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -72,8 +72,8 @@ class ProgressFormPriority extends StatelessWidget {
                       type: priorities.keys.elementAt(index),
                       isSelected: selected == index,
                     ),
-                    const ProgressFormPriorityDuration(
-                      duration: "10d",
+                    ProgressFormPriorityDuration(
+                      duration: durations[index],
                     ),
                   ],
                 ),
