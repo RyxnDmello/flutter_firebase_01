@@ -39,62 +39,6 @@ class Header extends StatelessWidget {
       return percentage.toStringAsFixed(2);
     }
 
-    Widget content = Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        HeaderNavbar(
-          onClose: () => Navigator.of(context).pop(),
-          onOpenForm: null,
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        HeaderController(
-          totalTasks: completedLength,
-          onOpenScreen: onOpenScreen,
-          label: "Progress Tasks",
-          onClear: null,
-        ),
-      ],
-    );
-
-    if (isProgress) {
-      content = Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          HeaderNavbar(
-            onClose: () => Navigator.of(context).pop(),
-            onOpenForm: onOpenForm,
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          HeaderTitle(
-            name: collection.name,
-            icon: collection.icon,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          HeaderDetails(
-            active: progressLength.toString(),
-            percentage: getCompletedPercentage(),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          HeaderController(
-            totalTasks: completedLength,
-            onOpenScreen: onOpenScreen,
-            label: "Completed Tasks",
-            onClear: onClear,
-          ),
-        ],
-      );
-    }
-
     return Container(
       width: double.infinity,
       clipBehavior: Clip.hardEdge,
@@ -114,7 +58,44 @@ class Header extends StatelessWidget {
           ),
         ],
       ),
-      child: content,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Hero(
+            tag: "COLLECTION",
+            child: HeaderNavbar(
+              onClose: () => Navigator.of(context).pop(),
+              onOpenForm: isProgress ? onOpenForm : null,
+            ),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          HeaderTitle(
+            name: collection.name,
+            icon: collection.icon,
+          ),
+          if (isProgress)
+            const SizedBox(
+              height: 10,
+            ),
+          if (isProgress)
+            HeaderDetails(
+              active: progressLength.toString(),
+              percentage: getCompletedPercentage(),
+            ),
+          const SizedBox(
+            height: 10,
+          ),
+          HeaderController(
+            totalTasks: completedLength,
+            onOpenScreen: onOpenScreen,
+            label: isProgress ? "Completed Tasks" : "Progress Tasks",
+            onClear: isProgress ? onClear : null,
+          ),
+        ],
+      ),
     );
   }
 }

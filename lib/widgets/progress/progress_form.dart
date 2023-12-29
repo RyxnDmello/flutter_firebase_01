@@ -95,7 +95,7 @@ class _ProgressFormState extends State<ProgressForm> {
     if (selectedDate == null) return;
 
     setState(() {
-      _date = DateFormat("dd MMM, yyyy").format(selectedDate);
+      _date = DateFormat("yyyy-MM-dd").format(selectedDate);
       _selectedOption = -1;
     });
 
@@ -103,21 +103,10 @@ class _ProgressFormState extends State<ProgressForm> {
   }
 
   void _saveDuration({
-    required int days,
+    required int duration,
     required int index,
   }) {
-    _duration = DateFormat("dd MMM, yyyy").format(
-      DateTime.parse(_formattedDate(days: days)),
-    );
-
-    setState(() {
-      _selectedOption = index;
-      _date = null;
-    });
-  }
-
-  String _formattedDate({required int days}) {
-    String day = "${DateTime.now().day + days}";
+    String day = "${DateTime.now().day + duration}";
     String month = "${DateTime.now().month}";
     String year = "${DateTime.now().year}";
 
@@ -130,7 +119,12 @@ class _ProgressFormState extends State<ProgressForm> {
     if (month.length != 2) month = "0$month";
     if (day.length != 2) day = "0$day";
 
-    return "$year-$month-$day";
+    _duration = "$year-$month-$day";
+
+    setState(() {
+      _selectedOption = index;
+      _date = null;
+    });
   }
 
   void _closeForm() {

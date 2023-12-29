@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../models/collection_model.dart';
 import '../../models/task_model.dart';
 
-import './list/collections_list_block.dart';
+import './list/collections_list_card.dart';
 
 class CollectionsList extends StatelessWidget {
   const CollectionsList({
@@ -33,7 +33,7 @@ class CollectionsList extends StatelessWidget {
       ),
       itemCount: collections.length,
       itemBuilder: (context, index) {
-        return CollectionsListBlock(
+        return CollectionsListCard(
           openProgressScreen: onOpenProgressScreen,
           updateCollections: updateCollections,
           collection: collections[index],

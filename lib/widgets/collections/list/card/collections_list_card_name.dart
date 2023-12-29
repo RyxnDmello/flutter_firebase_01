@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CollectionsListBlockName extends StatelessWidget {
-  const CollectionsListBlockName({
+class CollectionsListCardName extends StatelessWidget {
+  const CollectionsListCardName({
     required this.name,
     required this.icon,
     super.key,

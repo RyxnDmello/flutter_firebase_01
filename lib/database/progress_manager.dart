@@ -61,9 +61,9 @@ class _ProgressManager {
         .collection("progress")
         .get();
 
-    dbProgress.docs.map((progress) async {
-      await progress.reference.delete();
-    });
+    for (final doc in dbProgress.docs) {
+      await doc.reference.delete();
+    }
   }
 
   Future<List<TaskModel>> tasks({

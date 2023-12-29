@@ -10,7 +10,7 @@ class TaskHeader extends StatelessWidget {
     required this.onAddTask,
     required this.priorityColor,
     required this.priorityType,
-    required this.days,
+    required this.duration,
     super.key,
   });
 
@@ -18,7 +18,7 @@ class TaskHeader extends StatelessWidget {
   final Future<void> Function()? onAddTask;
   final Color priorityColor;
   final String priorityType;
-  final String days;
+  final String? duration;
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +49,10 @@ class TaskHeader extends StatelessWidget {
             ),
           ],
         ),
-        TaskHeaderDuration(
-          duration: days,
-        ),
+        if (duration != null)
+          TaskHeaderDuration(
+            duration: duration!,
+          ),
       ],
     );
   }

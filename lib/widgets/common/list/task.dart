@@ -5,14 +5,21 @@ import '../../../models/task_model.dart';
 import './task/task_header.dart';
 import './task/task_title.dart';
 import './task/task_description.dart';
+import './task/task_overdue.dart';
+
+final _currentDate = DateTime.now();
 
 class Task extends StatelessWidget {
   const Task({
     required this.onDeleteTask,
+    required this.isProgress,
     required this.onAddTask,
     required this.task,
     super.key,
   });
+
+  final bool isProgress;
+  final TaskModel task;
 
   final Future<void> Function({
     required String title,
@@ -25,10 +32,26 @@ class Task extends StatelessWidget {
     required String taskID,
   })? onDeleteTask;
 
-  final TaskModel task;
-
   @override
   Widget build(BuildContext context) {
+    final taskDate = DateTime.parse(task.date);
+    final timePeriod = taskDate.difference(_currentDate);
+
+    String? duration() {
+      final inDays = timePeriod.inDays;
+      final inHours = timePeriod.inHours;
+
+      if (inDays < 0) return null;
+      return inDays == 0 ? "${inHours}H" : "${inDays}D";
+    }
+
+    String? overdue() {
+      final inDays = timePeriod.inDays;
+
+      if (inDays > -1) return null;
+      return inDays.abs() == 1 ? "${inDays.abs()} Day" : "${inDays.abs()} Days";
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 15,
@@ -72,13 +95,9 @@ class Task extends StatelessWidget {
                     );
                   }
                 : null,
-            priorityColor: priorities.values.elementAt(
-              task.priority,
-            ),
-            priorityType: priorities.keys.elementAt(
-              task.priority,
-            ),
-            days: "10d",
+            priorityColor: priorities.values.elementAt(task.priority),
+            priorityType: priorities.keys.elementAt(task.priority),
+            duration: isProgress ? duration() : null,
           ),
           const SizedBox(
             height: 15,
@@ -92,6 +111,14 @@ class Task extends StatelessWidget {
           TaskDescription(
             description: task.description,
           ),
+          if (overdue() != null)
+            const SizedBox(
+              height: 15,
+            ),
+          if (overdue() != null)
+            TaskOverdue(
+              overdue: overdue()!,
+            ),
         ],
       ),
     );

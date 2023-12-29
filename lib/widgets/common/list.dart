@@ -8,6 +8,7 @@ class TasksList extends StatelessWidget {
   const TasksList({
     required this.collectionID,
     required this.onDeleteTask,
+    required this.isProgress,
     required this.onAddTask,
     required this.tasks,
     super.key,
@@ -15,6 +16,7 @@ class TasksList extends StatelessWidget {
 
   final List<TaskModel> tasks;
   final String collectionID;
+  final bool isProgress;
 
   final Future<void> Function({
     required String title,
@@ -36,6 +38,7 @@ class TasksList extends StatelessWidget {
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         return Task(
+          isProgress: isProgress,
           onDeleteTask: onDeleteTask,
           onAddTask: onAddTask,
           task: tasks[index],

@@ -17,6 +17,7 @@ class TaskHeaderDuration extends StatelessWidget {
       children: [
         const Icon(
           Icons.timelapse,
+          color: Colors.black,
           size: 30,
         ),
         const SizedBox(

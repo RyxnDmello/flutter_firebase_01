@@ -169,6 +169,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 onDeleteTask: _deleteProgressTask,
                 onAddTask: _addCompletedTask,
                 tasks: _progress,
+                isProgress: true,
               ),
           ],
         ),

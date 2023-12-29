@@ -110,9 +110,9 @@ class _CollectionScreenState extends State<CollectionsScreen> {
         CollectionsHeader(
           background: "./lib/images/collection/background.png",
           image: "./lib/images/collection/collection.png",
+          title: "Empty Collection",
           onBack: _closeCollectionsScreen,
           onRefresh: _updateCollections,
-          title: "Empty Collection",
           onOpenForm: _openForm,
           onOpenGraph: null,
         ),

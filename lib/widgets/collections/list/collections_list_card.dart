@@ -7,11 +7,11 @@ import '../../../database/completed_manager.dart';
 import '../../../models/collection_model.dart';
 import '../../../models/task_model.dart';
 
-import './block/collections_list_block_name.dart';
-import './block/collections_list_block_controller.dart';
+import './card/collections_list_card_name.dart';
+import './card/collections_list_card_controller.dart';
 
-class CollectionsListBlock extends StatelessWidget {
-  const CollectionsListBlock({
+class CollectionsListCard extends StatelessWidget {
+  const CollectionsListCard({
     required this.openProgressScreen,
     required this.updateCollections,
     required this.collection,
@@ -85,14 +85,14 @@ class CollectionsListBlock extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CollectionsListBlockName(
+            CollectionsListCardName(
               name: collection.name,
               icon: collection.icon,
             ),
             const SizedBox(
               height: 12.5,
             ),
-            CollectionsListBlockController(
+            CollectionsListCardController(
               deleteCollection: deleteCollection,
               date: collection.date,
             ),

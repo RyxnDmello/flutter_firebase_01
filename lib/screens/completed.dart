@@ -80,6 +80,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
               collectionID: widget.collection.id,
               onDeleteTask: _deleteCompletedTask,
               tasks: _completed,
+              isProgress: false,
               onAddTask: null,
             ),
           ],

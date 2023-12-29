@@ -19,7 +19,7 @@ class ProgressFormDate extends StatelessWidget {
   final Future<void> Function() onSaveDate;
 
   final void Function({
-    required int days,
+    required int duration,
     required int index,
   }) onSaveOption;
 
@@ -66,7 +66,7 @@ class ProgressFormDate extends StatelessWidget {
           itemBuilder: (context, index) {
             return ProgressFormDateOption(
               onSelectOption: () => onSaveOption(
-                days: durations[index],
+                duration: durations[index],
                 index: index,
               ),
               isSelected: selectedOption == index,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CollectionsListBlockController extends StatelessWidget {
-  const CollectionsListBlockController({
+class CollectionsListCardController extends StatelessWidget {
+  const CollectionsListCardController({
     required this.deleteCollection,
     required this.date,
     super.key,
