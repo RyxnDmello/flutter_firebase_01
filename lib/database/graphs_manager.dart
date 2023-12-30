@@ -6,7 +6,7 @@ import './progress_manager.dart';
 class _GraphsManager {
   const _GraphsManager();
 
-  Future<Map<CollectionModel, int>> get collectionGraphData async {
+  Future<Map<CollectionModel, int>> get pieData async {
     final collections = await collectionManager.collections;
 
     final Map<CollectionModel, int> collectionGraphData = {};

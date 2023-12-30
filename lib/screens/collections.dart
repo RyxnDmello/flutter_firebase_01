@@ -78,20 +78,20 @@ class _CollectionScreenState extends State<CollectionsScreen> {
   }
 
   Future<void> _openGraphsScreen() async {
-    final collectionGraphData = await graphsManager.collectionGraphData;
+    final pieData = await graphsManager.pieData;
 
     _graphsScreen(
-      collectionGraphData: collectionGraphData,
+      pieData: pieData,
     );
   }
 
   Future<void> _graphsScreen({
-    required Map<CollectionModel, int> collectionGraphData,
+    required Map<CollectionModel, int> pieData,
   }) async {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GraphsScreen(
-          collections: collectionGraphData,
+          pieData: pieData,
         ),
       ),
     );

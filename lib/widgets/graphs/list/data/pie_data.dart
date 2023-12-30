@@ -5,10 +5,10 @@ import 'package:fl_chart/fl_chart.dart';
 import '../../../../models/collection_model.dart';
 
 List<PieChartSectionData> pieChartSections({
-  required Map<CollectionModel, int> collections,
+  required Map<CollectionModel, int> pieData,
   required Color sectionColor,
 }) {
-  return collections.entries.map((entry) {
+  return pieData.entries.map((entry) {
     return _section(
       title: entry.value.toString(),
       value: entry.value.toDouble(),
@@ -26,25 +26,20 @@ PieChartSectionData _section({
 }) {
   return PieChartSectionData(
     titleStyle: GoogleFonts.montserrat(
-      fontWeight: FontWeight.w600,
-      color: Colors.black,
-      fontSize: 16,
-      height: 1,
+      fontWeight: FontWeight.w500,
+      color: Colors.white,
+      fontSize: 20,
     ),
     badgeWidget: Icon(
       icon,
       color: Colors.black,
       size: 30,
     ),
-    borderSide: BorderSide(
-      color: color,
-      width: 2.5,
-    ),
-    titlePositionPercentageOffset: 0.65,
+    titlePositionPercentageOffset: 0.6,
     badgePositionPercentageOffset: 1.5,
-    color: color.withAlpha(100),
     value: double.parse(title),
     title: title.toString(),
+    color: color,
     radius: 65,
   );
 }

@@ -8,11 +8,11 @@ import './data/pie_data.dart';
 
 class GraphsListPie extends StatelessWidget {
   const GraphsListPie({
-    required this.collections,
+    required this.pieData,
     super.key,
   });
 
-  final Map<CollectionModel, int> collections;
+  final Map<CollectionModel, int> pieData;
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +21,10 @@ class GraphsListPie extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Collections",
+          "Progress / Collection",
           style: GoogleFonts.montserrat(
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w600,
             color: Colors.black,
-            letterSpacing: 0,
             fontSize: 25,
           ),
         ),
@@ -37,8 +36,8 @@ class GraphsListPie extends StatelessWidget {
           child: PieChart(
             PieChartData(
               sections: pieChartSections(
-                sectionColor: const Color.fromARGB(255, 0, 0, 255),
-                collections: collections,
+                sectionColor: const Color.fromARGB(255, 0, 0, 100),
+                pieData: pieData,
               ),
               centerSpaceRadius: 50,
               sectionsSpace: 4,
