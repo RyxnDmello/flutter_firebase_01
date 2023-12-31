@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../models/collection_model.dart';
 
-import './data/pie_data.dart';
+import './pie/pie_data.dart';
 
 class GraphsListPie extends StatelessWidget {
   const GraphsListPie({

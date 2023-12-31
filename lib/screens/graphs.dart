@@ -7,16 +7,19 @@ import '../widgets/graphs/graphs_list.dart';
 
 class GraphsScreen extends StatelessWidget {
   const GraphsScreen({
-    required this.pieData,
+    required this.graphsData,
     super.key,
   });
 
-  final Map<CollectionModel, int> pieData;
+  final Map<CollectionModel, List<int>> graphsData;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        padding: const EdgeInsets.only(
+          bottom: 40,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -29,7 +32,7 @@ class GraphsScreen extends StatelessWidget {
               height: 40,
             ),
             GraphsList(
-              pieData: pieData,
+              graphsData: graphsData,
             ),
           ],
         ),

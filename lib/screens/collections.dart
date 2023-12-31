@@ -78,20 +78,20 @@ class _CollectionScreenState extends State<CollectionsScreen> {
   }
 
   Future<void> _openGraphsScreen() async {
-    final pieData = await graphsManager.pieData;
+    final graphsData = await graphsManager.graphsData;
 
     _graphsScreen(
-      pieData: pieData,
+      graphsData: graphsData,
     );
   }
 
   Future<void> _graphsScreen({
-    required Map<CollectionModel, int> pieData,
+    required Map<CollectionModel, List<int>> graphsData,
   }) async {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GraphsScreen(
-          pieData: pieData,
+          graphsData: graphsData,
         ),
       ),
     );
@@ -156,7 +156,7 @@ class _CollectionScreenState extends State<CollectionsScreen> {
 
     return Scaffold(
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.only(bottom: 40),
         child: content,
       ),
     );
