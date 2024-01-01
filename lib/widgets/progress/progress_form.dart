@@ -6,6 +6,7 @@ import '../../database/progress_manager.dart';
 import '../../models/collection_model.dart';
 
 import '../common/calendar.dart';
+import '../common/loading_indicator.dart';
 
 import './form/progress_form_title.dart';
 import './form/progress_form_input.dart';
@@ -43,6 +44,10 @@ class _ProgressFormState extends State<ProgressForm> {
     if (_priority == null || (_date == null && _duration == null)) return;
 
     _formKey.currentState!.save();
+
+    showLoadingIndicator(
+      context: context,
+    );
 
     await progressManager.addTask(
       collectionID: widget.collection.id,
@@ -128,6 +133,7 @@ class _ProgressFormState extends State<ProgressForm> {
   }
 
   void _closeForm() {
+    Navigator.of(context).pop();
     Navigator.of(context).pop();
   }
 

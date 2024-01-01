@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../database/collection_manager.dart';
+import '../database/progress_manager.dart';
+import '../database/completed_manager.dart';
 import '../database/graphs_manager.dart';
 
 import '../models/collection_model.dart';
 import '../models/task_model.dart';
 
 import '../widgets/common/empty.dart';
+import '../widgets/common/loading_indicator.dart';
 
 import '../widgets/collections/collections_header.dart';
 import '../widgets/collections/collections_form.dart';
@@ -33,11 +36,6 @@ class CollectionsScreen extends StatefulWidget {
 class _CollectionScreenState extends State<CollectionsScreen> {
   List<CollectionModel> _collections = [];
 
-  Future<void> _updateCollections() async {
-    final collections = await collectionManager.collections;
-    setState(() => _collections = collections);
-  }
-
   void _openForm() {
     showModalBottomSheet(
       useSafeArea: true,
@@ -51,18 +49,79 @@ class _CollectionScreenState extends State<CollectionsScreen> {
       context: context,
       builder: (context) {
         return CollectionsForm(
-          updateCollections: _updateCollections,
+          onUpdate: _updateCollections,
         );
       },
     );
   }
 
+  Future<void> _updateCollections() async {
+    final collections = await collectionManager.collections;
+    setState(() => _collections = collections);
+  }
+
   Future<void> _openProgressScreen({
+    required CollectionModel collection,
+  }) async {
+    showLoadingIndicator(
+      context: context,
+    );
+
+    final progress = await progressManager.tasks(
+      collectionID: collection.id,
+    );
+
+    final completed = await completedManager.tasks(
+      collectionID: collection.id,
+    );
+
+    _closeLoadingIndicator();
+
+    _progressScreen(
+      collection: collection,
+      progress: progress,
+      completed: completed,
+    );
+  }
+
+  Future<void> _deleteCollection({
+    required String collectionID,
+  }) async {
+    showLoadingIndicator(
+      context: context,
+    );
+
+    await collectionManager.deleteCollection(
+      collectionID: collectionID,
+    );
+
+    await _updateCollections();
+    _closeLoadingIndicator();
+  }
+
+  Future<void> _openGraphsScreen() async {
+    showLoadingIndicator(
+      context: context,
+    );
+
+    final graphsData = await graphsManager.graphsData;
+    _closeLoadingIndicator();
+
+    _graphsScreen(
+      graphsData: graphsData,
+    );
+  }
+
+  Future<void> _closeCollectionsScreen() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
+  void _progressScreen({
     required CollectionModel collection,
     required List<TaskModel> progress,
     required List<TaskModel> completed,
-  }) async {
-    await Navigator.of(context).push(
+  }) {
+    Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
           return ProgressScreen(
@@ -73,21 +132,11 @@ class _CollectionScreenState extends State<CollectionsScreen> {
         },
       ),
     );
-
-    _updateCollections();
   }
 
-  Future<void> _openGraphsScreen() async {
-    final graphsData = await graphsManager.graphsData;
-
-    _graphsScreen(
-      graphsData: graphsData,
-    );
-  }
-
-  Future<void> _graphsScreen({
+  void _graphsScreen({
     required Map<CollectionModel, List<int>> graphsData,
-  }) async {
+  }) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GraphsScreen(
@@ -97,67 +146,46 @@ class _CollectionScreenState extends State<CollectionsScreen> {
     );
   }
 
-  Future<void> _closeCollectionsScreen() async {
-    await FirebaseAuth.instance.signOut();
+  void _closeLoadingIndicator() {
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget content = Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        CollectionsHeader(
-          background: "./lib/images/collection/background.png",
-          image: "./lib/images/collection/collection.png",
-          title: "Empty Collection",
-          onBack: _closeCollectionsScreen,
-          onRefresh: _updateCollections,
-          onOpenForm: _openForm,
-          onOpenGraph: null,
-        ),
-        const SizedBox(
-          height: 80,
-        ),
-        Empty(
-          image: "./lib/images/collection/empty.png",
-          label: "CREATE COLLECTION",
-          openForm: _openForm,
-          size: 300,
-        ),
-      ],
-    );
-
-    if (_collections.isNotEmpty) {
-      content = Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          CollectionsHeader(
-            background: "./lib/images/collection/background.png",
-            image: "./lib/images/collection/collection.png",
-            title: "Your Collections",
-            onBack: _closeCollectionsScreen,
-            onOpenGraph: _openGraphsScreen,
-            onRefresh: _updateCollections,
-            onOpenForm: _openForm,
-          ),
-          const SizedBox(
-            height: 40,
-          ),
-          CollectionsList(
-            onOpenProgressScreen: _openProgressScreen,
-            updateCollections: _updateCollections,
-            collections: _collections,
-          ),
-        ],
-      );
-    }
-
     return Scaffold(
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 40),
-        child: content,
+        padding: const EdgeInsets.only(bottom: 30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CollectionsHeader(
+              background: "./lib/images/collection/background.png",
+              image: "./lib/images/collection/collection.png",
+              title: "Empty Collection",
+              onClose: _closeCollectionsScreen,
+              onRefresh: _updateCollections,
+              onOpenForm: _openForm,
+              onOpenGraph: _collections.isEmpty ? null : _openGraphsScreen,
+            ),
+            SizedBox(
+              height: _collections.isEmpty ? 80 : 30,
+            ),
+            if (_collections.isEmpty)
+              Empty(
+                image: "./lib/images/collection/empty.png",
+                label: "CREATE COLLECTION",
+                openForm: _openForm,
+                size: 300,
+              ),
+            if (_collections.isNotEmpty)
+              CollectionsList(
+                onOpen: _openProgressScreen,
+                onDelete: _deleteCollection,
+                collections: _collections,
+              ),
+          ],
+        ),
       ),
     );
   }

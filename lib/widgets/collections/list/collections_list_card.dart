@@ -1,61 +1,34 @@
 import 'package:flutter/material.dart';
 
-import '../../../database/collection_manager.dart';
-import '../../../database/progress_manager.dart';
-import '../../../database/completed_manager.dart';
-
 import '../../../models/collection_model.dart';
-import '../../../models/task_model.dart';
 
 import './card/collections_list_card_name.dart';
 import './card/collections_list_card_controller.dart';
 
 class CollectionsListCard extends StatelessWidget {
   const CollectionsListCard({
-    required this.openProgressScreen,
-    required this.updateCollections,
     required this.collection,
+    required this.onDelete,
+    required this.onOpen,
     super.key,
   });
 
   final CollectionModel collection;
 
-  final Future<void> Function() updateCollections;
-
-  final void Function({
+  final Future<void> Function({
     required CollectionModel collection,
-    required List<TaskModel> progress,
-    required List<TaskModel> completed,
-  }) openProgressScreen;
+  }) onOpen;
+
+  final Future<void> Function({
+    required String collectionID,
+  }) onDelete;
 
   @override
   Widget build(BuildContext context) {
-    Future<void> openScreen() async {
-      final progress = await progressManager.tasks(
-        collectionID: collection.id,
-      );
-
-      final completed = await completedManager.tasks(
-        collectionID: collection.id,
-      );
-
-      openProgressScreen(
-        collection: collection,
-        completed: completed,
-        progress: progress,
-      );
-    }
-
-    Future<void> deleteCollection() async {
-      await collectionManager.deleteCollection(
-        collectionID: collection.id,
-      );
-
-      await updateCollections();
-    }
-
     return GestureDetector(
-      onTap: () => openScreen(),
+      onTap: () async => await onOpen(
+        collection: collection,
+      ),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(
@@ -93,7 +66,9 @@ class CollectionsListCard extends StatelessWidget {
               height: 12.5,
             ),
             CollectionsListCardController(
-              deleteCollection: deleteCollection,
+              onDelete: () async => await onDelete(
+                collectionID: collection.id,
+              ),
               date: collection.date,
             ),
           ],

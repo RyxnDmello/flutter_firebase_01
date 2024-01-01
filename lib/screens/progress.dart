@@ -9,6 +9,7 @@ import '../models/task_model.dart';
 import '../widgets/common/header.dart';
 import '../widgets/common/list.dart';
 import '../widgets/common/empty.dart';
+import '../widgets/common/loading_indicator.dart';
 
 import '../widgets/progress/progress_form.dart';
 
@@ -43,6 +44,26 @@ class _ProgressScreenState extends State<ProgressScreen> {
     _completed = widget.completed;
   }
 
+  void _openForm() {
+    showModalBottomSheet(
+      useSafeArea: true,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
+        ),
+      ),
+      context: context,
+      builder: (context) {
+        return ProgressForm(
+          collection: widget.collection,
+          updateTasks: _updateTasks,
+        );
+      },
+    );
+  }
+
   Future<void> _updateTasks() async {
     final progress = await progressManager.tasks(
       collectionID: widget.collection.id,
@@ -64,6 +85,10 @@ class _ProgressScreenState extends State<ProgressScreen> {
     required int priority,
     required String date,
   }) async {
+    showLoadingIndicator(
+      context: context,
+    );
+
     await completedManager.addTask(
       collectionID: widget.collection.id,
       description: description,
@@ -73,48 +98,43 @@ class _ProgressScreenState extends State<ProgressScreen> {
     );
 
     await _updateTasks();
+    _closeLoadingIndicator();
   }
 
   Future<void> _deleteProgressTask({
     required String taskID,
   }) async {
+    showLoadingIndicator(
+      context: context,
+    );
+
     await progressManager.deleteTask(
       collectionID: widget.collection.id,
       taskID: taskID,
     );
 
     await _updateTasks();
+    _closeLoadingIndicator();
   }
 
   Future<void> _clearProgressTasks() async {
+    showLoadingIndicator(
+      context: context,
+    );
+
     await progressManager.clearTasks(
       collectionID: widget.collection.id,
     );
 
     await _updateTasks();
-  }
-
-  void _openForm() {
-    showModalBottomSheet(
-      useSafeArea: true,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(20),
-          topLeft: Radius.circular(20),
-        ),
-      ),
-      context: context,
-      builder: (context) {
-        return ProgressForm(
-          collection: widget.collection,
-          updateTasks: _updateTasks,
-        );
-      },
-    );
+    _closeLoadingIndicator();
   }
 
   Future<void> _openCompletedScreen() async {
+    showLoadingIndicator(
+      context: context,
+    );
+
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
@@ -127,12 +147,20 @@ class _ProgressScreenState extends State<ProgressScreen> {
     );
 
     await _updateTasks();
+    _closeLoadingIndicator();
+  }
+
+  void _closeLoadingIndicator() {
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        padding: const EdgeInsets.only(
+          bottom: 30,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -161,7 +189,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
               ),
             if (_progress.isNotEmpty)
               const SizedBox(
-                height: 20,
+                height: 30,
               ),
             if (_progress.isNotEmpty)
               TasksList(

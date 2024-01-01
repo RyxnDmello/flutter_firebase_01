@@ -18,7 +18,7 @@ class GraphsScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(
-          bottom: 40,
+          bottom: 30,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -29,7 +29,7 @@ class GraphsScreen extends StatelessWidget {
               title: "Graphs & Analytics",
             ),
             const SizedBox(
-              height: 40,
+              height: 30,
             ),
             GraphsList(
               graphsData: graphsData,

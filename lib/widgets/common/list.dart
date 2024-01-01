@@ -34,7 +34,10 @@ class TasksList extends StatelessWidget {
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.fromLTRB(15, 10, 15, 30),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 15,
+        vertical: 0,
+      ),
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         return Task(

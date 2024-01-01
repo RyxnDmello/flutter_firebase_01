@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 
 import '../../models/collection_model.dart';
-import '../../models/task_model.dart';
 
 import './list/collections_list_card.dart';
 
 class CollectionsList extends StatelessWidget {
   const CollectionsList({
-    required this.updateCollections,
-    required this.onOpenProgressScreen,
     required this.collections,
+    required this.onDelete,
+    required this.onOpen,
     super.key,
   });
 
   final List<CollectionModel> collections;
-  final Future<void> Function() updateCollections;
 
   final Future<void> Function({
     required CollectionModel collection,
-    required List<TaskModel> progress,
-    required List<TaskModel> completed,
-  }) onOpenProgressScreen;
+  }) onOpen;
+
+  final Future<void> Function({
+    required String collectionID,
+  }) onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +34,9 @@ class CollectionsList extends StatelessWidget {
       itemCount: collections.length,
       itemBuilder: (context, index) {
         return CollectionsListCard(
-          openProgressScreen: onOpenProgressScreen,
-          updateCollections: updateCollections,
           collection: collections[index],
+          onDelete: onDelete,
+          onOpen: onOpen,
         );
       },
       separatorBuilder: (context, index) {

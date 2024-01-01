@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../database/collection_manager.dart';
 
+import '../common/loading_indicator.dart';
+
 import './form/collections_form_title.dart';
 import './form/collections_form_input.dart';
 import './form/collections_form_icons.dart';
@@ -10,11 +12,11 @@ import './form/collections_form_button.dart';
 
 class CollectionsForm extends StatefulWidget {
   const CollectionsForm({
-    required this.updateCollections,
+    required this.onUpdate,
     super.key,
   });
 
-  final Future<void> Function() updateCollections;
+  final Future<void> Function() onUpdate;
 
   @override
   State<CollectionsForm> createState() {
@@ -36,13 +38,17 @@ class _CollectionsFormState extends State<CollectionsForm> {
 
     _formKey.currentState!.save();
 
+    showLoadingIndicator(
+      context: context,
+    );
+
     await collectionManager.createCollection(
       icon: _icon!,
       image: _image!,
       name: _name!,
     );
 
-    await widget.updateCollections();
+    await widget.onUpdate();
 
     _closeForm();
   }
@@ -73,6 +79,7 @@ class _CollectionsFormState extends State<CollectionsForm> {
   }
 
   void _closeForm() {
+    Navigator.of(context).pop();
     Navigator.of(context).pop();
   }
 

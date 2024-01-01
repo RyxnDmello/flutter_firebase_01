@@ -7,6 +7,7 @@ import '../models/task_model.dart';
 
 import '../widgets/common/header.dart';
 import '../widgets/common/list.dart';
+import '../widgets/common/loading_indicator.dart';
 
 class CompletedScreen extends StatefulWidget {
   const CompletedScreen({
@@ -33,23 +34,28 @@ class _CompletedScreenState extends State<CompletedScreen> {
     _completed = widget.completed;
   }
 
-  Future<void> _updateCompletedTasks() async {
-    final completed = await completedManager.tasks(
-      collectionID: widget.collection.id,
-    );
-
-    setState(() => _completed = completed);
-  }
-
   Future<void> _deleteCompletedTask({
     required String taskID,
   }) async {
+    showLoadingIndicator(
+      context: context,
+    );
+
     await completedManager.deleteTask(
       collectionID: widget.collection.id,
       taskID: taskID,
     );
 
-    await _updateCompletedTasks();
+    final completed = await completedManager.tasks(
+      collectionID: widget.collection.id,
+    );
+
+    setState(() => _completed = completed);
+    _closeLoadingIndicator();
+  }
+
+  void _closeLoadingIndicator() {
+    Navigator.of(context).pop();
   }
 
   Future<void> _closeCompletedScreen() async {
@@ -60,6 +66,9 @@ class _CompletedScreenState extends State<CompletedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        padding: const EdgeInsets.only(
+          bottom: 30,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -74,7 +83,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
               onClear: null,
             ),
             const SizedBox(
-              height: 20,
+              height: 30,
             ),
             TasksList(
               collectionID: widget.collection.id,

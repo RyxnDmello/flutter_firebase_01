@@ -10,7 +10,7 @@ class CollectionsHeader extends StatelessWidget {
     required this.onOpenForm,
     required this.background,
     required this.onRefresh,
-    required this.onBack,
+    required this.onClose,
     required this.image,
     required this.title,
     super.key,
@@ -19,7 +19,7 @@ class CollectionsHeader extends StatelessWidget {
   final Future<void> Function() onRefresh;
   final void Function()? onOpenGraph;
   final void Function() onOpenForm;
-  final void Function() onBack;
+  final void Function() onClose;
   final String background;
   final String image;
   final String title;
@@ -53,7 +53,7 @@ class CollectionsHeader extends StatelessWidget {
           CollectionsHeaderNavbar(
             onRefresh: onRefresh,
             onOpenForm: onOpenForm,
-            onBack: onBack,
+            onBack: onClose,
           ),
           const SizedBox(
             height: 20,

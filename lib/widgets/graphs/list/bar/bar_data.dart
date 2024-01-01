@@ -25,8 +25,8 @@ BarChartGroupData _group({
   required int X,
 }) {
   const List<Color> rodColors = [
-    Color.fromARGB(255, 0, 0, 225),
-    Color.fromARGB(255, 225, 0, 0),
+    Color.fromARGB(255, 0, 0, 180),
+    Color.fromARGB(255, 200, 0, 0),
   ];
 
   return BarChartGroupData(

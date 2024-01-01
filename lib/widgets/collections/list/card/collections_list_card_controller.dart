@@ -3,12 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CollectionsListCardController extends StatelessWidget {
   const CollectionsListCardController({
-    required this.deleteCollection,
+    required this.onDelete,
     required this.date,
     super.key,
   });
 
-  final void Function() deleteCollection;
+  final void Function() onDelete;
   final String date;
 
   @override
@@ -18,7 +18,7 @@ class CollectionsListCardController extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         OutlinedButton(
-          onPressed: () => deleteCollection(),
+          onPressed: () => onDelete(),
           style: OutlinedButton.styleFrom(
             padding: const EdgeInsets.symmetric(
               horizontal: 25,
