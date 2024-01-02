@@ -140,6 +140,7 @@ class _CollectionScreenState extends State<CollectionsScreen> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GraphsScreen(
+          onOpenScreen: _openProgressScreen,
           graphsData: graphsData,
         ),
       ),

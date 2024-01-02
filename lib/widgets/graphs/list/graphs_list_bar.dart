@@ -7,6 +7,7 @@ import '../../../models/collection_model.dart';
 import './bar/bar_data.dart';
 import './bar/bar_tiles.dart';
 import './bar/bar_lines.dart';
+import './bar/bar_controller.dart';
 
 class GraphsListBar extends StatefulWidget {
   const GraphsListBar({
@@ -14,14 +15,17 @@ class GraphsListBar extends StatefulWidget {
     super.key,
   });
 
-  final Map<CollectionModel, List<int>> barData;
+  final List<Map<CollectionModel, List<int>>> barData;
 
   @override
   State<GraphsListBar> createState() => _GraphsListBarState();
 }
 
-class _GraphsListBarState extends State<GraphsListBar> {
-  Map<CollectionModel, List<int>> _barData = {};
+class _GraphsListBarState extends State<GraphsListBar>
+    with TickerProviderStateMixin {
+  final PageController _pageController = PageController(initialPage: 0);
+  List<Map<CollectionModel, List<int>>> _barData = [];
+  int _index = 0;
 
   @override
   initState() {
@@ -29,25 +33,32 @@ class _GraphsListBarState extends State<GraphsListBar> {
     _barData = widget.barData;
   }
 
-  List<Map<CollectionModel, List<int>>> get _barDataPages {
-    List<Map<CollectionModel, List<int>>> pages = [];
+  void _tabIndicator({required changedIndex}) {
+    setState(() => _index = changedIndex);
+  }
 
-    Map<CollectionModel, List<int>> temp = {};
-    int start = 0;
+  void _switchPageRight() {
+    if (_index == _barData.length - 1) return;
 
-    for (int i = 0; i < (_barData.length / 5).ceil(); i++) {
-      for (int j = start; j < start + 5; j++) {
-        if (j == _barData.length) break;
+    setState(() => ++_index);
+    _switchPages();
+  }
 
-        temp[_barData.keys.elementAt(j)] = _barData.values.elementAt(j);
-      }
+  void _switchPageLeft() {
+    if (_index == 0) return;
 
-      pages.insert(i, temp);
-      start += 5;
-      temp = {};
-    }
+    setState(() => --_index);
+    _switchPages();
+  }
 
-    return pages;
+  void _switchPages() {
+    _pageController.animateToPage(
+      _index,
+      curve: Curves.ease,
+      duration: const Duration(
+        milliseconds: 450,
+      ),
+    );
   }
 
   @override
@@ -71,7 +82,11 @@ class _GraphsListBarState extends State<GraphsListBar> {
           height: 250,
           width: double.infinity,
           child: PageView.builder(
-            itemCount: _barDataPages.length,
+            onPageChanged: (index) => _tabIndicator(
+              changedIndex: index,
+            ),
+            controller: _pageController,
+            itemCount: _barData.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.only(
@@ -82,7 +97,7 @@ class _GraphsListBarState extends State<GraphsListBar> {
                   BarChartData(
                     alignment: BarChartAlignment.spaceAround,
                     barGroups: barChartGroups(
-                      barData: _barDataPages.elementAt(index),
+                      barData: _barData.elementAt(index),
                     ),
                     gridData: FlGridData(
                       show: true,
@@ -94,7 +109,7 @@ class _GraphsListBarState extends State<GraphsListBar> {
                     titlesData: FlTitlesData(
                       bottomTitles: AxisTitles(
                         sideTitles: bottomSideTiles(
-                          collections: widget.barData.keys.toList(),
+                          collections: _barData.elementAt(index).keys.toList(),
                         ),
                       ),
                       leftTitles: AxisTitles(
@@ -119,6 +134,17 @@ class _GraphsListBarState extends State<GraphsListBar> {
             },
           ),
         ),
+        const SizedBox(
+          height: 20,
+        ),
+        if (_barData.length > 1)
+          BarController(
+            onTapRight: _switchPageRight,
+            onTapLeft: _switchPageLeft,
+            totalTabs: _barData.length,
+            tabIndex: _index,
+            vsync: this,
+          ),
       ],
     );
   }

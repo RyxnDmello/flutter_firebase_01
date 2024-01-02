@@ -8,14 +8,35 @@ import './pie/pie_data.dart';
 
 class GraphsListPie extends StatelessWidget {
   const GraphsListPie({
+    required this.onOpenScreen,
     required this.pieData,
     super.key,
   });
 
   final Map<CollectionModel, int> pieData;
 
+  final void Function({
+    required CollectionModel collection,
+  }) onOpenScreen;
+
   @override
   Widget build(BuildContext context) {
+    void onTapSection({
+      required PieTouchResponse? response,
+    }) {
+      if (response == null) return;
+
+      final touchedSectionIndex = response.touchedSection!.touchedSectionIndex;
+
+      if (touchedSectionIndex == -1) return;
+
+      onOpenScreen(
+        collection: pieData.keys.elementAt(
+          touchedSectionIndex,
+        ),
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -38,6 +59,11 @@ class GraphsListPie extends StatelessWidget {
               sections: pieChartSections(
                 sectionColor: const Color.fromARGB(255, 0, 0, 100),
                 pieData: pieData,
+              ),
+              pieTouchData: PieTouchData(
+                touchCallback: (event, response) => onTapSection(
+                  response: response,
+                ),
               ),
               centerSpaceRadius: 50,
               sectionsSpace: 4,

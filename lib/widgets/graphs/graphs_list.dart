@@ -9,11 +9,16 @@ import './list/graphs_list_bar.dart';
 
 class GraphsList extends StatelessWidget {
   const GraphsList({
+    required this.onOpenScreen,
     required this.graphsData,
     super.key,
   });
 
   final Map<CollectionModel, List<int>> graphsData;
+
+  final void Function({
+    required CollectionModel collection,
+  }) onOpenScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +33,17 @@ class GraphsList extends StatelessWidget {
         children: [
           GraphsListPie(
             pieData: graphsManager.convertToPieData(
-              graphsData,
+              graphsData: graphsData,
             ),
+            onOpenScreen: onOpenScreen,
           ),
           SizedBox(
             height: graphsData.length > 2 ? 60 : 20,
           ),
           GraphsListBar(
-            barData: graphsData,
+            barData: graphsManager.convertToBarData(
+              graphsData: graphsData,
+            ),
           ),
         ],
       ),

@@ -27,12 +27,35 @@ class _GraphsManager {
     return graphData;
   }
 
-  Map<CollectionModel, int> convertToPieData(
-    Map<CollectionModel, List<int>> graphsData,
-  ) {
+  Map<CollectionModel, int> convertToPieData({
+    required Map<CollectionModel, List<int>> graphsData,
+  }) {
     return graphsData.map((key, value) {
       return MapEntry(key, value.first);
     });
+  }
+
+  List<Map<CollectionModel, List<int>>> convertToBarData({
+    required Map<CollectionModel, List<int>> graphsData,
+  }) {
+    List<Map<CollectionModel, List<int>>> pages = [];
+
+    Map<CollectionModel, List<int>> temp = {};
+    int start = 0;
+
+    for (int i = 0; i < (graphsData.length / 5).ceil(); i++) {
+      for (int j = start; j < start + 5; j++) {
+        if (j == graphsData.length) break;
+
+        temp[graphsData.keys.elementAt(j)] = graphsData.values.elementAt(j);
+      }
+
+      pages.insert(i, temp);
+      start += 5;
+      temp = {};
+    }
+
+    return pages;
   }
 }
 
