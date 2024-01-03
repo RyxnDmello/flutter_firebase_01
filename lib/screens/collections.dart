@@ -25,7 +25,7 @@ class CollectionsScreen extends StatefulWidget {
     super.key,
   });
 
-  final List<CollectionModel>? collections;
+  final List<CollectionModel> collections;
 
   @override
   State<CollectionsScreen> createState() {
@@ -35,6 +35,12 @@ class CollectionsScreen extends StatefulWidget {
 
 class _CollectionScreenState extends State<CollectionsScreen> {
   List<CollectionModel> _collections = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _collections = widget.collections;
+  }
 
   void _openForm() {
     showModalBottomSheet(
@@ -161,9 +167,11 @@ class _CollectionScreenState extends State<CollectionsScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CollectionsHeader(
+              title: _collections.isEmpty
+                  ? "Empty Collection"
+                  : "Your Collections",
               background: "./lib/images/collection/background.png",
               image: "./lib/images/collection/collection.png",
-              title: "Empty Collection",
               onClose: _closeCollectionsScreen,
               onRefresh: _updateCollections,
               onOpenForm: _openForm,

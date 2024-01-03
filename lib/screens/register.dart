@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/register/register_app_bar.dart';
+import '../widgets/register/register_header.dart';
 import '../widgets/register/register_form.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -15,7 +15,7 @@ class RegisterScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            RegisterAppBar(),
+            RegisterHeader(),
             RegisterForm(),
           ],
         ),

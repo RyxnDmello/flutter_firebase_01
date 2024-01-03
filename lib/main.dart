@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import './database/account_manager.dart';
+
 import './firebase_options.dart';
 
 import './screens/register.dart';
-import './screens/collections.dart';
+import './screens/splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,13 +28,12 @@ class MyApp extends StatelessWidget {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const RegisterScreen();
+          if (snapshot.hasData) {
+            accountManager.initializeFirebase();
+            return const SplashScreen();
           }
 
-          return const CollectionsScreen(
-            collections: null,
-          );
+          return const RegisterScreen();
         },
       ),
     );

@@ -21,6 +21,12 @@ class _AccountManager {
     return _account;
   }
 
+  void initializeFirebase() {
+    _account = _firestore.collection("accounts").doc(
+          _firebaseAuth.currentUser!.uid,
+        );
+  }
+
   Future<bool> createAccount({
     required String username,
     required String email,

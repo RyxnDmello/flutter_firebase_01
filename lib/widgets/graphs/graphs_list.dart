@@ -35,7 +35,7 @@ class GraphsList extends StatelessWidget {
             pieData: graphsManager.convertToPieData(
               graphsData: graphsData,
             ),
-            onOpenScreen: onOpenScreen,
+            onTapSection: onOpenScreen,
           ),
           SizedBox(
             height: graphsData.length > 2 ? 60 : 20,

@@ -2,16 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../database/account_manager.dart';
-import '../../database/collection_manager.dart';
-
-import '../../models/collection_model.dart';
 
 import './form/register_form_title.dart';
 import './form/register_form_input.dart';
 import './form/register_form_button.dart';
 import './form/register_form_instead.dart';
-
-import '../../screens/collections.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -59,12 +54,6 @@ class _RegisterFormState extends State<RegisterForm> {
         return;
       }
     }
-
-    final collections = await collectionManager.collections;
-
-    _openCollectionsScreen(
-      collections: collections,
-    );
   }
 
   String? _validateUsername(String? username) {
@@ -105,16 +94,6 @@ class _RegisterFormState extends State<RegisterForm> {
 
   void _switchForms() {
     setState(() => _isSignUpForm = !_isSignUpForm);
-  }
-
-  void _openCollectionsScreen({required List<CollectionModel> collections}) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => CollectionsScreen(
-          collections: collections,
-        ),
-      ),
-    );
   }
 
   void _failureSnackbar({required String message}) {

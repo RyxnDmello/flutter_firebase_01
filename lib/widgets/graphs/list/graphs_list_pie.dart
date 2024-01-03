@@ -5,10 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../models/collection_model.dart';
 
 import './pie/pie_data.dart';
+import './pie/pie_touch.dart';
 
 class GraphsListPie extends StatelessWidget {
   const GraphsListPie({
-    required this.onOpenScreen,
+    required this.onTapSection,
     required this.pieData,
     super.key,
   });
@@ -17,26 +18,10 @@ class GraphsListPie extends StatelessWidget {
 
   final void Function({
     required CollectionModel collection,
-  }) onOpenScreen;
+  }) onTapSection;
 
   @override
   Widget build(BuildContext context) {
-    void onTapSection({
-      required PieTouchResponse? response,
-    }) {
-      if (response == null) return;
-
-      final touchedSectionIndex = response.touchedSection!.touchedSectionIndex;
-
-      if (touchedSectionIndex == -1) return;
-
-      onOpenScreen(
-        collection: pieData.keys.elementAt(
-          touchedSectionIndex,
-        ),
-      );
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -61,7 +46,9 @@ class GraphsListPie extends StatelessWidget {
                 pieData: pieData,
               ),
               pieTouchData: PieTouchData(
-                touchCallback: (event, response) => onTapSection(
+                touchCallback: (event, response) => touchCallBack(
+                  collections: pieData.keys.toList(),
+                  onTapSection: onTapSection,
                   response: response,
                 ),
               ),
