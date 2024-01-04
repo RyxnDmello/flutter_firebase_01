@@ -30,6 +30,14 @@ class RegisterFormInstead extends StatelessWidget {
         ),
         TextButton(
           onPressed: () => switchForms(),
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 0,
+            ),
+            foregroundColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+          ),
           child: Text(
             label,
             style: GoogleFonts.poppins(

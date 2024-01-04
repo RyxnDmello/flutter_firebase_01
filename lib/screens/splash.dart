@@ -4,8 +4,9 @@ import '../database/collection_manager.dart';
 
 import '../models/collection_model.dart';
 
-import '../widgets/splash/splash_message.dart';
 import '../widgets/splash/splash_title.dart';
+import '../widgets/splash/splash_description.dart';
+import '../widgets/splash/splash_message.dart';
 
 import './collections.dart';
 
@@ -63,16 +64,24 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               color: Colors.black,
             ),
-            child: const Center(
+            child: const SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SplashTitle(),
                   SizedBox(
-                    height: 20,
+                    height: 250,
                   ),
-                  SplashMessage(),
+                  SplashDescription(
+                    description: "TAKE CONTROL OF TIME",
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SplashMessage(
+                    message: "Loading Collections...",
+                  ),
                 ],
               ),
             ),

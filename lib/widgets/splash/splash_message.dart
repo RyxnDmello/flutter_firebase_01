@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SplashMessage extends StatelessWidget {
-  const SplashMessage({super.key});
+  const SplashMessage({
+    required this.message,
+    super.key,
+  });
+
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -12,19 +17,19 @@ class SplashMessage extends StatelessWidget {
       children: [
         const CircularProgressIndicator(
           strokeCap: StrokeCap.round,
-          strokeAlign: -2.65,
+          strokeAlign: -5,
           color: Colors.white,
-          strokeWidth: 3,
+          strokeWidth: 2.25,
         ),
         const SizedBox(
-          width: 10,
+          width: 8,
         ),
         Text(
-          "Loading Collections...",
+          message,
           style: GoogleFonts.montserrat(
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w400,
             color: Colors.white,
-            letterSpacing: 1,
+            letterSpacing: 0.5,
             fontSize: 25,
             height: 1,
           ),

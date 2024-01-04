@@ -5,28 +5,31 @@ class SplashTitle extends StatelessWidget {
   const SplashTitle({super.key});
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset(
-          "./lib/images/collection/collection.png",
-          fit: BoxFit.cover,
-          width: 70,
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(
-          "TaskFlow",
-          style: GoogleFonts.montserrat(
-            color: Colors.white,
-            letterSpacing: -2,
-            fontSize: 65,
-            height: 1,
+    return Padding(
+      padding: const EdgeInsets.only(top: 100),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            "./lib/images/collection/collection.png",
+            fit: BoxFit.cover,
+            width: 70,
           ),
-        ),
-      ],
+          const SizedBox(
+            width: 10,
+          ),
+          Text(
+            "TaskFlow",
+            style: GoogleFonts.montserrat(
+              color: Colors.white,
+              letterSpacing: -2,
+              fontSize: 65,
+              height: 1,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
